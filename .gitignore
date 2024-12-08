@@ -26,3 +26,4 @@ yarn-error.log
 /storage/logs/*
 
 .editorconfig
+.vite
