@@ -1,1 +1,1 @@
-export type SideLink = { id: number; label: string }[]
+export type SideLinkType = { id: number; label: string }[]

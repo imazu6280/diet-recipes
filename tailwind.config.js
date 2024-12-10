@@ -26,6 +26,14 @@ export default {
                 beige: "#F8F6F2",
                 white: "#FFFFFF",
                 black: "#606060",
+                red: "#F2907F",
+                blue: "#73A3C1",
+                green: "#A0BD4E",
+                yellow: "#DBBD34",
+                charcoal: "#CC903C",
+            },
+            boxShadow: {
+                black: "0 1px 5px #0000001a",
             },
             gridTemplateColumns: {
                 "sidebar-column": "270px 1fr",
@@ -33,9 +41,9 @@ export default {
             gridTemplateRows: {
                 "sidebar-row": "100vh 1fr",
             },
-            content: {
-                "search-icon": '"\\f002"',
-            },
+            // content: {
+            //     "search-icon": '"\\f002"',
+            // },
         },
     },
     plugins: [],
