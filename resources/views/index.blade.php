@@ -12,7 +12,7 @@
 
     </head>
 
-    <body class="antialiased m-2 bg-beige">
+    <body class="antialiased m-2 bg-beige md:m-0">
         <div id="app"></div>
     </body>
 </html>

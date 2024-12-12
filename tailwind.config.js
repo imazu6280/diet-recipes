@@ -15,9 +15,10 @@ export default {
     theme: {
         extend: {
             screens: {
-                sm: {'max': '560px'},
-                md: {'max': '768px'},
-                tb: {'max': '960px'}
+                sm: { max: "560px" },
+                tablet_md: { min: "561px", max: "768px" },
+                md: { max: "768px" },
+                tb: { max: "960px" },
             },
             width: {
                 inner: "96%",
@@ -41,7 +42,9 @@ export default {
                 black: "0 1px 5px #0000001a",
             },
             gridTemplateColumns: {
-                "sidebar-column": "clamp(240px, 20%, 270px) 1fr",
+                "header-column": "1fr 40px",
+                "header-tb-column": "140px 1fr 160px 24px",
+                "sidebar-column": "clamp(120px, 20%, 270px) 1fr",
             },
             // gridTemplateRows: {
             //     "sidebar-row": "100% 1fr",
