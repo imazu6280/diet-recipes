@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>diet-recipes</title>
+        <title>sample-api</title>
 
         
         <?php echo app('Illuminate\Foundation\Vite')->reactRefresh(); ?>
@@ -12,7 +12,7 @@
 
     </head>
 
-    <body class="antialiased m-2 bg-beige md:m-0">
+    <body class="antialiased">
         <div id="app"></div>
     </body>
 </html>

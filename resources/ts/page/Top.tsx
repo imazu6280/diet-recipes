@@ -39,7 +39,7 @@ const category: categoryType = [
 export const Top = () => {
     return (
         <div className="w-inner mx-auto">
-            <div className="flex flex-col gap-y-6 md:hidden">
+            <div className="flex flex-col gap-y-6">
                 <h1 className="text-3xl font-bold text-center">DIET RECIPES</h1>
                 <form action="">
                     <div className="flex justify-center gap-2 mx-auto">
@@ -59,7 +59,7 @@ export const Top = () => {
                         {popularRecipes.map((item) => (
                             <li
                                 key={item.id}
-                                className="pt-20 pb-2 px-4 text-white font-bold shadow-black bg-gray rounded-lg"
+                                className="pt-20 pb-2 px-4 text-white shadow-black bg-gray rounded-lg"
                             >
                                 {item.recipe}
                             </li>
@@ -68,11 +68,11 @@ export const Top = () => {
                 </div>
                 <div>
                     <h2 className="t-6 text-lg text-black font-semibold">登録レシピ一覧</h2>
-                    <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-2 tablet_md:grid-cols-3 sm:grid-cols-1 sm:gap-y-4">
+                    <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-2 md:grid-cols-3 sm:grid-cols-1 sm:gap-y-4">
                         {popularRecipes.map((item) => (
                             <li key={item.id} className="bg-white shadow-black rounded-lg">
                                 <div className="pt-20 bg-gray rounded-t-lg">
-                                    <p className="p-2 text-white font-bold">{item.recipe}</p>
+                                    <p className="p-2 text-white">{item.recipe}</p>
                                 </div>
                                 <div className="flex flex-col gap-y-1 mx-2 mt-6 mb-2">
                                     <p className="text-xs text-gray">詳細画像</p>
@@ -89,16 +89,16 @@ export const Top = () => {
                 </div>
                 <div>
                     <h2 className="t-6 text-lg text-black font-semibold">カテゴリ</h2>
-                    <ul className="grid grid-cols-4 gap-4 mt-2 bg-white rounded-lg md:grid-cols-3 md:gap-0 md:p-3">
+                    <ul className="grid grid-cols-4 gap-4 mt-2 md:grid-cols-3 md:gap-0">
                         {category.map((item) => (
                             <li
                                 key={item.id}
-                                className="py-4 pl-4 pr-1 bg-white shadow-black rounded-lg md:p-0 md:text-sm md:shadow-none  md:border-b md:border-gray md:rounded-none"
+                                className="py-4 pl-4 pr-1 bg-white shadow-black rounded-lg md:shadow-none"
                             >
-                                <p className="p-2 tb:px-0 tb:text-sm">
+                                <p className="p-2 smborder-b-2">
                                     <FontAwesomeIcon
                                         icon={item.icon}
-                                        className={`text-2xl mr-2 tb:mr-1 ${item.color} tb:text-lg`}
+                                        className={`text-2xl mr-2 ${item.color}`}
                                     />
                                     {item.category}
                                 </p>
