@@ -22,7 +22,7 @@ yarn-error.log
 /.vscode
 /.zed
 
-/storage/framework/view/*
+/storage/framework/views/*
 /storage/logs/*
 
 .editorconfig
