@@ -14,6 +14,11 @@ export default {
     ],
     theme: {
         extend: {
+            screens: {
+                sm: {'max': '560px'},
+                md: {'max': '768px'},
+                tb: {'max': '960px'}
+            },
             width: {
                 inner: "96%",
             },
@@ -36,11 +41,11 @@ export default {
                 black: "0 1px 5px #0000001a",
             },
             gridTemplateColumns: {
-                "sidebar-column": "270px 1fr",
+                "sidebar-column": "clamp(240px, 20%, 270px) 1fr",
             },
-            gridTemplateRows: {
-                "sidebar-row": "100vh 1fr",
-            },
+            // gridTemplateRows: {
+            //     "sidebar-row": "100% 1fr",
+            // },
             // content: {
             //     "search-icon": '"\\f002"',
             // },

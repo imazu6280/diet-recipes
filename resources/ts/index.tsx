@@ -13,7 +13,7 @@ const root = createRoot(container!) // createRoot(container!) if you use TypeScr
 root.render(
     <React.StrictMode>
         <BrowserRouter>
-            <div className="grid grid-cols-sidebar-column grid-rows-sidebar-row gap-2 items-start">
+            <div className="grid grid-cols-sidebar-column gap-2 items-start min-h-screen md:block">
                 <Sidebar />
 
                 <div className="py-5 bg-white rounded-lg">

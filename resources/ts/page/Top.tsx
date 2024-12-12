@@ -55,7 +55,7 @@ export const Top = () => {
             <div className="flex flex-col gap-y-6">
                 <div>
                     <h2 className="pt-6 text-lg text-black font-semibold">よく使う減量レシピ</h2>
-                    <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-2">
+                    <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-2 sm:grid-cols-2 sm:gap-y-4">
                         {popularRecipes.map((item) => (
                             <li
                                 key={item.id}
@@ -68,7 +68,7 @@ export const Top = () => {
                 </div>
                 <div>
                     <h2 className="t-6 text-lg text-black font-semibold">登録レシピ一覧</h2>
-                    <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-2">
+                    <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-2 md:grid-cols-3 sm:grid-cols-1 sm:gap-y-4">
                         {popularRecipes.map((item) => (
                             <li key={item.id} className="bg-white shadow-black rounded-lg">
                                 <div className="pt-20 bg-gray rounded-t-lg">
@@ -89,13 +89,13 @@ export const Top = () => {
                 </div>
                 <div>
                     <h2 className="t-6 text-lg text-black font-semibold">カテゴリ</h2>
-                    <ul className="grid grid-cols-4 gap-4 mt-2">
+                    <ul className="grid grid-cols-4 gap-4 mt-2 md:grid-cols-3 md:gap-0">
                         {category.map((item) => (
                             <li
                                 key={item.id}
-                                className="py-4 pl-4 pr-1 bg-white shadow-black rounded-lg"
+                                className="py-4 pl-4 pr-1 bg-white shadow-black rounded-lg md:shadow-none"
                             >
-                                <p className="p-2">
+                                <p className="p-2 smborder-b-2">
                                     <FontAwesomeIcon
                                         icon={item.icon}
                                         className={`text-2xl mr-2 ${item.color}`}
