@@ -1,13 +1,13 @@
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const headerLogo = {
     logo: "DIET-RECIPES",
-}
+};
 
 export const Header = () => {
     return (
-        <>
+        <header>
             <div className="sticky top-0 py-2 flex justify-end bg-white z-10 md:hidden">
                 <p className="py-2 px-4 mr-6 text-white bg-orange rounded-lg">
                     <FontAwesomeIcon icon={faPenToSquare} className="pr-2" />
@@ -33,7 +33,10 @@ export const Header = () => {
                 <div className="flex justify-between items-center">
                     <h1 className="text-xl font-bold">{headerLogo.logo}</h1>
                     <p className="px-4 py-2 text-center text-white bg-orange rounded-lg">
-                        <FontAwesomeIcon icon={faPenToSquare} className="pr-2" />
+                        <FontAwesomeIcon
+                            icon={faPenToSquare}
+                            className="pr-2"
+                        />
                         レシピを書く
                     </p>
                 </div>
@@ -48,6 +51,6 @@ export const Header = () => {
                     <div className="p-3 bg-slate-400"></div>
                 </div>
             </div>
-        </>
-    )
-}
+        </header>
+    );
+};

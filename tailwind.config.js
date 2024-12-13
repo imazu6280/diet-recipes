@@ -1,4 +1,4 @@
-import defaultTheme from "tailwindcss/defaultTheme"
+import defaultTheme from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -41,18 +41,32 @@ export default {
             boxShadow: {
                 black: "0 1px 5px #0000001a",
             },
+            backgroundImage: {
+                "search-image": "url('/images/image01.png')",
+                "footer-image": "url('/images/footer-image01.png')",
+            },
+
             gridTemplateColumns: {
                 "header-column": "1fr 40px",
                 "header-tb-column": "140px 1fr 160px 24px",
                 "sidebar-column": "clamp(120px, 20%, 270px) 1fr",
             },
-            // gridTemplateRows: {
-            //     "sidebar-row": "100% 1fr",
-            // },
-            // content: {
-            //     "search-icon": '"\\f002"',
-            // },
         },
     },
-    plugins: [],
-}
+    plugins: [
+        function ({ addComponents }) {
+            addComponents({
+                ".content-search-image": {
+                    content: "",
+                    background: "url(images/image01.png)",
+                    position: "absolute",
+                    top: "50%",
+                    left: "5%",
+                    transform: "translateY(-50%)",
+                    width: "24px",
+                    height: "24px",
+                },
+            });
+        },
+    ],
+};
