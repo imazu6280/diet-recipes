@@ -1,1 +1,1 @@
-export type popularRecipesType = { id: number; recipe: string }[]
+export type popularRecipesType = { id: number; recipe: string; calorie: number }[]

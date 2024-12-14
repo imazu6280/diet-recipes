@@ -1,4 +1,4 @@
-import defaultTheme from "tailwindcss/defaultTheme";
+import defaultTheme from "tailwindcss/defaultTheme"
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -22,6 +22,9 @@ export default {
             },
             width: {
                 inner: "96%",
+            },
+            fontSize: {
+                sideClamp: "clamp(14px, 1.5vw, 22px)",
             },
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
@@ -48,25 +51,10 @@ export default {
 
             gridTemplateColumns: {
                 "header-column": "1fr 40px",
-                "header-tb-column": "140px 1fr 160px 24px",
+                "header-tb-column": "140px 1fr 140px 24px",
                 "sidebar-column": "clamp(120px, 20%, 270px) 1fr",
             },
         },
     },
-    plugins: [
-        function ({ addComponents }) {
-            addComponents({
-                ".content-search-image": {
-                    content: "",
-                    background: "url(images/image01.png)",
-                    position: "absolute",
-                    top: "50%",
-                    left: "5%",
-                    transform: "translateY(-50%)",
-                    width: "24px",
-                    height: "24px",
-                },
-            });
-        },
-    ],
-};
+    plugins: [],
+}

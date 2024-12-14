@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { categoryType } from "../type/category";
-import { popularRecipesType } from "../type/recipes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { categoryType } from "../type/category"
+import { popularRecipesType } from "../type/recipes"
 import {
     faCarrot,
     faDrumstickBite,
@@ -13,13 +13,15 @@ import {
     faBox,
     faBreadSlice,
     faCookieBite,
-} from "@fortawesome/free-solid-svg-icons";
+} from "@fortawesome/free-solid-svg-icons"
+import { SearchInput } from "../component/SearchInput"
+import { Button } from "../component/Button"
 
 const popularRecipes: popularRecipesType = [
-    { id: 0, recipe: "大根" },
-    { id: 1, recipe: "大根" },
-    { id: 2, recipe: "大根" },
-];
+    { id: 0, recipe: "大根", calorie: 111 },
+    { id: 1, recipe: "大根", calorie: 111 },
+    { id: 2, recipe: "大根", calorie: 111 },
+]
 
 const category: categoryType = [
     { id: 0, category: "野菜", icon: "images/image02.png" },
@@ -66,7 +68,7 @@ const category: categoryType = [
         category: "おもてなし",
         icon: "images/image13.png",
     },
-];
+]
 
 export const Top = () => {
     return (
@@ -75,22 +77,14 @@ export const Top = () => {
                 <h1 className="text-3xl font-bold text-center">DIET RECIPES</h1>
                 <form action="">
                     <div className="flex justify-center gap-2 mx-auto">
-                        <input
-                            type="text"
-                            className="relative w-80 pr-2 pl-10 rounded-lg border border-black before:content-search-image"
-                            placeholder="使いたい食材は？"
-                        />
-                        <button className="py-2 px-4 text-white bg-orange rounded-lg ">
-                            検索
-                        </button>
+                        <SearchInput isStyle={false} />
+                        <Button isIcon={false} text="検索" />
                     </div>
                 </form>
             </div>
             <div className="flex flex-col gap-y-6">
                 <div>
-                    <h2 className="pt-6 text-black font-semibold">
-                        よく使う減量レシピ
-                    </h2>
+                    <h2 className="pt-6 text-black font-semibold">よく使う減量レシピ</h2>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-4 sm:grid-cols-2 sm:gap-y-4">
                         {popularRecipes.map((item) => (
                             <li
@@ -98,27 +92,48 @@ export const Top = () => {
                                 className="pt-16 pb-2 px-4 text-white font-bold shadow-black bg-gray rounded-lg"
                             >
                                 {item.recipe}
+                                <span className="block pt-1 text-xs font-light text-white">
+                                    {item.calorie}カロリー
+                                </span>
                             </li>
                         ))}
                     </ul>
                 </div>
                 <div>
-                    <h2 className="t-6 text-lg text-black font-semibold">
-                        登録レシピ一覧
-                    </h2>
+                    <h2 className="t-6 text-lg text-black font-semibold">登録レシピ一覧</h2>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-4 tablet_md:grid-cols-3 sm:grid-cols-1 sm:gap-y-4">
                         {popularRecipes.map((item) => (
-                            <li
-                                key={item.id}
-                                className="bg-white shadow-black rounded-lg"
-                            >
+                            <li key={item.id} className="bg-white shadow-black rounded-lg">
                                 <div className="pt-20 pb-4 px-4 bg-gray rounded-t-lg">
-                                    <p className="text-white font-bold">
-                                        {item.recipe}
+                                    <p className="text-white font-bold">{item.recipe}</p>
+                                    <p className="pt-0.5 text-xs font-light text-white">
+                                        {item.calorie}カロリー
                                     </p>
                                 </div>
                                 <div className="flex flex-col gap-y-1 mx-2 mt-6 mb-2">
-                                    <p className="text-xs text-gray">
+                                    <p className="flex gap-x-1 text-xs text-gray">
+                                        <svg
+                                            width="17"
+                                            height="16"
+                                            viewBox="0 0 17 16"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M14.997 7.333V11.333C14.997 12.0403 14.716 12.7187 14.2159 13.2189C13.7157 13.719 13.0373 14 12.33 14H4.33001C3.62268 14 2.94432 13.719 2.44416 13.2189C1.944 12.7187 1.66301 12.0403 1.66301 11.333V5.333C1.66301 4.597 2.26001 4 2.99701 4H4.28301C4.72901 4 5.14501 3.777 5.39301 3.406L5.93401 2.594C6.18201 2.223 6.59801 2 7.04401 2H9.66401"
+                                                stroke="#939290"
+                                                stroke-width="1.3"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            />
+                                            <path
+                                                d="M13.663 1.33301V5.33301M11.663 3.33301H15.663M5.48102 8.69901L8.07602 11.402C8.21502 11.546 8.44602 11.546 8.58402 11.402L11.179 8.69901C11.497 8.36775 11.6704 7.92374 11.661 7.46465C11.6516 7.00556 11.4603 6.569 11.129 6.25101C10.7978 5.93301 10.3537 5.75963 9.89466 5.76901C9.43557 5.77839 8.99901 5.96975 8.68102 6.30101L8.33002 6.66701L7.97902 6.30001C7.66102 5.96875 7.22446 5.77739 6.76537 5.76801C6.30628 5.75863 5.86227 5.93201 5.53102 6.25001C5.19976 6.568 5.0084 7.00456 4.99902 7.46365C4.98964 7.92274 5.16302 8.36675 5.48102 8.69801V8.69901Z"
+                                                stroke="#939290"
+                                                stroke-width="1.3"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            />
+                                        </svg>
                                         詳細画像
                                     </p>
                                     <ul className="grid grid-cols-6 gap-x-2">
@@ -133,19 +148,17 @@ export const Top = () => {
                     </ul>
                 </div>
                 <div>
-                    <h2 className="t-6 text-lg text-black font-semibold">
-                        カテゴリ
-                    </h2>
+                    <h2 className="t-6 text-lg text-black font-semibold">カテゴリ</h2>
                     <ul className="grid grid-cols-4 gap-4 mt-4 bg-white rounded-lg md:grid-cols-3 md:gap-0 md:p-3">
                         {category.map((item) => (
                             <li
                                 key={item.id}
                                 className="py-4 pl-4 pr-1 bg-white shadow-black rounded-lg md:p-0 md:text-sm md:shadow-none  md:border-b md:border-gray md:rounded-none"
                             >
-                                <p className="flex gap-x-2 p-2 tb:px-0 tb:text-sm">
-                                    <p className="w-6 mr-1.5">
+                                <p className="flex gap-x-2 items-center p-2 tb:px-0 tb:text-sm">
+                                    <span className="w-6 mr-1.5">
                                         <img src={item.icon} alt="" />
-                                    </p>
+                                    </span>
                                     {item.category}
                                 </p>
                             </li>
@@ -154,5 +167,5 @@ export const Top = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
