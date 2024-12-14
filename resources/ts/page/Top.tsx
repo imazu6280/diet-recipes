@@ -1,19 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { categoryType } from "../type/category"
 import { popularRecipesType } from "../type/recipes"
-import {
-    faCarrot,
-    faDrumstickBite,
-    faFish,
-    faEgg,
-    faLeaf,
-    faBowlFood,
-    faHamburger,
-    faUtensils,
-    faBox,
-    faBreadSlice,
-    faCookieBite,
-} from "@fortawesome/free-solid-svg-icons"
 import { SearchInput } from "../component/SearchInput"
 import { Button } from "../component/Button"
 
