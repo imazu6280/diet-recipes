@@ -24,7 +24,7 @@ export default {
                 inner: "96%",
             },
             fontSize: {
-                sideClamp: "clamp(14px, 1.5vw, 22px)",
+                sideClamp: "clamp(14px, 1.8vw, 22px)",
             },
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
@@ -35,11 +35,6 @@ export default {
                 beige: "#F8F6F2",
                 white: "#FFFFFF",
                 black: "#606060",
-                red: "#F2907F",
-                blue: "#73A3C1",
-                green: "#A0BD4E",
-                yellow: "#DBBD34",
-                charcoal: "#CC903C",
             },
             boxShadow: {
                 black: "0 1px 5px #0000001a",
