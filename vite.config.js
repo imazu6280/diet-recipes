@@ -10,4 +10,5 @@ export default defineConfig({
         }),
         react(),
     ],
+    publicDir: "public",
 })
