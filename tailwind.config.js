@@ -1,4 +1,4 @@
-import defaultTheme from "tailwindcss/defaultTheme"
+import defaultTheme from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -43,13 +43,40 @@ export default {
                 "search-image": "url('/images/image01.png')",
                 "footer-image": "url('/images/footer-image01.png')",
             },
-
             gridTemplateColumns: {
                 "header-column": "1fr 40px",
                 "header-tb-column": "140px 1fr 140px 24px",
                 "sidebar-column": "clamp(120px, 20%, 270px) 1fr",
             },
+            animation: {
+                "slide-in-right":
+                    "slide-in-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s both",
+                "slide-out-right":
+                    "slide-out-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both",
+            },
+            keyframes: {
+                "slide-in-right": {
+                    "0%": {
+                        transform: "translateX(1000px)",
+                        opacity: "0",
+                    },
+                    "100%": {
+                        transform: "translateX(0)",
+                        opacity: "1",
+                    },
+                },
+                "slide-out-right": {
+                    "0%": {
+                        transform: "translateX(0)",
+                        opacity: "1",
+                    },
+                    "100%": {
+                        transform: "translateX(1000px)",
+                        opacity: "0",
+                    },
+                },
+            },
         },
     },
     plugins: [],
-}
+};
