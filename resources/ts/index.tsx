@@ -5,6 +5,7 @@ import { Top } from "./page/Top"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Header } from "./component/Header"
 import { Footer } from "./component/Footer"
+import App from "./App"
 
 const container = document.getElementById("app")
 const root = createRoot(container!) // createRoot(container!) if you use TypeScript
@@ -12,6 +13,7 @@ const root = createRoot(container!) // createRoot(container!) if you use TypeScr
 root.render(
     <React.StrictMode>
         <BrowserRouter>
+            <App />
             <div className="grid grid-cols-sidebar-column gap-2 items-start min-h-screen md:block">
                 <Sidebar />
 
