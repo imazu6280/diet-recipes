@@ -50,14 +50,14 @@ export default {
             },
             animation: {
                 "slide-in-right":
-                    "slide-in-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s both",
+                    "slide-in-right 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s both",
                 "slide-out-right":
-                    "slide-out-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both",
+                    "slide-out-right 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both",
             },
             keyframes: {
                 "slide-in-right": {
                     "0%": {
-                        transform: "translateX(1000px)",
+                        transform: "translateX(100%)",
                         opacity: "0",
                     },
                     "100%": {
@@ -71,7 +71,7 @@ export default {
                         opacity: "1",
                     },
                     "100%": {
-                        transform: "translateX(1000px)",
+                        transform: "translateX(100%)",
                         opacity: "0",
                     },
                 },

@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { SideMenu } from "./component/SideMenu";
+import { Sidebar } from "./component/Sidebar";
 import { Top } from "./page/Top";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Header } from "./component/Header";
@@ -13,7 +13,7 @@ root.render(
     <React.StrictMode>
         <BrowserRouter>
             <div className="grid grid-cols-sidebar-column gap-2 items-start min-h-screen md:block">
-                <SideMenu />
+                <Sidebar />
                 <div className="pt-5 bg-white rounded-lg md:py-0 md:bg-beige">
                     <Header />
                     <div className="pl-4 pr-6">
