@@ -9,4 +9,5 @@ export type SideLinkType = {
 export type SideMenuType = {
     open: boolean;
     menuOpen: () => void;
+    handleCloseMenu: (e: React.MouseEvent<HTMLDivElement>) => void;
 };

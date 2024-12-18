@@ -10,7 +10,7 @@ const headerLogo = {
 };
 
 export const Header = () => {
-    const { open, menuOpen }: SideMenuType = useMenu();
+    const { open, menuOpen, handleCloseMenu }: SideMenuType = useMenu();
 
     return (
         <header className="sticky top-0">
@@ -43,36 +43,43 @@ export const Header = () => {
                     ></button>
                 </div>
             </div>
-            <nav
-                className={`absolute top-0 right-0 h-screen flex flex-col gap-y-7 pl-4 pr-6 pt-5 bg-white rounded-lg ${
-                    open
-                        ? "opacity-100 animate-slide-in-right z-80 flex"
-                        : "opacity-0 animate-slide-out-right z-0 hidden"
-                }`}
-            >
-                <h1 className="flex justify-between items-center text-sideClamp font-bold">
-                    DIET RECIPES
-                    <span className="tb:w-3">
-                        <img src={"/images/side-arrow.png"} alt="" />
-                    </span>
-                </h1>
-                <ul className="h-full flex flex-col gap-y-7">
-                    {sideLink.map((item) => (
-                        <li
-                            key={item.id}
-                            className={`mr-1 tb:text-sm ${
-                                item.id === 0 && "text-orange"
-                            }`}
-                        >
-                            <FontAwesomeIcon
-                                icon={item.icon}
-                                style={{ marginRight: "10px" }}
-                            />
-                            {item.label}
-                        </li>
-                    ))}
-                </ul>
-            </nav>
+            {open && (
+                <div
+                    onClick={handleCloseMenu}
+                    className="fixed inset-0 bg-transparent z-40"
+                >
+                    <nav
+                        className={`absolute top-0 right-0 h-screen flex flex-col gap-y-7 pl-4 pr-6 pt-5 bg-white rounded-lg ${
+                            open
+                                ? "opacity-100 animate-slide-in-right z-80 flex"
+                                : "opacity-0 animate-slide-out-right z-0 hidden"
+                        }`}
+                    >
+                        <h1 className="flex justify-between items-center text-sideClamp font-bold">
+                            DIET RECIPES
+                            <span className="tb:w-3">
+                                <img src={"/images/side-arrow.png"} alt="" />
+                            </span>
+                        </h1>
+                        <ul className="h-full flex flex-col gap-y-7">
+                            {sideLink.map((item) => (
+                                <li
+                                    key={item.id}
+                                    className={`mr-1 tb:text-sm ${
+                                        item.id === 0 && "text-orange"
+                                    }`}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={item.icon}
+                                        style={{ marginRight: "10px" }}
+                                    />
+                                    {item.label}
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                </div>
+            )}
         </header>
     );
 };
