@@ -4,8 +4,10 @@ import axios from "axios"
 const App: React.FC = () => {
     useEffect(() => {
         const fetchFromLaravel = async () => {
-            const res = await axios.get(`/api/hoge`)
-            alert(res.data.hoge)
+            const res = await axios.get(`/api/recipes`)
+            console.log("recipes", res)
+
+            // alert(res.data.hoge)
         }
         fetchFromLaravel()
     }, [])
