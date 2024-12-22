@@ -14,8 +14,6 @@ class RecipeSeeder extends Seeder
      */
     public function run(): void
     {
-        // 既存データを削除
-    DB::table('recipes')->truncate();
        // ダミーデータを10件挿入
        foreach (range(1, 10) as $index) {
         DB::table('recipes')->insert([
