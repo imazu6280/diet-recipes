@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Header } from "./component/Header"
 import { Footer } from "./component/Footer"
 import App from "./App"
+import { Show } from "./page/Show"
 
 const container = document.getElementById("app")
 const root = createRoot(container!) // createRoot(container!) if you use TypeScript
@@ -22,6 +23,7 @@ root.render(
                     <div className="pl-4 pr-6">
                         <Routes>
                             <Route path="/" element={<Top />} />
+                            <Route path="/show" element={<Show />} />
                         </Routes>
                     </div>
                     <Footer />
