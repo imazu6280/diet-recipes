@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('steps');
-            $table->string('thumbnail_image');
+            $table->string('thumbnail');
+            $table->integer('calories');
+            $table->boolean('is_favorite')->default(0);
             $table->timestamps();
         });
     }

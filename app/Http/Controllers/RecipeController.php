@@ -12,10 +12,13 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = Recipe::all();
+        $favoriteRecipes = Recipe::where('is_favorite', 1)->get();
 
-
-        return response()->json($recipes);
+        $allRecipes = Recipe::all();
+        return response()->json([
+            'favorite_recipes' => $favoriteRecipes,
+            'all_recipes' => $allRecipes,
+        ]);
     }
 
     /**
