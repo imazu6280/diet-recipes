@@ -10,7 +10,7 @@ const headerLogo = {
 };
 
 export const Header = () => {
-    const { open, menuOpen, handleCloseMenu }: SideMenuType = useMenu();
+    const { open, menuOpen }: SideMenuType = useMenu();
 
     return (
         <header className="sticky top-0">
@@ -24,9 +24,32 @@ export const Header = () => {
                 </form>
                 <Button isIcon={false} text="レシピを書く" />
                 <button
-                    className="p-3 bg-slate-400"
-                    onClick={menuOpen}
-                ></button>
+                    onClick={(e) => menuOpen(e)}
+                    type="button"
+                    className="space-y-2"
+                >
+                    <div
+                        className={
+                            open
+                                ? "w-8 h-0.5 bg-black translate-y-2.5 rotate-45 transition duration-500 ease-in-out"
+                                : "w-8 h-0.5 bg-black transition duration-500 ease-in-out"
+                        }
+                    />
+                    <div
+                        className={
+                            open
+                                ? "opacity-0 transition duration-500 ease-in-out"
+                                : "w-8 h-0.5 bg-black transition duration-500 ease-in-out"
+                        }
+                    />
+                    <div
+                        className={
+                            open
+                                ? "w-8 h-0.5 bg-black -rotate-45 transition duration-500 ease-in-out"
+                                : "w-8 h-0.5 bg-black transition duration-500 ease-in-out"
+                        }
+                    />
+                </button>
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden sm:flex flex-col gap-y-4">
                 <div className="flex justify-between items-center">
@@ -38,48 +61,71 @@ export const Header = () => {
                         <SearchInput isStyle={true} />
                     </form>
                     <button
-                        className="p-3 bg-slate-400"
-                        onClick={menuOpen}
-                    ></button>
+                        onClick={(e) => menuOpen(e)}
+                        type="button"
+                        className="z-30 space-y-2"
+                    >
+                        <div
+                            className={
+                                open
+                                    ? "w-8 h-0.5 bg-black translate-y-2.5 rotate-45 transition duration-500 ease-in-out"
+                                    : "w-8 h-0.5 bg-black transition duration-500 ease-in-out"
+                            }
+                        />
+                        <div
+                            className={
+                                open
+                                    ? "opacity-0 transition duration-500 ease-in-out"
+                                    : "w-8 h-0.5 bg-black transition duration-500 ease-in-out"
+                            }
+                        />
+                        <div
+                            className={
+                                open
+                                    ? "w-8 h-0.5 bg-black -rotate-45 transition duration-500 ease-in-out"
+                                    : "w-8 h-0.5 bg-black transition duration-500 ease-in-out"
+                            }
+                        />
+                    </button>
                 </div>
             </div>
-            {open && (
-                <div
-                    onClick={handleCloseMenu}
-                    className="fixed inset-0 bg-transparent z-40"
+            <div
+                onClick={(e) => menuOpen(e)}
+                className={`fixed inset-0 bg-transparent ${
+                    open ? "z-50" : "z-0"
+                }`}
+            >
+                <nav
+                    className={`fixed ease-linear duration-500 ${
+                        open
+                            ? "right-0 top-0 h-screen flex flex-col gap-y-7 px-6 pt-5 bg-white rounded-lg"
+                            : "-right-full"
+                    }`}
                 >
-                    <nav
-                        className={`absolute top-0 right-0 h-screen flex flex-col gap-y-7 pl-4 pr-6 pt-5 bg-white rounded-lg ${
-                            open
-                                ? "opacity-100 animate-slide-in-right z-80 flex"
-                                : "opacity-0 animate-slide-out-right z-0 hidden"
-                        }`}
-                    >
-                        <h1 className="flex justify-between items-center text-sideClamp font-bold">
-                            DIET RECIPES
-                            <span className="tb:w-3">
-                                <img src={"/images/side-arrow.png"} alt="" />
-                            </span>
-                        </h1>
-                        <ul className="h-full flex flex-col gap-y-7">
-                            {sideLink.map((item) => (
-                                <li
-                                    key={item.id}
-                                    className={`mr-1 tb:text-sm ${
-                                        item.id === 0 && "text-orange"
-                                    }`}
-                                >
-                                    <FontAwesomeIcon
-                                        icon={item.icon}
-                                        style={{ marginRight: "10px" }}
-                                    />
-                                    {item.label}
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
-                </div>
-            )}
+                    <h1 className="flex justify-between items-center text-sideClamp font-bold">
+                        DIET RECIPES
+                        <span className="tb:w-3">
+                            <img src={"/images/side-arrow.png"} alt="" />
+                        </span>
+                    </h1>
+                    <ul className="h-full flex flex-col gap-y-7">
+                        {sideLink.map((item) => (
+                            <li
+                                key={item.id}
+                                className={`mr-1 tb:text-sm ${
+                                    item.id === 0 && "text-orange"
+                                }`}
+                            >
+                                <FontAwesomeIcon
+                                    icon={item.icon}
+                                    style={{ marginRight: "10px" }}
+                                />
+                                {item.label}
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+            </div>
         </header>
     );
 };

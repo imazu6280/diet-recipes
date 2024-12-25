@@ -2,19 +2,23 @@ import { useState } from "react";
 
 export const useMenu = () => {
     const [open, setopen] = useState(false);
-    const [isClose, setIsOpen] = useState(false);
 
-    const menuOpen = () => {
-        setopen((prevOpen) => !prevOpen);
-    };
-
-    const handleCloseMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+    const menuOpen = (e: React.MouseEvent<HTMLElement>) => {
+        setopen(!open);
         if (e.target === e.currentTarget) {
-            setTimeout(() => {
-                setopen(false);
-            }, 300);
+            console.log(e);
+
+            setopen(false);
         }
     };
 
-    return { open, menuOpen, handleCloseMenu };
+    // const handleCloseMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+    //     if (e.target === e.currentTarget) {
+    //         setTimeout(() => {
+    //             setopen(false);
+    //         }, 300);
+    //     }
+    // };
+
+    return { open, menuOpen };
 };
