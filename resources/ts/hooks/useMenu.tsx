@@ -3,10 +3,12 @@ import { useState } from "react";
 export const useMenu = () => {
     const [open, setopen] = useState(false);
 
-    const menuOpen = (e: React.MouseEvent<HTMLElement>) => {
+    const menuOpen = (
+        e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
+    ) => {
         setopen(!open);
         if (e.target === e.currentTarget) {
-            console.log(e);
+            console.log(e.currentTarget);
 
             setopen(false);
         }

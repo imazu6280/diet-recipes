@@ -23,11 +23,7 @@ export const Header = () => {
                     <SearchInput isStyle={true} />
                 </form>
                 <Button isIcon={false} text="レシピを書く" />
-                <button
-                    onClick={(e) => menuOpen(e)}
-                    type="button"
-                    className="space-y-2"
-                >
+                <button onClick={menuOpen} type="button" className="space-y-2">
                     <div
                         className={
                             open
@@ -61,7 +57,7 @@ export const Header = () => {
                         <SearchInput isStyle={true} />
                     </form>
                     <button
-                        onClick={(e) => menuOpen(e)}
+                        onClick={menuOpen}
                         type="button"
                         className="z-30 space-y-2"
                     >
@@ -90,7 +86,7 @@ export const Header = () => {
                 </div>
             </div>
             <div
-                onClick={(e) => menuOpen(e)}
+                onClick={menuOpen}
                 className={`fixed inset-0 bg-transparent ${
                     open ? "z-50" : "z-0"
                 }`}
