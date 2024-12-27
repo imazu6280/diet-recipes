@@ -6,21 +6,12 @@ export const useMenu = () => {
     const menuOpen = (
         e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
     ) => {
-        setopen(!open);
         if (e.target === e.currentTarget) {
-            console.log(e.currentTarget);
-
             setopen(false);
+        } else {
+            setopen(!open);
         }
     };
-
-    // const handleCloseMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-    //     if (e.target === e.currentTarget) {
-    //         setTimeout(() => {
-    //             setopen(false);
-    //         }, 300);
-    //     }
-    // };
 
     return { open, menuOpen };
 };

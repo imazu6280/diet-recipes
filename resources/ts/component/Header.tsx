@@ -4,6 +4,8 @@ import { useMenu } from "../hooks/useMenu";
 import { SideMenuType } from "../type/sideMenu";
 import { sideLink } from "../constants/sideLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MenuButton } from "./MenuButton";
+import { Navbar } from "./Navbar";
 
 const headerLogo = {
     logo: "DIET-RECIPES",
@@ -23,7 +25,8 @@ export const Header = () => {
                     <SearchInput isStyle={true} />
                 </form>
                 <Button isIcon={false} text="レシピを書く" />
-                <button onClick={menuOpen} type="button" className="space-y-2">
+                <MenuButton open={open} menuOpen={menuOpen} />
+                {/* <button onClick={menuOpen} type="button" className="space-y-2">
                     <div
                         className={
                             open
@@ -45,7 +48,7 @@ export const Header = () => {
                                 : "w-8 h-0.5 bg-black transition duration-500 ease-in-out"
                         }
                     />
-                </button>
+                </button> */}
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden sm:flex flex-col gap-y-4">
                 <div className="flex justify-between items-center">
@@ -56,7 +59,8 @@ export const Header = () => {
                     <form action="">
                         <SearchInput isStyle={true} />
                     </form>
-                    <button
+                    <MenuButton open={open} menuOpen={menuOpen} />
+                    {/* <button
                         onClick={menuOpen}
                         type="button"
                         className="z-30 space-y-2"
@@ -82,17 +86,18 @@ export const Header = () => {
                                     : "w-8 h-0.5 bg-black transition duration-500 ease-in-out"
                             }
                         />
-                    </button>
+                    </button> */}
                 </div>
             </div>
             <div
                 onClick={menuOpen}
-                className={`fixed inset-0 bg-transparent ${
-                    open ? "z-50" : "z-0"
+                className={`inset-0 ${
+                    open ? "fixed z-50 bg-gray-opacity" : "z-0"
                 }`}
             >
-                <nav
-                    className={`fixed ease-linear duration-500 ${
+                <Navbar open={open} />
+                {/* <nav
+                    className={`fixed ease-linear duration-300 ${
                         open
                             ? "right-0 top-0 h-screen flex flex-col gap-y-7 px-6 pt-5 bg-white rounded-lg"
                             : "-right-full"
@@ -120,7 +125,7 @@ export const Header = () => {
                             </li>
                         ))}
                     </ul>
-                </nav>
+                </nav> */}
             </div>
         </header>
     );

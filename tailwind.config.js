@@ -35,6 +35,7 @@ export default {
                 beige: "#F8F6F2",
                 white: "#FFFFFF",
                 black: "#606060",
+                "gray-opacity": "rgba(74, 74, 74, 0.7)",
             },
             boxShadow: {
                 black: "0 1px 5px #0000001a",
