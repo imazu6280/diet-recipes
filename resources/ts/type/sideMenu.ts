@@ -5,3 +5,8 @@ export type SideLinkType = {
     label: string;
     icon: IconDefinition;
 }[];
+
+export type SideMenuType = {
+    open: boolean;
+    menuOpen: (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => void;
+};
