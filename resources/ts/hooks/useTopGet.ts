@@ -9,11 +9,17 @@ export const useTopGet = () => {
         try {
             const res = await fetch("/api/recipes")
             const json = await res.json()
-            const favoriteRecipes = json.favorite_recipes
-            const allData = json.all_recipes
+            setRecipes(json)
+        } catch (error) {
+            console.error("recipe get error", error)
+        }
+    }
 
-            setFavoriteRecipes(favoriteRecipes)
-            setRecipes(allData)
+    const GetRecipesFavoriteApi = async () => {
+        try {
+            const res = await fetch("/api/recipes/favorites")
+            const json = await res.json()
+            setFavoriteRecipes(json)
         } catch (error) {
             console.error("recipe get error", error)
         }
@@ -21,6 +27,7 @@ export const useTopGet = () => {
 
     useEffect(() => {
         GetRecipesAllApi()
+        GetRecipesFavoriteApi()
     }, [])
 
     return { favoriteRecipes, recipes }
