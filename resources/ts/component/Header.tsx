@@ -1,20 +1,20 @@
-import { SearchInput } from "./SearchInput";
-import { Button } from "./Button";
-import { useMenu } from "../hooks/useMenu";
-import { SideMenuType } from "../type/sideMenu";
-import { MenuButton } from "./MenuButton";
-import { Navbar } from "./Navbar";
+import { SearchInput } from "./SearchInput"
+import { Button } from "./Button"
+import { useMenu } from "../hooks/useMenu"
+import { SideMenuType } from "../type/sideMenu"
+import { MenuButton } from "./MenuButton"
+import { Navbar } from "./Navbar"
 
 const headerLogo = {
     logo: "DIET-RECIPES",
-};
+}
 
 export const Header = () => {
-    const { open, menuOpen }: SideMenuType = useMenu();
+    const { open, menuOpen }: SideMenuType = useMenu()
 
     return (
         <header className="sticky top-0">
-            <div className="py-2 flex justify-end bg-white z-10 md:hidden">
+            <div className="p-2 flex justify-end bg-white z-10 md:hidden">
                 <Button isIcon={true} text="レシピを書く" />
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden tablet_md:grid grid-cols-header-tb-column gap-x-6 items-center">
@@ -39,12 +39,10 @@ export const Header = () => {
             </div>
             <div
                 onClick={menuOpen}
-                className={`inset-0 ${
-                    open ? "fixed z-50 bg-gray-opacity" : "z-0"
-                }`}
+                className={`inset-0 ${open ? "fixed z-50 bg-gray-opacity" : "z-0"}`}
             >
                 <Navbar open={open} />
             </div>
         </header>
-    );
-};
+    )
+}
