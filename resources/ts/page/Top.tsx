@@ -3,7 +3,6 @@ import { SearchInput } from "../component/SearchInput"
 import { Button } from "../component/Button"
 import { useTopGet } from "../hooks/useTopGet"
 
-
 const category: categoryType = [
     { id: 0, category: "野菜", icon: "images/image02.png" },
     { id: 1, category: "お肉", icon: "images/image03.png" },
@@ -97,7 +96,6 @@ export const Top = () => {
                                     style={{ backgroundImage: `url(${item.thumbnail})` }}
                                 >
                                     <p className="text-white font-bold">{item.name}</p>
->>>>>>> main
                                     <p className="pt-0.5 text-xs font-light text-white">
                                         {item.calories}カロリー
                                     </p>

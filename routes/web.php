@@ -1,12 +1,11 @@
 <?php
 
+use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 
-Route::get('/', function () {
+// Route::resource('recipes', RecipeController::class);
+
+// フロントエンドのすべてのリクエストをキャッチするルート
+Route::get('{any}', function () {
     return view('index');
-});
-
-Route::get('/api/hoge', function (Request $request) {
-    return response()->json(['hoge' => 'Hello Laravel!']);
-});
+})->where('any','.*');
