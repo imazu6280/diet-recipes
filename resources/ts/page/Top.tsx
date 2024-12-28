@@ -1,13 +1,8 @@
-import { categoryType } from "../type/category";
-import { popularRecipesType } from "../type/recipes";
-import { SearchInput } from "../component/SearchInput";
-import { Button } from "../component/Button";
+import { categoryType } from "../type/category"
+import { SearchInput } from "../component/SearchInput"
+import { Button } from "../component/Button"
+import { useTopGet } from "../hooks/useTopGet"
 
-const popularRecipes: popularRecipesType = [
-    { id: 0, recipe: "大根", calorie: 111 },
-    { id: 1, recipe: "大根", calorie: 111 },
-    { id: 2, recipe: "大根", calorie: 111 },
-];
 
 const category: categoryType = [
     { id: 0, category: "野菜", icon: "images/image02.png" },
@@ -57,6 +52,8 @@ const category: categoryType = [
 ];
 
 export const Top = () => {
+    const { recipes, favoriteRecipes } = useTopGet()
+
     return (
         <div className="w-inner mx-auto">
             <div className="flex flex-col gap-y-6 md:hidden">
@@ -74,14 +71,15 @@ export const Top = () => {
                         よく使う減量レシピ
                     </h2>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-4 sm:grid-cols-2 sm:gap-y-4">
-                        {popularRecipes.map((item) => (
+                        {favoriteRecipes.map((item) => (
                             <li
                                 key={item.id}
-                                className="pt-16 pb-2 px-4 text-white font-bold shadow-black bg-gray rounded-lg"
+                                className="pt-16 pb-2 px-4 text-white font-bold shadow-black rounded-lg bg-center bg-cover bg-no-repeat"
+                                style={{ backgroundImage: `url(${item.thumbnail})` }}
                             >
-                                {item.recipe}
+                                {item.name}
                                 <span className="block pt-1 text-xs font-light text-white">
-                                    {item.calorie}カロリー
+                                    {item.calories}カロリー
                                 </span>
                             </li>
                         ))}
@@ -92,17 +90,16 @@ export const Top = () => {
                         登録レシピ一覧
                     </h2>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-4 tablet_md:grid-cols-3 sm:grid-cols-1 sm:gap-y-4">
-                        {popularRecipes.map((item) => (
-                            <li
-                                key={item.id}
-                                className="bg-white shadow-black rounded-lg"
-                            >
-                                <div className="pt-20 pb-4 px-4 bg-gray rounded-t-lg">
-                                    <p className="text-white font-bold">
-                                        {item.recipe}
-                                    </p>
+                        {recipes.map((item) => (
+                            <li key={item.id} className="bg-white shadow-black rounded-lg">
+                                <div
+                                    className="pt-20 pb-4 px-4 rounded-t-lg bg-center bg-cover bg-no-repeat"
+                                    style={{ backgroundImage: `url(${item.thumbnail})` }}
+                                >
+                                    <p className="text-white font-bold">{item.name}</p>
+>>>>>>> main
                                     <p className="pt-0.5 text-xs font-light text-white">
-                                        {item.calorie}カロリー
+                                        {item.calories}カロリー
                                     </p>
                                 </div>
                                 <div className="flex flex-col gap-y-1 mx-2 mt-6 mb-2">
