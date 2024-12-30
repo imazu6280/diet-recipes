@@ -1,5 +1,6 @@
 import { SearchInput } from "./SearchInput"
 import { Button } from "./Button"
+import { buttonColors } from "../constants/buttonColors"
 import { useMenu } from "../hooks/useMenu"
 import { SideMenuType } from "../type/sideMenu"
 import { MenuButton } from "./MenuButton"
@@ -15,20 +16,35 @@ export const Header = () => {
     return (
         <header className="sticky top-0">
             <div className="p-2 flex justify-end bg-white z-10 md:hidden">
-                <Button isIcon={true} text="レシピを書く" />
+                <Button
+                    isIcon="images/header-write.svg"
+                    alt="レシピを書く"
+                    text="レシピを書く"
+                    color={buttonColors.bgOrange}
+                />
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden tablet_md:grid grid-cols-header-tb-column gap-x-6 items-center">
                 <h1 className="text-lg font-bold">{headerLogo.logo}</h1>
                 <form action="">
                     <SearchInput isStyle={true} />
                 </form>
-                <Button isIcon={false} text="レシピを書く" />
+                <Button
+                    isIcon="images/header-write.svg"
+                    alt="レシピを書く"
+                    text="レシピを書く"
+                    color={buttonColors.bgOrange}
+                />
                 <MenuButton open={open} menuOpen={menuOpen} />
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden sm:flex flex-col gap-y-4">
                 <div className="flex justify-between items-center">
                     <h1 className="text-xl font-bold">{headerLogo.logo}</h1>
-                    <Button isIcon={false} text="レシピを書く" />
+                    <Button
+                        isIcon="images/header-write.svg"
+                        alt="レシピを書く"
+                        text="レシピを書く"
+                        color={buttonColors.bgOrange}
+                    />
                 </div>
                 <div className="grid grid-cols-header-column gap-5">
                     <form action="">

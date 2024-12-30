@@ -23,7 +23,15 @@ export default {
             width: {
                 inner: "96%",
             },
+            padding: {
+                "72px": "72px",
+                "2-auto": "0 2%",
+            },
+            margin: {
+                "2-auto": "0 2%",
+            },
             fontSize: {
+                "34px": "34px",
                 sideClamp: "clamp(14px, 1.8vw, 22px)",
             },
             fontFamily: {
@@ -32,10 +40,14 @@ export default {
             colors: {
                 orange: "#FF9933",
                 gray: "#939290",
+                white_gray: "rgb(236 235 233)",
                 beige: "#F8F6F2",
                 white: "#FFFFFF",
                 black: "#606060",
                 "gray-opacity": "rgba(74, 74, 74, 0.7)",
+            },
+            borderWidth: {
+                1: "1px",
             },
             boxShadow: {
                 black: "0 1px 5px #0000001a",
@@ -48,6 +60,7 @@ export default {
                 "header-column": "1fr 40px",
                 "header-tb-column": "140px 1fr 140px 24px",
                 "sidebar-column": "clamp(120px, 20%, 270px) 1fr",
+                "show-column": "300px 1fr",
             },
             animation: {
                 "slide-in-right":

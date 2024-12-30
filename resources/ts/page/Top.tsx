@@ -2,6 +2,7 @@ import { categoryType } from "../type/category"
 import { SearchInput } from "../component/SearchInput"
 import { Button } from "../component/Button"
 import { useTopGet } from "../hooks/useTopGet"
+import { buttonColors } from "../constants/buttonColors"
 
 const category: categoryType = [
     { id: 0, category: "野菜", icon: "images/image02.png" },
@@ -60,7 +61,7 @@ export const Top = () => {
                 <form action="">
                     <div className="flex justify-center gap-2 mx-auto">
                         <SearchInput isStyle={false} />
-                        <Button isIcon={false} text="検索" />
+                        <Button isIcon="" alt="" text="検索" color={buttonColors.bgOrange} />
                     </div>
                 </form>
             </div>
