@@ -4,6 +4,8 @@ import { Card } from "../component/Card"
 import { buttonColors } from "../constants/buttonColors"
 import { GetCardResponse } from "../type/card"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useDetailGet } from "../hooks/useDetailGet"
+import { useEffect } from "react"
 
 const card: GetCardResponse = [
     {
@@ -54,23 +56,25 @@ const card: GetCardResponse = [
 ]
 
 export const RecipeDetail = () => {
+    const { recipesDetail } = useDetailGet()
+
     return (
-        <div className="flex flex-col gap-y-6 w-inner mx-auto tb:w-full tb:gap-y-4">
-            <div className="grid grid-cols-show-column gap-x-6 tb:grid-cols-1">
+        <div className="flex flex-col gap-y-6 w-inner mx-auto sm:w-full sm:gap-y-4">
+            <div className="grid grid-cols-show-column gap-x-6 sm:grid-cols-1">
                 <div className="h-96 bg-gray"></div>
-                <div className="flex flex-col justify-between tb:gap-y-4">
-                    <div className="flex flex-col gap-y-10 tb:gap-y-4 tb:px-2 tb:py-4 tb:bg-white">
+                <div className="flex flex-col justify-between sm:gap-y-4">
+                    <div className="flex flex-col gap-y-10 sm:gap-y-4 sm:px-2 sm:py-4 sm:bg-white">
                         <div className="flex flex-col gap-y-4">
-                            <h2 className="text-34px font-bold">ダミーテキスト</h2>
+                            <h2 className="text-34px font-bold">{recipesDetail.name}</h2>
                             <p>
                                 <span className="text-lg font-semibold">OO</span>カロリー
                             </p>
                         </div>
-                        <p className="tb:p-2 tb:text-tb tb:bg-white_gray tb:rounded-lg">
+                        <p className="sm:p-2 sm:text-sm sm:bg-white_gray sm:rounded-lg">
                             ダミーテキストダミーテキストダミーテキストダミーテキスト
                         </p>
                     </div>
-                    <div className="flex gap-x-4 tb:justify-around tb:py-4 tb:p-2-auto tb:gap-0 tb:bg-white sm:justify-between">
+                    <div className="flex gap-x-4 sm:justify-between sm:py-4 sm:p-2-auto sm:gap-0 sm:bg-white">
                         <Button
                             isIcon="images/image14.svg"
                             alt="レシピを保存"
@@ -86,8 +90,8 @@ export const RecipeDetail = () => {
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-show-column gap-x-6 tb:grid-cols-1 tb:gap-y-4">
-                <div className="flex flex-col gap-y-4 tb:bg-white tb:px-2 tb:py-4">
+            <div className="grid grid-cols-show-column gap-x-6 sm:grid-cols-1 sm:gap-y-4">
+                <div className="flex flex-col gap-y-4 sm:bg-white sm:px-2 sm:py-4">
                     <h3 className="text-2xl font-bold">材料</h3>
                     <p className="flex items-center gap-x-2">
                         <FontAwesomeIcon icon={faPerson} />
@@ -124,9 +128,9 @@ export const RecipeDetail = () => {
                         </dl>
                     </div>
                 </div>
-                <div className="flex flex-col gap-y-4 tb:bg-white tb:pt-4 tb:pb-8 tb:p-2-auto">
+                <div className="flex flex-col gap-y-4 sm:bg-white sm:pt-4 sm:pb-8 sm:p-2-auto">
                     <h3 className="text-2xl font-bold">作り方</h3>
-                    <ul className="grid grid-cols-4 gap-x-4 gap-y-10 tb:grid-cols-1">
+                    <ul className="grid grid-cols-4 gap-x-4 gap-y-10 sm:grid-cols-1">
                         {card.map((item) => (
                             <Card key={item.id} image={item.image} detail={item.detail} />
                         ))}
