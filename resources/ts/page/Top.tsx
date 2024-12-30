@@ -61,12 +61,7 @@ export const Top = () => {
                 <form action="">
                     <div className="flex justify-center gap-2 mx-auto">
                         <SearchInput isStyle={false} />
-                        <Button
-                            isIcon="images/image01.png"
-                            alt="レシピを書く"
-                            text="検索"
-                            color={buttonColors.bgOrange}
-                        />
+                        <Button isIcon="" alt="" text="検索" color={buttonColors.bgOrange} />
                     </div>
                 </form>
             </div>

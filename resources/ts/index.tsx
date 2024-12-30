@@ -20,7 +20,7 @@ root.render(
 
                 <div className="pt-5 bg-white rounded-lg md:py-0 md:bg-beige">
                     <Header />
-                    <div className="pl-4 pr-6 sm:px-0">
+                    <div className="pl-4 pr-6 tb:px-0">
                         <Routes>
                             <Route path="/" element={<Top />} />
                             <Route path="/show" element={<RecipeDetail />} />
