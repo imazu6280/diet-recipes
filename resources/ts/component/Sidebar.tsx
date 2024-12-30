@@ -1,12 +1,5 @@
-import { faStar, faList, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { SideLinkType } from "../type/sidebar"
-
-const sideLink: SideLinkType = [
-    { id: 0, label: "人気のレシピ", icon: faStar },
-    { id: 1, label: "レシピ一覧", icon: faList },
-    { id: 2, label: "レシピ登録", icon: faPlus },
-]
+import { sideLink } from "../constants/sideLink"
 
 export const Sidebar = () => {
     return (

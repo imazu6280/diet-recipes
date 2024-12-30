@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class RecipeController extends Controller
 {
@@ -12,13 +14,8 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $favoriteRecipes = Recipe::where('is_favorite', 1)->get();
-
         $allRecipes = Recipe::all();
-        return response()->json([
-            'favorite_recipes' => $favoriteRecipes,
-            'all_recipes' => $allRecipes,
-        ]);
+        return response()->json($allRecipes);
     }
 
     /**
@@ -67,5 +64,12 @@ class RecipeController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function favorites()
+    {
+        $favoriteRecipes = Recipe::where('is_favorite', 1)->get();
+
+        return response()->json($favoriteRecipes);
     }
 }
