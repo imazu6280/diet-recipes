@@ -110,7 +110,7 @@ export const Top = () => {
                                             {item.calories}カロリー
                                         </p>
                                     </div>
-                                    <div className="flex flex-col gap-y-1 mx-2 mt-6 mb-2">
+                                    <div className="flex flex-col gap-y-1 mx-2 py-4">
                                         <p className="flex gap-x-1 text-xs text-gray">
                                             <svg
                                                 width="17"

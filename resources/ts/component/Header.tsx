@@ -17,7 +17,7 @@ export const Header = () => {
         <header className="sticky top-0">
             <div className="p-2 flex justify-end bg-white z-10 md:hidden">
                 <Button
-                    isIcon="images/header-write.svg"
+                    isIcon="/images/header-write.svg"
                     alt="レシピを書く"
                     text="レシピを書く"
                     color={buttonColors.bgOrange}

@@ -5,7 +5,6 @@ import { buttonColors } from "../constants/buttonColors"
 import { GetCardResponse } from "../type/card"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useDetailGet } from "../hooks/useDetailGet"
-import { useEffect } from "react"
 
 const card: GetCardResponse = [
     {
@@ -65,9 +64,12 @@ export const RecipeDetail = () => {
                 <div className="flex flex-col justify-between sm:gap-y-4">
                     <div className="flex flex-col gap-y-10 sm:gap-y-4 sm:px-2 sm:py-4 sm:bg-white">
                         <div className="flex flex-col gap-y-4">
-                            <h2 className="text-34px font-bold">{recipesDetail.name}</h2>
+                            <h2 className="text-34px font-bold">{recipesDetail?.name}</h2>
                             <p>
-                                <span className="text-lg font-semibold">OO</span>カロリー
+                                <span className="text-lg font-semibold">
+                                    {recipesDetail?.calories}
+                                </span>
+                                カロリー
                             </p>
                         </div>
                         <p className="sm:p-2 sm:text-sm sm:bg-white_gray sm:rounded-lg">
@@ -76,7 +78,7 @@ export const RecipeDetail = () => {
                     </div>
                     <div className="flex gap-x-4 sm:justify-between sm:py-4 sm:p-2-auto sm:gap-0 sm:bg-white">
                         <Button
-                            isIcon="images/image14.svg"
+                            isIcon="/images/image14.svg"
                             alt="レシピを保存"
                             text="レシピを保存"
                             color={buttonColors.orange}
