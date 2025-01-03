@@ -39,7 +39,7 @@ class RecipeController extends Controller
      */
     public function show(string $id)
     {
-        $recipe = Recipe::find($id);
+        $recipe = Recipe::with(['steps', 'ingredients'])->find($id);
 
         if (!$recipe) {
             return response()->json(['error' => 'Recipe not found'], 404);

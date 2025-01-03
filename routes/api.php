@@ -11,5 +11,5 @@ Route::get('/recipes/favorites', [RecipeController::class, 'favorites']);
 Route::get('/recipes/{id}', [RecipeController::class, 'show']);
 Route::get('/recipes/{id}/ingredients', [RecipeIngredientController::class, 'index']);
 Route::post('/recipes/ingredients', [RecipeIngredientController::class, 'store']);
-Route::get('/api/recipes/{recipe}/steps', [RecipeStepController::class, 'index']);
-Route::post('/api/recipes/steps', [RecipeStepController::class, 'store']);
+Route::get('/recipes/{recipe}/steps', [RecipeStepController::class, 'index']);
+Route::post('/recipes/steps', [RecipeStepController::class, 'store']);

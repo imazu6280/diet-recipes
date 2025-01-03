@@ -10,6 +10,7 @@ class RecipeStep extends Model
         'recipe_id',
         'step_number',
         'description',
+        'thumbnail',
     ];
 
     public function recipe()

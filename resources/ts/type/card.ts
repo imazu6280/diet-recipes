@@ -1,7 +1,9 @@
-export type cardSchema = {
+export type stepsSchema = {
     id: number
-    image: string
-    detail: string
+    recipe_id: number
+    step_number: number
+    description: string
+    thumbnail: string
 }
 
-export type GetCardResponse = cardSchema[]
+export type GetStepsResponse = stepsSchema[]

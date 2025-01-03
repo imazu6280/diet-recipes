@@ -25,6 +25,7 @@ class RecipeStepSeeder extends Seeder
                 'recipe_id' => $recipeId,
                 'step_number' => $stepNumber,
                 'description' => "これはレシピ {$recipeId} のステップ {$stepNumber} です。",
+                'thumbnail' => 'https://placehold.jp/350x240.png',
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

@@ -95,11 +95,7 @@ export const Top = () => {
                     <h2 className="t-6 text-lg text-black font-semibold">登録レシピ一覧</h2>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-4 tablet_md:grid-cols-3 sm:grid-cols-1 sm:gap-y-4">
                         {recipes.map((item) => (
-                            <Link
-                                to={`show/${item.id}`}
-                                key={item.id}
-                                onClick={() => GetRecipesDetailApi(item.id)}
-                            >
+                            <Link to={`show/${item.id}`} key={item.id}>
                                 <li key={item.id} className="bg-white shadow-black rounded-lg">
                                     <div
                                         className="pt-20 pb-4 px-4 rounded-t-lg bg-center bg-cover bg-no-repeat"
