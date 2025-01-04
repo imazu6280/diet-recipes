@@ -11,7 +11,16 @@ class RecipeIngredientController extends Controller
     {
         $recipeIngredients = RecipeIngredient::with('ingredient')
             ->where('recipe_id', $recipeId)
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'recipe_id' => $item->recipe_id,
+                    'ingredient_id' => $item->ingredient_id,
+                    'quantity' => $item->quantity,
+                    'ingredient_name' => $item->ingredient ? $item->ingredient->name : null, // 食材名がない場合はnull
+                ];
+            });
 
         return response()->json($recipeIngredients);
     }

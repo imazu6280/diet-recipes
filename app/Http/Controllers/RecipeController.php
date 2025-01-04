@@ -45,6 +45,7 @@ class RecipeController extends Controller
             return response()->json(['error' => 'Recipe not found'], 404);
         }
 
+
         return response()->json($recipe);
     }
 

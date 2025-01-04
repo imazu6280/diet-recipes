@@ -13,4 +13,9 @@ class Ingredient extends Model
         'carbs',
         'fat',
     ];
+
+    public function recipeIngredients()
+    {
+        return $this->hasMany(RecipeIngredient::class);
+    }
 }
