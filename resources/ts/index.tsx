@@ -16,12 +16,12 @@ root.render(
             <div className="grid grid-cols-sidebar-column gap-2 items-start min-h-screen md:block">
                 <Sidebar />
 
-                <div className="pt-5 bg-white rounded-lg md:py-0 md:bg-beige">
+                <div className="bg-white rounded-lg md:py-0 md:bg-beige">
                     <Header />
                     <div className="pl-4 pr-6 tb:px-0">
                         <Routes>
                             <Route path="/" element={<Top />} />
-                            <Route path="/show" element={<RecipeDetail />} />
+                            <Route path="/show/:id" element={<RecipeDetail />} />
                         </Routes>
                     </div>
                     <Footer />

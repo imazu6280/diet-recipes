@@ -39,7 +39,25 @@ class RecipeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // レシピとそのステップ（最新のstep_numberごとに絞り込む）
+        $recipe = Recipe::with(['steps' => function ($query) use ($id) {
+            // 最新のstep_numberごとに絞り込む
+            $query->where('recipe_id', $id)
+                  ->whereIn('id', function ($subQuery) use ($id) {
+                      $subQuery->selectRaw('max(id)')
+                               ->from('recipe_steps')
+                               ->where('recipe_id', $id)  // 特定のrecipe_idでフィルタリング
+                               ->groupBy('step_number');  // step_numberごとにグループ化
+                  })
+                  ->orderBy('step_number');  // step_numberでソート
+        }, 'ingredients'])->find($id);
+
+        if (!$recipe) {
+            return response()->json(['error' => 'Recipe not found'], 404);
+        }
+
+
+        return response()->json($recipe);
     }
 
     /**
