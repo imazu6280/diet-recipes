@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom"
 export const useDetailGet = () => {
     const { id } = useParams<string>()
     const [recipesDetail, setRecipesDetail] = useState<recipeSchema>()
-    const [recipesSteps, setRecipesSteps] = useState<GetStepsResponse>([])
 
     const GetRecipesDetailApi = async (id: number) => {
         try {
