@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('recipes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('steps');
+            $table->text('comments');
             $table->string('thumbnail');
             $table->integer('calories');
             $table->boolean('is_favorite')->default(0);

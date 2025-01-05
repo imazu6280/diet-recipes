@@ -6,14 +6,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useDetailGet } from "../hooks/useDetailGet"
 
 export const RecipeDetail = () => {
-    const { recipesDetail, recipesSteps } = useDetailGet()
-
-    const recipeStep = recipesDetail?.steps
+    const { recipesDetail } = useDetailGet()
+    const recipesStep = recipesDetail?.steps
+    const recipeIngredient = recipesDetail?.ingredients
 
     return (
         <div className="flex flex-col gap-y-6 w-inner mx-auto sm:w-full sm:gap-y-4">
             <div className="grid grid-cols-show-column gap-x-6 sm:grid-cols-1">
-                <div className="h-96 bg-gray"></div>
+                <div className="max-h-96">
+                    <img src={recipesDetail?.thumbnail} alt="" />
+                </div>
                 <div className="flex flex-col justify-between sm:gap-y-4">
                     <div className="flex flex-col gap-y-10 sm:gap-y-4 sm:px-2 sm:py-4 sm:bg-white">
                         <div className="flex flex-col gap-y-4">
@@ -25,8 +27,8 @@ export const RecipeDetail = () => {
                                 カロリー
                             </p>
                         </div>
-                        <p className="sm:p-2 sm:text-sm sm:bg-white_gray sm:rounded-lg">
-                            ダミーテキストダミーテキストダミーテキストダミーテキスト
+                        <p className="break-words sm:p-2 sm:text-sm sm:bg-white_gray sm:rounded-lg">
+                            {recipesDetail?.comments}
                         </p>
                     </div>
                     <div className="flex gap-x-4 sm:justify-between sm:py-4 sm:p-2-auto sm:gap-0 sm:bg-white">
@@ -53,44 +55,26 @@ export const RecipeDetail = () => {
                         1枚分
                     </p>
                     <div>
-                        <dl className="flex justify-between py-1.5 border-b border-dotted">
-                            <dt>ダミー</dt>
-                            <dd className="font-bold">ダミー</dd>
-                        </dl>
-                        <dl className="flex justify-between py-1.5 border-b border-dotted">
-                            <dt>ダミー</dt>
-                            <dd className="font-bold">ダミー</dd>
-                        </dl>
-                        <dl className="flex justify-between py-1.5 border-b border-dotted">
-                            <dt>ダミー</dt>
-                            <dd className="font-bold">ダミー</dd>
-                        </dl>
-                        <dl className="flex justify-between py-1.5 border-b border-dotted">
-                            <dt>ダミー</dt>
-                            <dd className="font-bold">ダミー</dd>
-                        </dl>
-                        <dl className="flex justify-between py-1.5 border-b border-dotted">
-                            <dt>ダミー</dt>
-                            <dd className="font-bold">ダミー</dd>
-                        </dl>
-                        <dl className="flex justify-between py-1.5 border-b border-dotted">
-                            <dt>ダミー</dt>
-                            <dd className="font-bold">ダミー</dd>
-                        </dl>
-                        <dl className="flex justify-between py-1.5 border-b border-dotted">
-                            <dt>ダミー</dt>
-                            <dd className="font-bold">ダミー</dd>
-                        </dl>
+                        {recipeIngredient?.map((item) => (
+                            <dl
+                                key={item.id}
+                                className="flex justify-between py-1.5 border-b border-dotted"
+                            >
+                                <dt>{item.name}</dt>
+                                <dd className="font-bold">{item.pivot.quantity}g</dd>
+                            </dl>
+                        ))}
                     </div>
                 </div>
                 <div className="flex flex-col gap-y-4 sm:bg-white sm:pt-4 sm:pb-8 sm:p-2-auto">
                     <h3 className="text-2xl font-bold">作り方</h3>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-10 sm:grid-cols-1">
-                        {recipeStep?.map((item) => (
+                        {recipesStep?.map((item) => (
                             <Card
                                 key={item.step_number}
                                 image={item.thumbnail}
                                 detail={item.description}
+                                step_number={item.step_number}
                             />
                         ))}
                     </ul>

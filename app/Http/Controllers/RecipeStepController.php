@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class RecipeStepController extends Controller
 {
-    public function index($recipeId)
+    public function index($id)
     {
-        return RecipeStep::where('recipe_id', $recipeId)->orderBy('step_number')->get();
+        return RecipeStep::where('recipe_id', $id)->orderBy('step_number')->get();
     }
 
     public function store(Request $request)

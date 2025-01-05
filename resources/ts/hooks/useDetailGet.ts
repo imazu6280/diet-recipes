@@ -4,7 +4,7 @@ import { GetStepsResponse } from "../type/card"
 import { useParams } from "react-router-dom"
 
 export const useDetailGet = () => {
-    const { id, recipeId } = useParams<string>()
+    const { id } = useParams<string>()
     const [recipesDetail, setRecipesDetail] = useState<recipeSchema>()
     const [recipesSteps, setRecipesSteps] = useState<GetStepsResponse>([])
 
@@ -20,27 +20,11 @@ export const useDetailGet = () => {
         }
     }
 
-    const GetStepsDetailApi = async (recipeId: number) => {
-        try {
-            const res = await fetch(`/api/recipes/${recipeId}/steps`)
-            const json = await res.json()
-            console.log("json", json)
-
-            setRecipesSteps(json)
-        } catch (error) {
-            console.error("recipe detail get error", error)
-        }
-    }
-
     useEffect(() => {
         if (id) {
             GetRecipesDetailApi(Number(id))
         }
+    }, [id])
 
-        if (recipeId) {
-            GetStepsDetailApi(Number(recipeId))
-        }
-    }, [id, recipeId])
-
-    return { recipesDetail, recipesSteps, GetRecipesDetailApi, GetStepsDetailApi }
+    return { recipesDetail, GetRecipesDetailApi }
 }
