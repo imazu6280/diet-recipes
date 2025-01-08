@@ -2,6 +2,7 @@ import { faPerson, faStar } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../component/Button";
 import { buttonColors } from "../constants/buttonColors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { RegisterCard } from "../component/RegisterCard";
 
 export const RecipeCreate = () => {
     return (
@@ -27,7 +28,7 @@ export const RecipeCreate = () => {
                                         name="comments"
                                         id="comments"
                                         placeholder="・料理のポイント\n・こだわりのポイント\n・料理を作ったきっかけなど"
-                                        className="w-full p-10 break-words bg-beige rounded-md"
+                                        className="w-full p-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
                             </div>
@@ -87,7 +88,12 @@ export const RecipeCreate = () => {
                     </div>
                     <div className="flex flex-col gap-y-4 md:bg-white md:pt-4 md:pb-8 md:p-2-auto">
                         <h3 className="text-2xl font-bold">作り方</h3>
-                        <ul className="grid grid-cols-4 gap-x-4 gap-y-10 md:grid-cols-1"></ul>
+                        <ul className="grid grid-cols-3 gap-x-4 gap-y-10 tb:grid-cols-2 md:grid-cols-1">
+                            <RegisterCard />
+                        </ul>
+                        <button className="flex justify-center items-center gap-x-2 font-bold">
+                            <span className="text-xl">+</span>作り方
+                        </button>
                     </div>
                 </div>
             </div>
