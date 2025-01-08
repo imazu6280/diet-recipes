@@ -1,10 +1,13 @@
-import { faPerson, faStar } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "../component/Button";
-import { buttonColors } from "../constants/buttonColors";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { RegisterCard } from "../component/RegisterCard";
+import { faStar } from "@fortawesome/free-solid-svg-icons"
+import { Button } from "../component/Button"
+import { buttonColors } from "../constants/buttonColors"
+import { RegisterCard } from "../component/RegisterCard"
+import { useRegisterCard } from "../hooks/useRegisterCard"
+import { RegisterInput } from "../component/RegisterInput"
 
 export const RecipeCreate = () => {
+    const { addRegister, addCard, addIngredient } = useRegisterCard()
+
     return (
         <form action="">
             <div className="flex flex-col gap-y-6 w-inner mx-auto md:w-full md:gap-y-4">
@@ -63,40 +66,32 @@ export const RecipeCreate = () => {
                                 className="w-2/4 p-2 break-words bg-beige rounded-md"
                             />
                         </div>
-                        <div className="grid grid-cols-create-ingredient-column gap-x-2">
-                            <div className="bg-gray"></div>
-                            <label htmlFor="ingredient">
-                                <input
-                                    id="ingredient"
-                                    type="text"
-                                    name="ingredient"
-                                    placeholder="鶏胸肉"
-                                    className="w-full p-2 break-words bg-beige rounded-md"
-                                />
-                            </label>
-                            <label htmlFor="quantity">
-                                <input
-                                    id="quantity"
-                                    type="text"
-                                    name="quantity"
-                                    placeholder="200g"
-                                    className="w-full p-2 break-words bg-beige rounded-md"
-                                />
-                            </label>
-                            <div className="bg-gray"></div>
-                        </div>
+                        {addRegister.ingredients.map((item, index) => {
+                            return <RegisterInput key={index} />
+                        })}
+                        <button
+                            className="flex justify-center items-center gap-x-2 font-bold"
+                            onClick={(e) => addIngredient(e)}
+                        >
+                            <span className="text-xl">+</span>材料
+                        </button>
                     </div>
                     <div className="flex flex-col gap-y-4 md:bg-white md:pt-4 md:pb-8 md:p-2-auto">
                         <h3 className="text-2xl font-bold">作り方</h3>
-                        <ul className="grid grid-cols-3 gap-x-4 gap-y-10 tb:grid-cols-2 md:grid-cols-1">
-                            <RegisterCard />
+                        <ul className="grid grid-cols-4 gap-x-4 gap-y-10 tablet_md:grid-cols-2 sm:grid-cols-1">
+                            {addRegister.cards.map((step_number) => (
+                                <RegisterCard key={step_number} step_number={step_number} />
+                            ))}
                         </ul>
-                        <button className="flex justify-center items-center gap-x-2 font-bold">
+                        <button
+                            className="flex justify-center items-center gap-x-2 font-bold"
+                            onClick={(e) => addCard(e)}
+                        >
                             <span className="text-xl">+</span>作り方
                         </button>
                     </div>
                 </div>
             </div>
         </form>
-    );
-};
+    )
+}
