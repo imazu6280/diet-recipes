@@ -93,16 +93,5 @@ export default {
             },
         },
     },
-    plugins: [
-        function ({ addUtilities }) {
-            addUtilities(
-                {
-                    ".whitespace-pre-wrap": {
-                        "white-space": "pre-wrap",
-                    },
-                },
-                ["responsive", "hover"]
-            );
-        },
-    ],
+    plugins: [],
 };
