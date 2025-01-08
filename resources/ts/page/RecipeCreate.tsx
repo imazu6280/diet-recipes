@@ -37,20 +37,6 @@ export const RecipeCreate = () => {
                             </div>
                             <p className="break-words md:p-2 md:text-md md:bg-white_gray md:rounded-lg whitespace-normal"></p>
                         </div>
-                        <div className="flex gap-x-4 md:justify-between md:py-4 md:p-2-auto md:gap-0 md:bg-white">
-                            <Button
-                                isIcon="/images/image14.svg"
-                                alt="レシピを保存"
-                                text="レシピを保存"
-                                color={buttonColors.orange}
-                            />
-                            <Button
-                                isIcon={faStar}
-                                alt="お気に入り登録"
-                                text="お気に入り登録"
-                                color={buttonColors.gray}
-                            />
-                        </div>
                     </div>
                 </div>
                 <div className="grid grid-cols-show-column gap-x-6 md:grid-cols-1 md:gap-y-4">
