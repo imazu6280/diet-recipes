@@ -1,17 +1,17 @@
-import { SearchInput } from "./SearchInput"
-import { Button } from "./Button"
-import { buttonColors } from "../constants/buttonColors"
-import { useMenu } from "../hooks/useMenu"
-import { SideMenuType } from "../type/sideMenu"
-import { MenuButton } from "./MenuButton"
-import { Navbar } from "./Navbar"
+import { SearchInput } from "./SearchInput";
+import { Button } from "./Button";
+import { buttonColors } from "../constants/buttonColors";
+import { useMenu } from "../hooks/useMenu";
+import { SideMenuType } from "../type/sideMenu";
+import { MenuButton } from "./MenuButton";
+import { Navbar } from "./Navbar";
 
 const headerLogo = {
     logo: "DIET-RECIPES",
-}
+};
 
 export const CreateHeader = () => {
-    const { open, menuOpen }: SideMenuType = useMenu()
+    const { open, menuOpen }: SideMenuType = useMenu();
 
     return (
         <header className="sticky top-0">
@@ -40,9 +40,9 @@ export const CreateHeader = () => {
                 <div className="flex justify-between items-center">
                     <h1 className="text-xl font-bold">{headerLogo.logo}</h1>
                     <Button
-                        isIcon="/images/header-write.svg"
-                        alt="レシピを書く"
-                        text="レシピを書く"
+                        isIcon=""
+                        alt="公開する"
+                        text="公開する"
                         color={buttonColors.bgOrange}
                     />
                 </div>
@@ -55,10 +55,12 @@ export const CreateHeader = () => {
             </div>
             <div
                 onClick={menuOpen}
-                className={`inset-0 ${open ? "fixed z-50 bg-gray-opacity" : "z-0"}`}
+                className={`inset-0 ${
+                    open ? "fixed z-50 bg-gray-opacity" : "z-0"
+                }`}
             >
                 <Navbar open={open} />
             </div>
         </header>
-    )
-}
+    );
+};

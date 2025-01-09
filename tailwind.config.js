@@ -1,4 +1,4 @@
-import defaultTheme from "tailwindcss/defaultTheme"
+import defaultTheme from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -38,6 +38,7 @@ export default {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
             },
             colors: {
+                red: "rgba(254,70,58,1)",
                 orange: "#FF9933",
                 gray: "#939290",
                 white_gray: "rgb(236 235 233)",
@@ -94,4 +95,4 @@ export default {
         },
     },
     plugins: [],
-}
+};
