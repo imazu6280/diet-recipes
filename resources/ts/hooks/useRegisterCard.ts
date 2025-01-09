@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { addRegisterType } from "../type/registar"
+import { useState } from "react";
+import { addRegisterType } from "../type/registar";
 
 export const useRegisterCard = () => {
     const [addRegister, setAddRegister] = useState<addRegisterType>({
@@ -10,23 +10,26 @@ export const useRegisterCard = () => {
                 quantity: "",
             },
         ],
-    })
+    });
 
     const addCard = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
+        e.preventDefault();
         setAddRegister((addRegister) => ({
             ...addRegister,
             cards: [...addRegister.cards, addRegister.cards.length + 1],
-        }))
-    }
+        }));
+    };
 
     const addIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
+        e.preventDefault();
         setAddRegister((addRegister) => ({
             ...addRegister,
-            ingredients: [...addRegister.ingredients, { ingredient: "", quantity: "" }],
-        }))
-    }
+            ingredients: [
+                ...addRegister.ingredients,
+                { ingredient: "", quantity: "" },
+            ],
+        }));
+    };
 
-    return { addRegister, addCard, addIngredient }
-}
+    return { addRegister, addCard, addIngredient };
+};
