@@ -6,6 +6,8 @@ import { SideMenuType } from "../type/sideMenu";
 import { MenuButton } from "./MenuButton";
 import { Navbar } from "./Navbar";
 import { useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 
 const headerLogo = {
     logo: "DIET-RECIPES",
@@ -23,13 +25,13 @@ export const Header = () => {
                     isIcon=""
                     alt="削除する"
                     text="削除する"
-                    color={buttonColors.bgOrange}
+                    color={buttonColors.red}
                 />
                 <Button
                     isIcon=""
                     alt="保存して確認"
                     text="保存して確認"
-                    color={buttonColors.bgOrange}
+                    color={buttonColors.gray}
                 />
                 <Button
                     isIcon=""
@@ -46,7 +48,12 @@ export const Header = () => {
                     text="公開する"
                     color={buttonColors.bgOrange}
                 />
-                <div className="p-4 bg-black"></div>
+                <div className="p-4">
+                    <FontAwesomeIcon icon={faEllipsis} />
+                    <ul className="hidden">
+                        <li></li>
+                    </ul>
+                </div>
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden sm:flex flex-col gap-y-4">
                 <div className="flex justify-between items-center">
