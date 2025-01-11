@@ -60,7 +60,7 @@ export default {
             },
             gridTemplateColumns: {
                 "header-column": "1fr 40px",
-                "header-tb-column": "140px 1fr 140px 24px",
+                "header-tb-column": "140px 1fr 160px 24px",
                 "sidebar-column": "clamp(120px, 20%, 270px) 1fr",
                 "show-column": "300px 1fr",
                 "create-ingredient-column": "24px 2fr 1fr 24px",

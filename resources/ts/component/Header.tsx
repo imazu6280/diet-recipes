@@ -25,8 +25,8 @@ export const Header = () => {
                 <p>
                     <Button
                         isIcon="images/trash-red.svg"
-                        alt="削除する"
-                        text="削除する"
+                        alt="削除"
+                        text="削除"
                         color={buttonColors.red}
                         width="w-40"
                     />
@@ -80,7 +80,7 @@ export const Header = () => {
             <div className="px-4 py-3 bg-white z-10 hidden tablet_md:grid grid-cols-header-tb-column gap-x-6 items-center">
                 <h1 className="text-lg font-bold">{headerLogo.logo}</h1>
                 <form action="">
-                    <SearchInput isStyle={true} id="search" type="text" />
+                    <SearchInput isStyle={true} id="search" type="text" top="top-0" />
                 </form>
                 <Button
                     isIcon="/images/header-write.svg"
@@ -104,7 +104,7 @@ export const Header = () => {
                 </div>
                 <div className="grid grid-cols-header-column gap-5">
                     <form action="">
-                        <SearchInput isStyle={true} id="search" type="text" />
+                        <SearchInput isStyle={true} id="search" type="text" top="top-0" />
                     </form>
                     <MenuButton open={open} menuOpen={menuOpen} />
                 </div>

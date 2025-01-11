@@ -58,11 +58,11 @@ export const RecipeCreate = () => {
                     <div className="flex flex-col gap-y-4 md:bg-white md:px-2 md:py-4">
                         <h3 className="text-2xl font-bold">材料</h3>
                         <div className="flex justify-between items-center gap-x-2">
-                            <label htmlFor="peaple">何人分</label>
+                            <label htmlFor="people">何人分</label>
                             <input
-                                id="peaple"
+                                id="people"
                                 type="text"
-                                name="peaple"
+                                name="people"
                                 placeholder="何人分"
                                 className="w-2/4 p-2 break-words bg-beige rounded-md"
                             />

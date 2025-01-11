@@ -63,7 +63,7 @@ export const Top = () => {
                 <h1 className="text-3xl font-bold text-center">DIET RECIPES</h1>
                 <form action="">
                     <div className="flex justify-center gap-2 mx-auto">
-                        <SearchInput isStyle={false} id="search" type="text" />
+                        <SearchInput isStyle={false} id="search" type="text" top="top-1/4" />
                         <Button
                             isIcon=""
                             alt=""
