@@ -1,15 +1,28 @@
 import { useState } from "react"
 
 export const useMenu = () => {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState({
+        sideOpen: false,
+        deleteOpen: false,
+    })
 
     const menuOpen = (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
         if (e.target === e.currentTarget) {
-            setOpen(false)
+            setOpen((prevState) => ({ ...prevState, sideOpen: false }))
         } else {
-            setOpen(!open)
+            setOpen((prevState) => ({ ...prevState, sideOpen: !prevState.sideOpen }))
         }
     }
 
-    return { open, menuOpen }
+    const toggleDeleteOpen = (
+        e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLParagraphElement>
+    ) => {
+        if (e.target === e.currentTarget) {
+            setOpen((prevState) => ({ ...prevState, deleteOpen: false }))
+        } else {
+            setOpen((prevState) => ({ ...prevState, deleteOpen: !prevState.deleteOpen }))
+        }
+    }
+
+    return { open, menuOpen, toggleDeleteOpen }
 }

@@ -6,12 +6,13 @@ type Props = {
     alt?: string
     text: string
     color: string
+    width: string
 }
 
-export const Button = ({ isIcon, alt, text, color }: Props) => {
+export const Button = ({ isIcon, alt, text, color, width }: Props) => {
     return (
         <button
-            className={`border- flex gap-x-1 justify-center items-center py-2 px-4 rounded-lg ${color}`}
+            className={`border- flex gap-x-1 justify-center items-center py-2 px-4 rounded-lg ${color} ${width}`}
         >
             {isIcon &&
                 (typeof isIcon === "string" ? (

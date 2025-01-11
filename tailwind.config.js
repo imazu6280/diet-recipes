@@ -1,4 +1,4 @@
-import defaultTheme from "tailwindcss/defaultTheme";
+import defaultTheme from "tailwindcss/defaultTheme"
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -19,6 +19,7 @@ export default {
                 tablet_md: { min: "561px", max: "768px" },
                 md: { max: "768px" },
                 tb: { max: "960px" },
+                pc_sm: { min: "769px", max: "1200px" },
             },
             width: {
                 inner: "96%",
@@ -62,7 +63,10 @@ export default {
                 "header-tb-column": "140px 1fr 140px 24px",
                 "sidebar-column": "clamp(120px, 20%, 270px) 1fr",
                 "show-column": "300px 1fr",
-                "create-ingredient-column": "40px 2fr 1fr 40px",
+                "create-ingredient-column": "24px 2fr 1fr 24px",
+            },
+            aspectRatio: {
+                "5/4": "5 / 4",
             },
             animation: {
                 "slide-in-right":
@@ -95,4 +99,4 @@ export default {
         },
     },
     plugins: [],
-};
+}

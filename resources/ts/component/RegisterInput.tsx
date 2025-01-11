@@ -1,7 +1,15 @@
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useMenu } from "../hooks/useMenu"
+
 export const RegisterInput = () => {
+    const { open, toggleDeleteOpen } = useMenu()
+
     return (
-        <div className="grid grid-cols-create-ingredient-column gap-x-2">
-            <div className="bg-gray"></div>
+        <div className="grid grid-cols-create-ingredient-column gap-x-2 items-center">
+            <p>
+                <img src="images/bars.svg" alt="" />
+            </p>
             <label htmlFor="ingredient">
                 <input
                     id="ingredient"
@@ -20,7 +28,14 @@ export const RegisterInput = () => {
                     className="w-full p-2 break-words bg-beige rounded-md"
                 />
             </label>
-            <div className="bg-gray"></div>
+            <p onClick={toggleDeleteOpen} className="relative">
+                <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
+                {open.deleteOpen && (
+                    <ul className="absolute top-9 right-2 w-40 bg-white shadow-black rounded-sm">
+                        <li className="p-2 text-black hover:bg-beige">材料を削除</li>
+                    </ul>
+                )}
+            </p>
         </div>
     )
 }

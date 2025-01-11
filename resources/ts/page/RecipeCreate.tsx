@@ -1,18 +1,34 @@
-import { faStar } from "@fortawesome/free-solid-svg-icons"
-import { Button } from "../component/Button"
-import { buttonColors } from "../constants/buttonColors"
 import { RegisterCard } from "../component/RegisterCard"
 import { useRegisterCard } from "../hooks/useRegisterCard"
 import { RegisterInput } from "../component/RegisterInput"
+import { placeHolderType } from "../type/registar"
 
 export const RecipeCreate = () => {
     const { addRegister, addCard, addIngredient } = useRegisterCard()
 
+    const placeHolderText: placeHolderType = {
+        text: ["・味やおすすめポイント", "・楽しみ方", "・この料理を作ったきっかけ"],
+    }
+    const placeholderString = placeHolderText.text.join("\n")
+
     return (
         <form action="">
-            <div className="flex flex-col gap-y-6 w-inner mx-auto md:w-full md:gap-y-4">
-                <div className="grid grid-cols-show-column gap-x-6 tb:grid-cols-1">
-                    <div className="h-96 bg-beige"></div>
+            <div className="flex flex-col gap-y-6 w-inner pt-2 mx-auto md:w-full md:gap-y-4">
+                <div className="grid grid-cols-show-column gap-x-6 tablet_md:grid-cols-1 sm:grid-cols-1">
+                    <label htmlFor="mainImage" className="relative h-96 bg-beige rounded-md">
+                        <input type="file" id="mainImage" className="hidden" />
+                        <div className="absolute top-1/3 left-0 right-0 flex flex-col justify-center gap-y-2 text-center px-4 pointer-events-none">
+                            <p className="w-16 mx-auto ">
+                                <img src="images/image15.png" alt="" />
+                            </p>
+                            <p className="text-lg text-bold text-gray-opacity">
+                                料理の写真をのせる
+                            </p>
+                            <p className="text-sm text-gray-opacity">
+                                オリジナルではないものや料理に関係ない写真はご遠慮ください
+                            </p>
+                        </div>
+                    </label>
                     <div className="flex flex-col justify-between md:gap-y-4">
                         <div className="flex flex-col gap-y-10 md:gap-y-4 md:px-2 md:py-4 md:bg-white">
                             <div className="flex flex-col gap-y-4">
@@ -23,19 +39,18 @@ export const RecipeCreate = () => {
                                         type="text"
                                         placeholder="料理名を入力してください"
                                         value=""
-                                        className="w-full px-2 py-4 text-34px font-bold bg-beige rounded-md"
+                                        className="w-full px-2 py-4 text-34px font-bold bg-beige rounded-md tablet_md:text-xl sm:text-lg"
                                     />
                                 </label>
                                 <label htmlFor="comments">
                                     <textarea
                                         name="comments"
                                         id="comments"
-                                        placeholder="・料理のポイント\n・こだわりのポイント\n・料理を作ったきっかけなど"
-                                        className="w-full p-10 break-words bg-beige rounded-md whitespace-pre-wrap"
+                                        placeholder={placeholderString}
+                                        className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
                             </div>
-                            <p className="break-words md:p-2 md:text-md md:bg-white_gray md:rounded-lg whitespace-normal"></p>
                         </div>
                     </div>
                 </div>
@@ -56,24 +71,26 @@ export const RecipeCreate = () => {
                             return <RegisterInput key={index} />
                         })}
                         <button
-                            className="flex justify-center items-center gap-x-2 font-bold"
+                            className="flex justify-center items-center gap-x-2 text-black font-bold"
                             onClick={(e) => addIngredient(e)}
                         >
-                            <span className="text-xl">+</span>材料
+                            <img src="images/plus.svg" alt="プラス" />
+                            <span>材料</span>
                         </button>
                     </div>
                     <div className="flex flex-col gap-y-4 md:bg-white md:pt-4 md:pb-8 md:p-2-auto">
                         <h3 className="text-2xl font-bold">作り方</h3>
-                        <ul className="grid grid-cols-4 gap-x-4 gap-y-10 tablet_md:grid-cols-2 sm:grid-cols-1">
+                        <ul className="grid grid-cols-4 gap-x-4 gap-y-10 pc_sm:grid-cols-3 tablet_md:grid-cols-2 sm:grid-cols-1">
                             {addRegister.cards.map((step_number) => (
                                 <RegisterCard key={step_number} step_number={step_number} />
                             ))}
                         </ul>
                         <button
-                            className="flex justify-center items-center gap-x-2 font-bold"
+                            className="flex justify-center items-center gap-x-2 text-black font-bold"
                             onClick={(e) => addCard(e)}
                         >
-                            <span className="text-xl">+</span>作り方
+                            <img src="images/plus.svg" alt="プラス" />
+                            <span>作り方</span>
                         </button>
                     </div>
                 </div>

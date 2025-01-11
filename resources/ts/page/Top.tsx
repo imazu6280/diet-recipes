@@ -63,8 +63,14 @@ export const Top = () => {
                 <h1 className="text-3xl font-bold text-center">DIET RECIPES</h1>
                 <form action="">
                     <div className="flex justify-center gap-2 mx-auto">
-                        <SearchInput isStyle={false} />
-                        <Button isIcon="" alt="" text="検索" color={buttonColors.bgOrange} />
+                        <SearchInput isStyle={false} id="search" type="text" />
+                        <Button
+                            isIcon=""
+                            alt=""
+                            text="検索"
+                            color={buttonColors.bgOrange}
+                            width=""
+                        />
                     </div>
                 </form>
             </div>
