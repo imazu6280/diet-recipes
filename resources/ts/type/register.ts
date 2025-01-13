@@ -1,0 +1,13 @@
+export type Ingredient = {
+    ingredient: string
+    quantity: string
+}
+
+export type addRegisterType = {
+    cards: number[]
+    ingredients: Ingredient[]
+}
+
+export type placeHolderType = {
+    text: string[]
+}
