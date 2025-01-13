@@ -60,7 +60,7 @@ export const Header = () => {
                     <p onClick={toggleDeleteOpen} className="relative">
                         <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                         {open.deleteOpen && (
-                            <ul className="absolute top-9 right-2 w-40 bg-white shadow-black rounded-sm">
+                            <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-sm">
                                 <DeleteMenuButton text="削除" image="images/trash.svg" index={0} />
                             </ul>
                         )}

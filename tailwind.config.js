@@ -53,6 +53,10 @@ export default {
             },
             boxShadow: {
                 black: "0 1px 5px #0000001a",
+                modal: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
+            },
+            borderRadius: {
+                modal: "0.25rem",
             },
             backgroundImage: {
                 "search-image": "url('/images/image01.png')",

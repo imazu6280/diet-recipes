@@ -28,7 +28,7 @@ export const RegisterCard = ({ step_number }: Props) => {
                 </div>
                 <p className="relative" onClick={toggleDeleteOpen}>
                     <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
-                    <ul className="absolute top-9 right-2 w-40 bg-white rounded-lg">
+                    <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
                         {/* <div className="triangle-up"></div> */}
                         {open.deleteOpen &&
                             stepDelete.map((item, index) => (
@@ -69,7 +69,7 @@ export const RegisterCard = ({ step_number }: Props) => {
             <p className="relative hidden sm:block" onClick={toggleDeleteOpen}>
                 <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                 {open.deleteOpen && (
-                    <ul className="absolute top-9 right-2 w-40 bg-white shadow-black rounded-lg">
+                    <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
                         {open.deleteOpen &&
                             stepDelete.map((item) => (
                                 <DeleteMenuButton text={item.text} image="" index={0} />
