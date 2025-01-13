@@ -1,6 +1,7 @@
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useMenu } from "../hooks/useMenu"
+import { DeleteMenuButton } from "./DeleteMenuButton"
 
 export const RegisterInput = () => {
     const { open, toggleDeleteOpen } = useMenu()
@@ -31,8 +32,8 @@ export const RegisterInput = () => {
             <p onClick={toggleDeleteOpen} className="relative">
                 <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                 {open.deleteOpen && (
-                    <ul className="absolute top-9 right-2 w-40 bg-white shadow-black rounded-sm">
-                        <li className="p-2 text-black hover:bg-beige">材料を削除</li>
+                    <ul className="absolute top-9 right-2 w-40 bg-white shadow-black rounded-lg">
+                        <DeleteMenuButton text="材料を削除する" image="" index={0} />
                     </ul>
                 )}
             </p>

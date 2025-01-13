@@ -98,5 +98,19 @@ export default {
             },
         },
     },
-    plugins: [],
+    plugins: [
+        function ({ addUtilities }) {
+            const newUtilities = {
+                ".triangle-up": {
+                    width: "0",
+                    height: "0",
+                    "border-left": "2rem solid transparent",
+                    "border-right": "2rem solid transparent",
+                    "border-bottom": "4rem solid #007bff",
+                },
+            }
+
+            addUtilities(newUtilities, ["responsive", "hover"])
+        },
+    ],
 }

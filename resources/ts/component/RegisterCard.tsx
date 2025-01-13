@@ -1,10 +1,16 @@
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useMenu } from "../hooks/useMenu"
+import { DeleteMenuButton } from "./DeleteMenuButton"
 
 type Props = {
     step_number: number
 }
+
+const stepDelete = [
+    { id: 0, text: "作り方を追加" },
+    { id: 1, text: "作り方を削除" },
+]
 
 export const RegisterCard = ({ step_number }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
@@ -22,11 +28,18 @@ export const RegisterCard = ({ step_number }: Props) => {
                 </div>
                 <p className="relative" onClick={toggleDeleteOpen}>
                     <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
-                    {open.deleteOpen && (
-                        <ul className="absolute top-9 right-2 w-40 bg-white shadow-black rounded-sm">
-                            <li className="p-2 text-black hover:bg-beige">材料を削除</li>
-                        </ul>
-                    )}
+                    <ul className="absolute top-9 right-2 w-40 bg-white rounded-lg">
+                        {/* <div className="triangle-up"></div> */}
+                        {open.deleteOpen &&
+                            stepDelete.map((item, index) => (
+                                <DeleteMenuButton
+                                    key={index}
+                                    text={item.text}
+                                    image=""
+                                    index={index}
+                                />
+                            ))}
+                    </ul>
                 </p>
             </div>
             <div className="flex flex-col gap-y-2 w-full sm:flex-col-reverse">
@@ -44,7 +57,7 @@ export const RegisterCard = ({ step_number }: Props) => {
                         <img src="images/image16.svg" alt="カメラ" />
                     </p>
                 </label>
-                <label htmlFor="detailText" className="w-full px-2 py-4 bg-beige rounded-lg">
+                <label htmlFor="detailText" className="w-full px-2 py-4 bg-beige rounded-md">
                     <textarea
                         name="detailText"
                         id="detailText"
@@ -56,8 +69,11 @@ export const RegisterCard = ({ step_number }: Props) => {
             <p className="relative hidden sm:block" onClick={toggleDeleteOpen}>
                 <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                 {open.deleteOpen && (
-                    <ul className="absolute top-9 right-2 w-40 bg-white shadow-black rounded-sm">
-                        <li className="p-2 text-black hover:bg-beige">材料を削除</li>
+                    <ul className="absolute top-9 right-2 w-40 bg-white shadow-black rounded-lg">
+                        {open.deleteOpen &&
+                            stepDelete.map((item) => (
+                                <DeleteMenuButton text={item.text} image="" index={0} />
+                            ))}
                     </ul>
                 )}
             </p>

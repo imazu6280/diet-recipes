@@ -20,7 +20,7 @@ export const Header = () => {
     const isLocationCreate = location.pathname === "/create"
 
     return isLocationCreate ? (
-        <header className="sticky top-0 z-50">
+        <header className="sticky top-0 z-30">
             <div className="p-2 flex justify-end gap-x-4 bg-white z-10 md:hidden">
                 <p>
                     <Button
@@ -57,12 +57,14 @@ export const Header = () => {
                         color={buttonColors.bgOrange}
                         width="w-40"
                     />
-                    <div className="relative">
-                        <p onClick={toggleDeleteOpen}>
-                            <FontAwesomeIcon icon={faEllipsis} />
-                        </p>
-                        {open.deleteOpen && <DeleteMenuButton />}
-                    </div>
+                    <p onClick={toggleDeleteOpen} className="relative">
+                        <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
+                        {open.deleteOpen && (
+                            <ul className="absolute top-9 right-2 w-40 bg-white shadow-black rounded-sm">
+                                <DeleteMenuButton text="削除" image="images/trash.svg" index={0} />
+                            </ul>
+                        )}
+                    </p>
                 </div>
             </div>
         </header>

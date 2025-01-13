@@ -1,7 +1,7 @@
 import { RegisterCard } from "../component/RegisterCard"
 import { useRegisterCard } from "../hooks/useRegisterCard"
 import { RegisterInput } from "../component/RegisterInput"
-import { placeHolderType } from "../type/registar"
+import { placeHolderType } from "../type/register"
 
 export const RecipeCreate = () => {
     const { addRegister, addCard, addIngredient } = useRegisterCard()

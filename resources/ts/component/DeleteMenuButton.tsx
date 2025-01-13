@@ -1,15 +1,28 @@
-import { faTrash } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useMenu } from "../hooks/useMenu"
 
-export const DeleteMenuButton = () => {
+type Props = {
+    text: string
+    image: string
+    index: number
+}
+
+export const DeleteMenuButton = ({ text, image, index }: Props) => {
     return (
-        <ul className="absolute top-5 right-5 w-40 p-2 bg-white shadow-black rounded-lg">
-            <li className="flex items-center gap-x-2 bg-white">
-                <p className="w-5 h-5">
-                    <img src="images/trash.svg" alt="" />
-                </p>
-                削除
+        <>
+            <li
+                className={`relative flex items-center gap-x-2 w-40 p-2 border-gray border-1 bg-white z-50  hover:bg-beige
+                    ${index === 0 && "rounded-t-md"}
+                    ${index > 0 && "border-t-0 rounded-t-none"}
+                    ${index === length + 1 && "rounded-b-md rounded-t-none"}`}
+            >
+                {image && (
+                    <p className="w-5 h-5">
+                        <img src={image} alt="" />
+                    </p>
+                )}
+                {text}
             </li>
-        </ul>
+            <div className="fixed w-screen h-screen bg-transparent top-0 left-0 z-40"></div>
+        </>
     )
 }

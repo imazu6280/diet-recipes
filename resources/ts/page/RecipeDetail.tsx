@@ -38,12 +38,14 @@ export const RecipeDetail = () => {
                             alt="レシピを保存"
                             text="レシピを保存"
                             color={buttonColors.orange}
+                            width=""
                         />
                         <Button
                             isIcon={faStar}
                             alt="お気に入り登録"
                             text="お気に入り登録"
                             color={buttonColors.gray}
+                            width=""
                         />
                     </div>
                 </div>
