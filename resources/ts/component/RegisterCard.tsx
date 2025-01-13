@@ -19,14 +19,14 @@ export const RegisterCard = ({ step_number }: Props) => {
         <li className="flex flex-col gap-y-2 md:gap-x-4 md:flex-row md:items-start md:justify-between">
             <div className="flex justify-between">
                 <div className="flex items-center gap-x-2 md:gap-y-2 md:flex-col">
-                    <p className="w-6 h-6 text-center text-white bg-black rounded-full">
+                    <span className="block w-6 h-6 text-center text-white bg-black rounded-full">
                         {step_number}
-                    </p>
-                    <p>
+                    </span>
+                    <div>
                         <img src="images/bars.svg" alt="" />
-                    </p>
+                    </div>
                 </div>
-                <p className="relative md:hidden" onClick={toggleDeleteOpen}>
+                <div className="relative md:hidden" onClick={toggleDeleteOpen}>
                     <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                     <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
                         {/* <div className="triangle-up"></div> */}
@@ -40,7 +40,7 @@ export const RegisterCard = ({ step_number }: Props) => {
                                 />
                             ))}
                     </ul>
-                </p>
+                </div>
             </div>
             <div className="flex flex-col gap-y-2 w-full md:flex-col-reverse">
                 <label
@@ -66,7 +66,7 @@ export const RegisterCard = ({ step_number }: Props) => {
                     ></textarea>
                 </label>
             </div>
-            <p className="relative hidden md:block" onClick={toggleDeleteOpen}>
+            <div className="relative hidden md:block" onClick={toggleDeleteOpen}>
                 <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                 {open.deleteOpen && (
                     <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
@@ -76,7 +76,7 @@ export const RegisterCard = ({ step_number }: Props) => {
                             ))}
                     </ul>
                 )}
-            </p>
+            </div>
         </li>
     )
 }
