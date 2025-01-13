@@ -10,8 +10,7 @@ export const DeleteMenuButton = ({ text, image, index }: Props) => {
     return (
         <>
             <li
-                className={`relative flex items-center gap-x-2 w-40 p-2 text-gray-opacity border-gray-opacity border-1 bg-white z-50  hover:bg-beige
-                    ${index === 0 && "rounded-t-modal"}
+                className={`relative flex items-center gap-x-2 w-40 p-2 text-gray-opacity border-gray-opacity border-1 bg-white z-50 first:rounded-t-modal last-of-type:rounded-b-modal hover:bg-beige
                     ${index > 0 && "border-t-0 rounded-t-none"}
                     ${index === length + 1 && "rounded-b-modal rounded-t-none"}`}
             >
