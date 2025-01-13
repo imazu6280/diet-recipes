@@ -16,9 +16,9 @@ export const RegisterCard = ({ step_number }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
 
     return (
-        <li className="flex flex-col gap-y-2 sm:gap-x-4 sm:flex-row sm:items-start sm:justify-between">
+        <li className="flex flex-col gap-y-2 md:gap-x-4 md:flex-row md:items-start md:justify-between">
             <div className="flex justify-between">
-                <div className="flex items-center gap-x-2 sm:gap-y-2 sm:flex-col">
+                <div className="flex items-center gap-x-2 md:gap-y-2 md:flex-col">
                     <p className="w-6 h-6 text-center text-white bg-black rounded-full">
                         {step_number}
                     </p>
@@ -26,7 +26,7 @@ export const RegisterCard = ({ step_number }: Props) => {
                         <img src="images/bars.svg" alt="" />
                     </p>
                 </div>
-                <p className="relative" onClick={toggleDeleteOpen}>
+                <p className="relative md:hidden" onClick={toggleDeleteOpen}>
                     <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                     <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
                         {/* <div className="triangle-up"></div> */}
@@ -42,10 +42,10 @@ export const RegisterCard = ({ step_number }: Props) => {
                     </ul>
                 </p>
             </div>
-            <div className="flex flex-col gap-y-2 w-full sm:flex-col-reverse">
+            <div className="flex flex-col gap-y-2 w-full md:flex-col-reverse">
                 <label
                     htmlFor="detailImage"
-                    className="flex flex-col justify-center items-center aspect-5/4 bg-beige rounded-lg sm:w-28"
+                    className="flex flex-col justify-center items-center aspect-5/4 bg-beige rounded-lg md:w-28"
                 >
                     <input
                         type="file"
@@ -66,7 +66,7 @@ export const RegisterCard = ({ step_number }: Props) => {
                     ></textarea>
                 </label>
             </div>
-            <p className="relative hidden sm:block" onClick={toggleDeleteOpen}>
+            <p className="relative hidden md:block" onClick={toggleDeleteOpen}>
                 <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                 {open.deleteOpen && (
                     <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">

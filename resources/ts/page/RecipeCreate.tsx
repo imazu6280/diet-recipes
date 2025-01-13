@@ -80,7 +80,7 @@ export const RecipeCreate = () => {
                     </div>
                     <div className="flex flex-col gap-y-4 md:bg-white md:pt-4 md:pb-8 md:p-2-auto">
                         <h3 className="text-2xl font-bold">作り方</h3>
-                        <ul className="grid grid-cols-4 gap-x-4 gap-y-10 pc_sm:grid-cols-3 tablet_md:grid-cols-2 sm:grid-cols-1">
+                        <ul className="grid grid-cols-4 gap-x-4 gap-y-10 pc_sm:grid-cols-2 tablet_md:grid-cols-1 sm:grid-cols-1">
                             {addRegister.cards.map((step_number) => (
                                 <RegisterCard key={step_number} step_number={step_number} />
                             ))}
