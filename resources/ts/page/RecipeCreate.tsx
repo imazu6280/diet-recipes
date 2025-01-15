@@ -1,22 +1,34 @@
-import { RegisterCard } from "../component/RegisterCard"
-import { useRegisterCard } from "../hooks/useRegisterCard"
-import { RegisterInput } from "../component/RegisterInput"
-import { placeHolderType } from "../type/register"
+import { RegisterCard } from "../component/RegisterCard";
+import { useRegisterCard } from "../hooks/useRegisterCard";
+import { RegisterInput } from "../component/RegisterInput";
+import { placeHolderType } from "../type/register";
 
 export const RecipeCreate = () => {
-    const { addRegister, addCard, addIngredient } = useRegisterCard()
+    const { addRegister, addCard, addIngredient } = useRegisterCard();
 
     const placeHolderText: placeHolderType = {
-        text: ["・味やおすすめポイント", "・楽しみ方", "・この料理を作ったきっかけ"],
-    }
-    const placeholderString = placeHolderText.text.join("\n")
+        text: [
+            "・味やおすすめポイント",
+            "・楽しみ方",
+            "・この料理を作ったきっかけ",
+        ],
+    };
+    const placeholderString = placeHolderText.text.join("\n");
 
     return (
         <form action="">
             <div className="flex flex-col gap-y-6 w-inner pt-2 mx-auto md:w-full md:gap-y-4">
                 <div className="grid grid-cols-show-column gap-x-6 tablet_md:grid-cols-1 sm:grid-cols-1">
-                    <label htmlFor="mainImage" className="relative h-96 bg-beige rounded-md">
-                        <input type="file" id="mainImage" className="hidden" defaultValue="" />
+                    <label
+                        htmlFor="mainImage"
+                        className="relative h-96 bg-beige rounded-md"
+                    >
+                        <input
+                            type="file"
+                            id="mainImage"
+                            className="hidden"
+                            defaultValue=""
+                        />
                         <div className="absolute top-1/3 left-0 right-0 flex flex-col justify-center gap-y-2 text-center px-4 pointer-events-none">
                             <p className="w-16 mx-auto ">
                                 <img src="images/image15.png" alt="" />
@@ -69,7 +81,7 @@ export const RecipeCreate = () => {
                             />
                         </div>
                         {addRegister.ingredients.map((item, index) => {
-                            return <RegisterInput key={index} />
+                            return <RegisterInput key={index} />;
                         })}
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
@@ -83,7 +95,10 @@ export const RecipeCreate = () => {
                         <h3 className="text-2xl font-bold">作り方</h3>
                         <ul className="grid grid-cols-4 gap-x-4 gap-y-10 pc_sm:grid-cols-2 tablet_md:grid-cols-1 sm:grid-cols-1">
                             {addRegister.cards.map((step_number) => (
-                                <RegisterCard key={step_number} step_number={step_number} />
+                                <RegisterCard
+                                    key={step_number}
+                                    step_number={step_number}
+                                />
                             ))}
                         </ul>
                         <button
@@ -97,5 +112,5 @@ export const RecipeCreate = () => {
                 </div>
             </div>
         </form>
-    )
-}
+    );
+};
