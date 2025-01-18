@@ -1,4 +1,5 @@
 export type Ingredient = {
+    id: number
     ingredient: string
     quantity: string
 }

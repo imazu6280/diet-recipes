@@ -1,34 +1,24 @@
-import { RegisterCard } from "../component/RegisterCard";
-import { useRegisterCard } from "../hooks/useRegisterCard";
-import { RegisterInput } from "../component/RegisterInput";
-import { placeHolderType } from "../type/register";
+import { RegisterCard } from "../component/RegisterCard"
+import { useRegisterCard } from "../hooks/useRegisterCard"
+import { RegisterInput } from "../component/RegisterInput"
+import { placeHolderType } from "../type/register"
+import { useRecipeCreate } from "../hooks/useRecipeCreate"
 
 export const RecipeCreate = () => {
-    const { addRegister, addCard, addIngredient } = useRegisterCard();
+    const { addRegister, addCard, addIngredient } = useRegisterCard()
+    const { createInputValue, CreateRecipeSubmit, CreateHandleChange } = useRecipeCreate()
 
     const placeHolderText: placeHolderType = {
-        text: [
-            "・味やおすすめポイント",
-            "・楽しみ方",
-            "・この料理を作ったきっかけ",
-        ],
-    };
-    const placeholderString = placeHolderText.text.join("\n");
+        text: ["・味やおすすめポイント", "・楽しみ方", "・この料理を作ったきっかけ"],
+    }
+    const placeholderString = placeHolderText.text.join("\n")
 
     return (
-        <form action="">
+        <form action="" onSubmit={CreateRecipeSubmit}>
             <div className="flex flex-col gap-y-6 w-inner pt-2 mx-auto md:w-full md:gap-y-4">
                 <div className="grid grid-cols-show-column gap-x-6 tablet_md:grid-cols-1 sm:grid-cols-1">
-                    <label
-                        htmlFor="mainImage"
-                        className="relative h-96 bg-beige rounded-md"
-                    >
-                        <input
-                            type="file"
-                            id="mainImage"
-                            className="hidden"
-                            defaultValue=""
-                        />
+                    <label htmlFor="mainImage" className="relative h-96 bg-beige rounded-md">
+                        <input type="file" id="mainImage" className="hidden" value="" />
                         <div className="absolute top-1/3 left-0 right-0 flex flex-col justify-center gap-y-2 text-center px-4 pointer-events-none">
                             <p className="w-16 mx-auto ">
                                 <img src="images/image15.png" alt="" />
@@ -50,7 +40,8 @@ export const RecipeCreate = () => {
                                         name="name"
                                         type="text"
                                         placeholder="料理名を入力してください"
-                                        defaultValue=""
+                                        value={createInputValue.name}
+                                        onChange={CreateHandleChange}
                                         className="w-full px-2 py-4 text-34px font-bold bg-beige rounded-md tablet_md:text-xl sm:text-lg"
                                     />
                                 </label>
@@ -59,6 +50,8 @@ export const RecipeCreate = () => {
                                         name="comments"
                                         id="comments"
                                         placeholder={placeholderString}
+                                        value={createInputValue.comments}
+                                        onChange={CreateHandleChange}
                                         className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
@@ -76,12 +69,13 @@ export const RecipeCreate = () => {
                                 type="text"
                                 name="people"
                                 placeholder="何人分"
-                                defaultValue=""
+                                value={createInputValue.people}
+                                onChange={CreateHandleChange}
                                 className="w-2/4 p-2 break-words bg-beige rounded-md"
                             />
                         </div>
-                        {addRegister.ingredients.map((item, index) => {
-                            return <RegisterInput key={index} />;
+                        {addRegister.ingredients.map((item) => {
+                            return <RegisterInput key={item.id} id={item.id} />
                         })}
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
@@ -95,10 +89,7 @@ export const RecipeCreate = () => {
                         <h3 className="text-2xl font-bold">作り方</h3>
                         <ul className="grid grid-cols-4 gap-x-4 gap-y-10 pc_sm:grid-cols-2 tablet_md:grid-cols-1 sm:grid-cols-1">
                             {addRegister.cards.map((step_number) => (
-                                <RegisterCard
-                                    key={step_number}
-                                    step_number={step_number}
-                                />
+                                <RegisterCard key={step_number} step_number={step_number} />
                             ))}
                         </ul>
                         <button
@@ -112,5 +103,5 @@ export const RecipeCreate = () => {
                 </div>
             </div>
         </form>
-    );
-};
+    )
+}

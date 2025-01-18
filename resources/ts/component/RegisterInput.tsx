@@ -2,9 +2,15 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useMenu } from "../hooks/useMenu"
 import { DeleteMenuButton } from "./DeleteMenuButton"
+import { useRecipeCreate } from "../hooks/useRecipeCreate"
 
-export const RegisterInput = () => {
+type Props = {
+    id: number
+}
+
+export const RegisterInput = ({ id }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
+    const { createInputValue, CreateHandleChange } = useRecipeCreate()
 
     return (
         <div className="grid grid-cols-create-ingredient-column gap-x-2 items-center">
@@ -17,6 +23,8 @@ export const RegisterInput = () => {
                     type="text"
                     name="ingredient"
                     placeholder="鶏胸肉"
+                    value={createInputValue.ingredients[id].name}
+                    onChange={CreateHandleChange}
                     className="w-full p-2 break-words bg-beige rounded-md"
                 />
             </label>
@@ -26,6 +34,8 @@ export const RegisterInput = () => {
                     type="text"
                     name="quantity"
                     placeholder="200g"
+                    value={createInputValue.ingredients[id].pivot.quantity}
+                    onChange={CreateHandleChange}
                     className="w-full p-2 break-words bg-beige rounded-md"
                 />
             </label>

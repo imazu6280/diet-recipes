@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipe extends Model
 {
+    protected $fillable = ['name', 'comments', 'thumbnail', 'calories', 'is_favorite'];
+
  public function steps()
  {
     return $this->hasMany(RecipeStep::class);

@@ -2,6 +2,7 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useMenu } from "../hooks/useMenu"
 import { DeleteMenuButton } from "./DeleteMenuButton"
+import { useRecipeCreate } from "../hooks/useRecipeCreate"
 
 type Props = {
     step_number: number
@@ -14,6 +15,7 @@ const stepDelete = [
 
 export const RegisterCard = ({ step_number }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
+    const { createInputValue, CreateHandleChange } = useRecipeCreate()
 
     return (
         <li className="flex flex-col gap-y-2 md:gap-x-4 md:flex-row md:items-start md:justify-between">
@@ -29,7 +31,6 @@ export const RegisterCard = ({ step_number }: Props) => {
                 <div className="relative md:hidden" onClick={toggleDeleteOpen}>
                     <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                     <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
-                        {/* <div className="triangle-up"></div> */}
                         {open.deleteOpen &&
                             stepDelete.map((item, index) => (
                                 <DeleteMenuButton
@@ -44,23 +45,27 @@ export const RegisterCard = ({ step_number }: Props) => {
             </div>
             <div className="flex flex-col gap-y-2 w-full md:flex-col-reverse">
                 <label
-                    htmlFor="detailImage"
+                    htmlFor="thumbnail"
                     className="flex flex-col justify-center items-center aspect-5/4 bg-beige rounded-lg md:w-28"
                 >
                     <input
                         type="file"
-                        name="detailImage"
-                        id="detailImage"
+                        name="thumbnail"
+                        id="thumbnail"
+                        value={createInputValue.steps[step_number]?.thumbnail}
+                        onChange={CreateHandleChange}
                         className="hidden"
                     ></input>
                     <p>
                         <img src="images/image16.svg" alt="カメラ" />
                     </p>
                 </label>
-                <label htmlFor="detailText" className="w-full px-2 py-4 bg-beige rounded-md">
+                <label htmlFor="description" className="w-full px-2 py-4 bg-beige rounded-md">
                     <textarea
-                        name="detailText"
-                        id="detailText"
+                        name="description"
+                        id="description"
+                        value={createInputValue.steps[step_number]?.description}
+                        onChange={CreateHandleChange}
                         placeholder="鶏胸肉を一口サイズにカットする"
                         className="w-full p-2 bg-beige"
                     ></textarea>

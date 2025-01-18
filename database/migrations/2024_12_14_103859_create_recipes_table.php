@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('comments');
             $table->string('thumbnail');
             $table->integer('calories');
+            $table->integer('people');
             $table->boolean('is_favorite')->default(0);
             $table->timestamps();
         });

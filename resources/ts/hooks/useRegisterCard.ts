@@ -6,6 +6,7 @@ export const useRegisterCard = () => {
         cards: [1],
         ingredients: [
             {
+                id: 0,
                 ingredient: "",
                 quantity: "",
             },
@@ -24,7 +25,10 @@ export const useRegisterCard = () => {
         e.preventDefault()
         setAddRegister((addRegister) => ({
             ...addRegister,
-            ingredients: [...addRegister.ingredients, { ingredient: "", quantity: "" }],
+            ingredients: [
+                ...addRegister.ingredients,
+                { id: addRegister.ingredients.length + 1, ingredient: "", quantity: "" },
+            ],
         }))
     }
 

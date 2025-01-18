@@ -35,6 +35,7 @@ export type recipeSchema = {
     steps: GetStepsResponse
     thumbnail: string
     calories: number
+    people: number
     is_favorite: boolean
     created_at: string
     updated_at: string
@@ -42,3 +43,5 @@ export type recipeSchema = {
 }
 
 export type GetRecipesResponse = recipeSchema[]
+
+export type PostRecipesResponse = Omit<recipeSchema, "created_at" | "updated_at">[]

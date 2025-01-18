@@ -21,6 +21,7 @@ class RecipeSeeder extends Seeder
             'comments' => Str::random(50), // ランダムなコメント（50文字）
             'thumbnail' => 'https://placehold.jp/350x240.png',  // ダミー画像URL
             'calories' => rand(100, 500), // ランダムなカロリー情報
+            'peaple' => rand(1, 6), // ランダムなカロリー情報
             'is_favorite' => (bool)rand(0, 1), // 0または1のランダムな値（お気に入りフラグ）
             'created_at' => now(),
             'updated_at' => now(),
