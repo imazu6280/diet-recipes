@@ -62,25 +62,42 @@ class RecipeController extends Controller
      */
     public function show(string $id)
     {
-        // レシピとそのステップ（最新のstep_numberごとに絞り込む）
-        $recipe = Recipe::with(['steps' => function ($query) use ($id) {
-            // 最新のstep_numberごとに絞り込む
-            $query->where('recipe_id', $id)
-                  ->whereIn('id', function ($subQuery) use ($id) {
-                      $subQuery->selectRaw('max(id)')
-                               ->from('recipe_steps')
-                               ->where('recipe_id', $id)  // 特定のrecipe_idでフィルタリング
-                               ->groupBy('step_number');  // step_numberごとにグループ化
-                  })
-                  ->orderBy('step_number');  // step_numberでソート
-        }, 'ingredients'])->find($id);
+        // レシピを取得
+    $recipe = Recipe::find($id);
 
-        if (!$recipe) {
-            return response()->json(['error' => 'Recipe not found'], 404);
-        }
+    if (!$recipe) {
+        return response()->json(['error' => 'Recipe not found'], 404);
+    }
 
+    // JSONフィールドからステップと材料をデコード
+    $steps = $recipe->steps;
+    $ingredients = $recipe->ingredients;
 
-        return response()->json($recipe);
+    // 最新のステップをステップ番号ごとにグループ化し、最新のものだけを保持
+    $latestSteps = collect($steps)
+                    ->groupBy('step_number')
+                    ->map(function ($group) {
+                        return $group->sortByDesc('id')->first();
+                    })
+                    ->sortBy('step_number')
+                    ->values();
+
+    // レシピの詳細を構築
+    $recipeDetails = [
+        'id' => $recipe->id,
+        'name' => $recipe->name,
+        'comments' => $recipe->comments,
+        'thumbnail' => $recipe->thumbnail,
+        'calories' => $recipe->calories,
+        'people' => $recipe->people,
+        'is_favorite' => $recipe->is_favorite,
+        'steps' => $latestSteps,
+        'ingredients' => $ingredients,
+        'created_at' => $recipe->created_at,
+        'updated_at' => $recipe->updated_at,
+    ];
+
+    return response()->json($recipeDetails);
     }
 
     /**

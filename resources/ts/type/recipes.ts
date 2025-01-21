@@ -1,6 +1,5 @@
 export type stepsSchema = {
     id: number
-    recipe_id: number
     step_number: number
     description: string
     thumbnail: string
@@ -17,13 +16,9 @@ export type IngredientSchema = {
     protein: number
     carbs: number
     fat: number
+    quantity: number
     created_at: string
     updated_at: string
-    pivot: {
-        recipe_id: number
-        ingredient_id: number
-        quantity: number
-    }
 }
 
 export type GetIngredientResponse = IngredientSchema[]

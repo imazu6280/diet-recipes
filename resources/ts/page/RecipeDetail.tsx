@@ -64,7 +64,7 @@ export const RecipeDetail = () => {
                                 className="flex justify-between py-1.5 border-b border-dotted"
                             >
                                 <dt>{item.name}</dt>
-                                <dd className="font-bold">{item.pivot.quantity}g</dd>
+                                <dd className="font-bold">{item.quantity}g</dd>
                             </dl>
                         ))}
                     </div>
