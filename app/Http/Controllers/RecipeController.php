@@ -14,7 +14,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = Recipe::with(['ingredients', 'steps'])->get();
+        $recipes = Recipe::all();
         return response()->json($recipes);
     }
 
@@ -34,12 +34,12 @@ class RecipeController extends Controller
         $validatedData = $request->validate(([
             'name' => 'required|string|max:255',
             'comments' => 'nullable|string',
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'calories' => 'required|integer',
-            'people' => 'required|integer',
-            'is_favorite' => 'boolean',
-            'ingredients' => 'required|array',
-            'steps' => 'required|array',
+            'thumbnail' => 'nullable|string',
+            'calories' => 'nullable|integer',
+            'people' => 'nullable|integer',
+            'is_favorite' => 'nullable|boolean',
+            'ingredients' => 'required|json',
+            'steps' => 'required|json',
         ]));
 
         // レシピの保存
@@ -52,14 +52,6 @@ class RecipeController extends Controller
             $path = $request->file('thumbnail')->store('thumbnails', 'public');
             $recipe->thumbnail = $path;
             $recipe->save();
-        }
-
-        // 食材と手順の保存
-        foreach ($validatedData['ingredients'] as $ingredient) {
-            $recipe->ingredients()->create($ingredient);
-        }
-        foreach ($validatedData['steps'] as $step) {
-            $recipe->steps()->create($step);
         }
 
         return response()->json(['message' => 'Recipe created successfully', 'recipe' => $recipe], 201);

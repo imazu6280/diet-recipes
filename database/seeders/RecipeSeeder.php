@@ -15,14 +15,24 @@ class RecipeSeeder extends Seeder
     public function run(): void
     {
        // ダミーデータを10件挿入
-       foreach (range(1, 10) as $index) {
+       for ($i = 0; $i < 10; $i++) {
         DB::table('recipes')->insert([
-            'name' => Str::random(10),  // ランダムな料理名（10文字）
-            'comments' => Str::random(50), // ランダムなコメント（50文字）
-            'thumbnail' => 'https://placehold.jp/350x240.png',  // ダミー画像URL
-            'calories' => rand(100, 500), // ランダムなカロリー情報
-            'peaple' => rand(1, 6), // ランダムなカロリー情報
-            'is_favorite' => (bool)rand(0, 1), // 0または1のランダムな値（お気に入りフラグ）
+            'name' => 'Recipe ' . ($i + 1),
+            'comments' => 'This is a sample comment for Recipe ' . ($i + 1),
+            'thumbnail' => 'https://via.placeholder.com/150', // サンプルの画像URL
+            'calories' => 200 + ($i * 50), // 200〜750カロリーの範囲
+            'people' => 2 + ($i % 4), // 2〜5人分
+            'is_favorite' => $i % 2 === 0, // 偶数番目はお気に入り
+            'ingredients' => json_encode([
+                'ingredient1' => 'Ingredient 1 for Recipe ' . ($i + 1),
+                'ingredient2' => 'Ingredient 2 for Recipe ' . ($i + 1),
+                'ingredient3' => 'Ingredient 3 for Recipe ' . ($i + 1),
+            ]),
+            'steps' => json_encode([
+                'Step 1 for Recipe ' . ($i + 1),
+                'Step 2 for Recipe ' . ($i + 1),
+                'Step 3 for Recipe ' . ($i + 1),
+            ]),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
