@@ -4,7 +4,6 @@ import { createState } from "../constants/createState"
 import { useTopGet } from "./useTopGet"
 
 export const useRecipeCreate = () => {
-    const { recipes } = useTopGet()
     const [createInputValue, setCreateInputValue] = useState(createState)
     const [createRecipe, setCreateRecipe] = useState<PostRecipesResponse>([])
 
@@ -30,7 +29,7 @@ export const useRecipeCreate = () => {
                     ingredients: createInputValue.ingredients.map((ingredient) => ({
                         id: ingredient.id,
                         name: ingredient.name,
-                        quantity: ingredient.pivot.quantity,
+                        quantity: ingredient.quantity,
                     })),
                     steps: createInputValue.steps.map((step, index) => ({
                         step_number: index + 1,

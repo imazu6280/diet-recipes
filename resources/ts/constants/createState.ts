@@ -12,17 +12,12 @@ export const createState = {
             protein: 0,
             carbs: 0,
             fat: 0,
-            pivot: {
-                recipe_id: 0,
-                ingredient_id: 0,
-                quantity: 0,
-            },
+            quantity: 0,
         },
     ],
     steps: [
         {
             id: 0,
-            recipe_id: 0,
             step_number: 1,
             description: "",
             thumbnail: "",
