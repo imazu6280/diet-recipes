@@ -9,11 +9,15 @@ export const useRecipeCreate = () => {
 
     const CreateHandleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
+        console.log("e.target.name", e.target.name)
+        console.log("e.target.value", e.target.value)
 
         setCreateInputValue((prevState) => ({
             ...prevState,
             [name]: value,
         }))
+
+        console.log("createInputValue", createInputValue)
     }
 
     const CreateRecipeSubmit = async () => {
@@ -26,16 +30,20 @@ export const useRecipeCreate = () => {
                     comments: createInputValue.comments,
                     thumbnail: createInputValue.thumbnail,
                     calories: createInputValue.calories,
-                    ingredients: createInputValue.ingredients.map((ingredient) => ({
-                        id: ingredient.id,
-                        name: ingredient.name,
-                        quantity: ingredient.quantity,
-                    })),
-                    steps: createInputValue.steps.map((step, index) => ({
-                        step_number: index + 1,
-                        description: step.description,
-                        thumbnail: step.thumbnail,
-                    })),
+                    ingredients: createInputValue.ingredients
+                        .filter((ingredient) => ingredient.name && ingredient.quantity)
+                        .map((ingredient) => ({
+                            id: ingredient.id,
+                            name: ingredient.name,
+                            quantity: ingredient.quantity,
+                        })),
+                    steps: createInputValue.steps
+                        .filter((step) => step.description)
+                        .map((step, index) => ({
+                            step_number: index + 1,
+                            description: step.description,
+                            thumbnail: step.thumbnail,
+                        })),
                 }),
             })
             const json = await res.json()

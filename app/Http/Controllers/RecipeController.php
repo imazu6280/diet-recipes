@@ -31,31 +31,43 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate(([
+        // バリデーションルール
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'comments' => 'nullable|string',
             'thumbnail' => 'nullable|string',
             'calories' => 'nullable|integer',
             'people' => 'nullable|integer',
             'is_favorite' => 'nullable|boolean',
-            'ingredients' => 'required|json',
-            'steps' => 'required|json',
-        ]));
+            'ingredients' => 'required|array',
+            'ingredients.*.id' => 'required|integer',
+            'ingredients.*.name' => 'required|string|max:255',
+            'ingredients.*.quantity' => 'required|string|max:255',
+            'steps' => 'required|array',
+            'steps.*.step_number' => 'required|integer',
+            'steps.*.description' => 'required|string',
+            'steps.*.thumbnail' => 'nullable|string',
+        ]);
 
         // レシピの保存
         $recipe = new Recipe();
-        $recipe->fill($validatedData);
-        $recipe->save();
+        $recipe->name = $validatedData['name'];
+        $recipe->comments = $validatedData['comments'];
+        $recipe->thumbnail = $validatedData['thumbnail'];
+        $recipe->calories = $validatedData['calories'];
+        $recipe->people = $validatedData['people'];
+        $recipe->is_favorite = $validatedData['is_favorite'];
+        $recipe->ingredients = $validatedData['ingredients'];
+        $recipe->steps = $validatedData['steps'];
+        $recipe->created_at = now();
+        $recipe->updated_at = now();
 
-         // サムネイル画像の保存
-        if ($request->hasFile('thumbnail')) {
-            $path = $request->file('thumbnail')->store('thumbnails', 'public');
-            $recipe->thumbnail = $path;
-            $recipe->save();
-        }
+        // レシピの保存
+        $recipe->save();
 
         return response()->json(['message' => 'Recipe created successfully', 'recipe' => $recipe], 201);
     }
+
 
     /**
      * Display the specified resource.

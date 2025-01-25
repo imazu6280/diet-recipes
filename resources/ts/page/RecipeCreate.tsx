@@ -18,7 +18,13 @@ export const RecipeCreate = () => {
             <div className="flex flex-col gap-y-6 w-inner pt-2 mx-auto md:w-full md:gap-y-4">
                 <div className="grid grid-cols-show-column gap-x-6 tablet_md:grid-cols-1 sm:grid-cols-1">
                     <label htmlFor="mainImage" className="relative h-96 bg-beige rounded-md">
-                        <input type="file" id="mainImage" className="hidden" value="" />
+                        <input
+                            type="file"
+                            id="mainImage"
+                            className="hidden"
+                            value={createInputValue.thumbnail}
+                            onChange={CreateHandleChange}
+                        />
                         <div className="absolute top-1/3 left-0 right-0 flex flex-col justify-center gap-y-2 text-center px-4 pointer-events-none">
                             <p className="w-16 mx-auto ">
                                 <img src="images/image15.png" alt="" />
