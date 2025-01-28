@@ -27,9 +27,10 @@ export const useRegisterCard = () => {
             ...addRegister,
             ingredients: [
                 ...addRegister.ingredients,
-                { id: addRegister.ingredients.length + 1, ingredient: "", quantity: "" },
+                { id: addRegister.ingredients.length, ingredient: "", quantity: "" },
             ],
         }))
+        console.log("ingredients", addRegister.ingredients)
     }
 
     return { addRegister, addCard, addIngredient }

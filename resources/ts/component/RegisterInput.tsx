@@ -17,24 +17,24 @@ export const RegisterInput = ({ id }: Props) => {
             <p>
                 <img src="images/bars.svg" alt="" />
             </p>
-            <label htmlFor="name">
+            <label htmlFor={`name-${id}`}>
                 <input
-                    id="name"
+                    id={`name-${id}`}
                     type="text"
-                    name="name"
+                    name={`ingredients[${id}].name`}
                     placeholder="鶏胸肉"
-                    value={createInputValue.ingredients[id]?.name}
+                    value={createInputValue.ingredients[id].name}
                     onChange={CreateHandleChange}
                     className="w-full p-2 break-words bg-beige rounded-md"
                 />
             </label>
-            <label htmlFor="quantity">
+            <label htmlFor={`quantity-${id}`}>
                 <input
-                    id="quantity"
+                    id={`quantity-${id}`}
                     type="text"
-                    name="quantity"
+                    name={`ingredients[${id}].quantity`}
                     placeholder="200g"
-                    value={createInputValue.ingredients[id]?.quantity}
+                    value={createInputValue.ingredients[id].quantity}
                     onChange={CreateHandleChange}
                     className="w-full p-2 break-words bg-beige rounded-md"
                 />

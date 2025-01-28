@@ -3,7 +3,24 @@ export const createState = {
     comments: "",
     thumbnail: "",
     calories: 0,
-    people: 1,
-    ingredients: [],
-    steps: [],
+    people: undefined,
+    ingredients: [
+        {
+            id: 0,
+            name: "",
+            calories: 0,
+            protein: 0,
+            carbs: 0,
+            fat: 0,
+            quantity: undefined,
+        },
+    ],
+    steps: [
+        {
+            id: 0,
+            step_number: 1,
+            description: "",
+            thumbnail: "",
+        },
+    ],
 }

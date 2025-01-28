@@ -72,7 +72,7 @@ export const RecipeCreate = () => {
                             <label htmlFor="people">何人分</label>
                             <input
                                 id="people"
-                                type="text"
+                                type="number"
                                 name="people"
                                 placeholder="何人分"
                                 value={createInputValue.people}

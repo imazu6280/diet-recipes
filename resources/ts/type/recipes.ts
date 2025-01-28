@@ -30,7 +30,7 @@ export type recipeSchema = {
     steps: GetStepsResponse
     thumbnail: string
     calories: number
-    people: number
+    people: number | undefined
     is_favorite: boolean
     created_at: string
     updated_at: string
