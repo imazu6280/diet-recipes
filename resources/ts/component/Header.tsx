@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
 import { DeleteMenuButton } from "./DeleteMenuButton"
+import { useRecipeCreate } from "../hooks/useRecipeCreate"
 
 const headerLogo = {
     logo: "DIET-RECIPES",
@@ -16,6 +17,7 @@ const headerLogo = {
 
 export const Header = () => {
     const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu()
+    const { CreateRecipeSubmit } = useRecipeCreate()
     const location = useLocation()
     const isLocationCreate = location.pathname === "/create"
 
@@ -29,6 +31,7 @@ export const Header = () => {
                         text="削除"
                         color={buttonColors.red}
                         width="w-40"
+                        type="button"
                     />
                 </p>
 
@@ -38,6 +41,7 @@ export const Header = () => {
                     text="保存して確認"
                     color={buttonColors.gray}
                     width="w-40"
+                    type="button"
                 />
                 <Button
                     isIcon=""
@@ -45,6 +49,8 @@ export const Header = () => {
                     text="公開する"
                     color={buttonColors.bgOrange}
                     width="w-40"
+                    type="submit"
+                    onClick={(e: React.FormEvent) => CreateRecipeSubmit(e)}
                 />
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden md:flex justify-between gap-x-6 items-center">
@@ -56,6 +62,8 @@ export const Header = () => {
                         text="公開する"
                         color={buttonColors.bgOrange}
                         width="w-40"
+                        onClick={(e: React.FormEvent) => CreateRecipeSubmit(e)}
+                        type="submit"
                     />
                     <p onClick={toggleDeleteOpen} className="relative">
                         <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
@@ -77,6 +85,7 @@ export const Header = () => {
                     text="レシピを書く"
                     color={buttonColors.bgOrange}
                     width=""
+                    type="button"
                 />
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden tablet_md:grid grid-cols-header-tb-column gap-x-6 items-center">
@@ -90,6 +99,7 @@ export const Header = () => {
                     text="レシピを書く"
                     color={buttonColors.bgOrange}
                     width=""
+                    type="button"
                 />
                 <MenuButton open={open} menuOpen={menuOpen} />
             </div>
@@ -102,6 +112,7 @@ export const Header = () => {
                         text="レシピを書く"
                         color={buttonColors.bgOrange}
                         width=""
+                        type="button"
                     />
                 </div>
                 <div className="grid grid-cols-header-column gap-5">

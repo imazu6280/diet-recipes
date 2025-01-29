@@ -1,114 +1,71 @@
 import React, { useEffect, useState } from "react"
 import { PostRecipesResponse } from "../type/recipes"
 import { createState } from "../constants/createState"
-import { useTopGet } from "./useTopGet"
 
 export const useRecipeCreate = () => {
     const [createInputValue, setCreateInputValue] = useState(createState)
+    const [formData, setFormData] = useState<FormData | null>(null)
     const [createRecipe, setCreateRecipe] = useState<PostRecipesResponse>([])
 
-    const CreateHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, files } = e.target
-        if (files) {
-            const file = files[0] // ファイルの選択があれば、最初のファイルを取得
-            console.log("e.target.files", files)
-            console.log("Selected file:", file)
+    const CreateHandleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target
+        const files = (e.target as HTMLInputElement).files
 
-            // ファイル名を状態に格納
+        if (files) {
+            const file = files[0]
             setCreateInputValue((prevState) => ({
                 ...prevState,
-                [name]: file.name, // ファイルの名前を格納
+                thumbnail: file,
             }))
         } else {
-            console.log("e.target.value", value)
-            console.log("e.target.name", name)
-
-            // その他のフィールドの値を状態に格納
             setCreateInputValue((prevState) => ({
                 ...prevState,
                 [name]: value,
             }))
         }
-
-        // ingredients の場合の処理
-        // if (name.startsWith("ingredients")) {
-        //     // インデックスとフィールド名を抽出
-        //     const indexMatch = name.match(/\[(\d+)\]/) // インデックス部分を取り出す
-        //     const fieldNameMatch = name.match(/\.(\w+)/) // フィールド名部分を取り出す
-
-        //     if (indexMatch && fieldNameMatch) {
-        //         const index = parseInt(indexMatch[1], 10) // インデックスの値を取得
-        //         const fieldName = fieldNameMatch[1] // フィールド名を取得
-
-        //         setCreateInputValue((prevState) => {
-
-        //             // ingredients 配列のコピーを作成
-        //             const newIngredients = [...prevState.ingredients]
-
-        //             // 対象のインデックスの要素がまだ存在しない場合に空オブジェクトを挿入
-        //             if (!newIngredients[index]) {
-        //                 newIngredients[index] = {
-        //                     id: index, // 新規インデックスを ID として設定
-        //                     name: "", // 初期値
-        //                     quantity: undefined, // 初期値
-        //                     calories: 0, // 初期値
-        //                     protein: 0, // 初期値
-        //                     carbs: 0, // 初期値
-        //                     fat: 0, // 初期値
-        //                 }
-        //             }
-
-        //             // 特定のフィールドだけを更新
-        //             newIngredients[index] = {
-        //                 ...newIngredients[index],
-        //                 [fieldName]: value, // フィールド名に基づいて値を更新
-        //             }
-
-        //             return {
-        //                 ...prevState,
-        //                 ingredients: newIngredients, // 更新された ingredients 配列を返す
-        //             }
-        //         })
-        //     }
-        // } else {
-        // // ingredients 以外のフィールドの更新
-        // setCreateInputValue((prevState) => ({
-        //     ...prevState,
-        //     [name]: value,
-        // }))
-        // }
     }
 
     useEffect(() => {
-        console.log("createInputValue updated", createInputValue)
+        // createInputValueが変更されたタイミングでformDataを更新
+        const newFormData = new FormData()
+
+        newFormData.append("name", createInputValue.name)
+        newFormData.append("comments", createInputValue.comments)
+        newFormData.append("calories", createInputValue.calories.toString())
+        newFormData.append("people", createInputValue.people.toString())
+        newFormData.append("is_favorite", createInputValue.is_favorite.toString())
+
+        // thumbnailが存在する場合はformDataに追加
+        if (createInputValue.thumbnail instanceof File) {
+            newFormData.append("thumbnail", createInputValue.thumbnail)
+        }
+
+        // フォームデータをコンソールに出力（デバッグ用）
+        for (let [key, value] of newFormData.entries()) {
+            console.log(`${key}: ${value}`)
+        }
+
+        setFormData(newFormData)
     }, [createInputValue])
 
-    const CreateRecipeSubmit = async () => {
+    const CreateRecipeSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+
+        console.log("formData", formData)
+
         try {
             const res = await fetch(`/api/recipes/`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: createInputValue.name,
-                    comments: createInputValue.comments,
-                    thumbnail: createInputValue.thumbnail,
-                    calories: createInputValue.calories,
-                    ingredients: createInputValue.ingredients.map((ingredient) => ({
-                        id: ingredient.id,
-                        name: ingredient.name,
-                        quantity: ingredient.quantity,
-                    })),
-                    steps: createInputValue.steps.map((step, index) => ({
-                        step_number: index + 1,
-                        description: step.description,
-                        thumbnail: step.thumbnail,
-                    })),
-                }),
+                body: formData,
             })
-            const json = await res.json()
-            console.log(json)
 
-            // setCreateRecipe([...recipes, json])
+            if (!res.ok) {
+                const errorText = await res.text()
+                console.error("API Error:", errorText)
+                return
+            }
+            const result = await res.json()
+            console.log("成功:", result)
         } catch (error) {
             console.error("post error", error)
         }

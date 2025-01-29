@@ -27,14 +27,14 @@ export type recipeSchema = {
     id: number
     name: string
     comments: string
-    steps: GetStepsResponse
+    // steps: GetStepsResponse
     thumbnail: string
     calories: number
     people: number
     is_favorite: boolean
     created_at: string
     updated_at: string
-    ingredients: GetIngredientResponse
+    // ingredients: GetIngredientResponse
 }
 
 export type GetRecipesResponse = recipeSchema[]

@@ -35,30 +35,35 @@ class RecipeController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'comments' => 'nullable|string',
-            'thumbnail' => 'nullable|string',
+            'thumbnail' => 'nullable|file',
             'calories' => 'nullable|integer',
             'people' => 'nullable|integer',
             'is_favorite' => 'nullable|boolean',
-            'ingredients' => 'required|array',
-            'ingredients.*.id' => 'required|integer',
-            'ingredients.*.name' => 'required|string|max:255',
-            'ingredients.*.quantity' => 'required|string|max:255',
-            'steps' => 'required|array',
-            'steps.*.step_number' => 'required|integer',
-            'steps.*.description' => 'required|string',
-            'steps.*.thumbnail' => 'nullable|string',
+            // 'ingredients' => 'required|array',
+            // 'ingredients.*.id' => 'required|integer',
+            // 'ingredients.*.name' => 'required|string|max:255',
+            // 'ingredients.*.quantity' => 'required|string|max:255',
+            // 'steps' => 'required|array',
+            // 'steps.*.step_number' => 'required|integer',
+            // 'steps.*.description' => 'required|string',
+            // 'steps.*.thumbnail' => 'nullable|string',
         ]);
+
+        $filePath = null;
+        if ($request->hasFile('thumbnail')) {
+            $filePath = $request->file('thumbnail')->store('thumbnails', 'public');
+        }
 
         // レシピの保存
         $recipe = new Recipe();
         $recipe->name = $validatedData['name'];
         $recipe->comments = $validatedData['comments'];
-        $recipe->thumbnail = $validatedData['thumbnail'];
+        $recipe->thumbnail = $filePath ?? null;
         $recipe->calories = $validatedData['calories'];
         $recipe->people = $validatedData['people'];
         $recipe->is_favorite = $validatedData['is_favorite'];
-        $recipe->ingredients = $validatedData['ingredients'];
-        $recipe->steps = $validatedData['steps'];
+        // $recipe->ingredients = $validatedData['ingredients'];
+        // $recipe->steps = $validatedData['steps'];
         $recipe->created_at = now();
         $recipe->updated_at = now();
 
