@@ -3,7 +3,7 @@ export const createState = {
     comments: "",
     thumbnail: "",
     calories: 0,
-    people: undefined,
+    people: 0,
     ingredients: [
         {
             id: 0,
@@ -12,7 +12,7 @@ export const createState = {
             protein: 0,
             carbs: 0,
             fat: 0,
-            quantity: undefined,
+            quantity: 0,
         },
     ],
     steps: [

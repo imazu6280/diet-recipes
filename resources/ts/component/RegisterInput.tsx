@@ -23,7 +23,7 @@ export const RegisterInput = ({ id }: Props) => {
                     type="text"
                     name={`ingredients[${id}].name`}
                     placeholder="鶏胸肉"
-                    value={createInputValue.ingredients[id].name}
+                    value={createInputValue.ingredients[id]?.name}
                     onChange={CreateHandleChange}
                     className="w-full p-2 break-words bg-beige rounded-md"
                 />
@@ -34,7 +34,7 @@ export const RegisterInput = ({ id }: Props) => {
                     type="text"
                     name={`ingredients[${id}].quantity`}
                     placeholder="200g"
-                    value={createInputValue.ingredients[id].quantity}
+                    value={createInputValue.ingredients[id]?.quantity}
                     onChange={CreateHandleChange}
                     className="w-full p-2 break-words bg-beige rounded-md"
                 />
