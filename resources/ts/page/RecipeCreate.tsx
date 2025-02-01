@@ -5,8 +5,8 @@ import { placeHolderType } from "../type/register"
 import { useRecipeCreate } from "../hooks/useRecipeCreate"
 
 export const RecipeCreate = () => {
-    const { addRegister, addCard, addIngredient } = useRegisterCard()
-    const { createInputValue, CreateRecipeSubmit, CreateHandleChange } = useRecipeCreate()
+    const { addRegister, addIngredient } = useRegisterCard()
+    const { createInputValue, CreateHandleChange, CreateRecipeSubmit } = useRecipeCreate()
 
     const placeHolderText: placeHolderType = {
         text: ["・味やおすすめポイント", "・楽しみ方", "・この料理を作ったきっかけ"],
@@ -14,10 +14,10 @@ export const RecipeCreate = () => {
     const placeholderString = placeHolderText.text.join("\n")
 
     return (
-        <form action="">
+        <form id="create" action="" onSubmit={CreateRecipeSubmit}>
             <div className="flex flex-col gap-y-6 w-inner pt-2 mx-auto md:w-full md:gap-y-4">
                 <div className="grid grid-cols-show-column gap-x-6 tablet_md:grid-cols-1 sm:grid-cols-1">
-                    <label htmlFor="mainImage" className="relative h-96 bg-beige rounded-md">
+                    {/* <label htmlFor="mainImage" className="relative h-96 bg-beige rounded-md">
                         <input
                             type="file"
                             id="mainImage"
@@ -35,7 +35,7 @@ export const RecipeCreate = () => {
                                 オリジナルではないものや料理に関係ない写真はご遠慮ください
                             </p>
                         </div>
-                    </label>
+                    </label> */}
                     <div className="flex flex-col justify-between md:gap-y-4">
                         <div className="flex flex-col gap-y-10 md:gap-y-4 md:px-2 md:py-4 md:bg-white">
                             <div className="flex flex-col gap-y-4">
@@ -74,16 +74,17 @@ export const RecipeCreate = () => {
                                 type="number"
                                 name="people"
                                 placeholder="何人分"
-                                value={createInputValue.people || ""}
+                                value={createInputValue.people}
                                 onChange={CreateHandleChange}
                                 className="w-2/4 p-2 break-words bg-beige rounded-md"
                             />
                         </div>
-                        {/* {addRegister.ingredients.map((item) => {
+                        {addRegister.ingredients.map((item) => {
                             return <RegisterInput key={item.id} id={item.id} />
-                        })} */}
+                        })}
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
+                            type="button"
                             onClick={(e) => addIngredient(e)}
                         >
                             <img src="images/plus.svg" alt="プラス" />
@@ -99,6 +100,7 @@ export const RecipeCreate = () => {
                         </ul>
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
+                            type="button"
                             onClick={(e) => addCard(e)}
                         >
                             <img src="images/plus.svg" alt="プラス" />
@@ -107,6 +109,10 @@ export const RecipeCreate = () => {
                     </div>
                 </div>
             </div>
+            <button
+                className="block p-3 my-6 mx-auto text-white bg-slate-500"
+                onClick={CreateRecipeSubmit}
+            ></button>
         </form>
     )
 }

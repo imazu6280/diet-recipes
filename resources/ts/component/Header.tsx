@@ -50,7 +50,8 @@ export const Header = () => {
                     color={buttonColors.bgOrange}
                     width="w-40"
                     type="submit"
-                    onClick={(e: React.FormEvent) => CreateRecipeSubmit(e)}
+                    formId="create"
+                    // onClick={CreateRecipeSubmit}
                 />
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden md:flex justify-between gap-x-6 items-center">
@@ -62,8 +63,9 @@ export const Header = () => {
                         text="公開する"
                         color={buttonColors.bgOrange}
                         width="w-40"
-                        onClick={(e: React.FormEvent) => CreateRecipeSubmit(e)}
+                        // onClick={CreateRecipeSubmit}
                         type="submit"
+                        formId="create"
                     />
                     <p onClick={toggleDeleteOpen} className="relative">
                         <FontAwesomeIcon icon={faEllipsis} className="text-gray" />

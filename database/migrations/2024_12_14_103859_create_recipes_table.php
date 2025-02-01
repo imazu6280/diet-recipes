@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('comments');
-            $table->string('thumbnail');
+            // $table->string('thumbnail');
             $table->integer('calories');
             $table->integer('people');
             $table->boolean('is_favorite')->default(0);

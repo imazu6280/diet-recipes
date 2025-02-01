@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipe extends Model
 {
-    protected $fillable = ['name', 'comments', 'thumbnail', 'calories', 'is_favorite','ingredients','steps',];
+    protected $fillable = ['name', 'comments','people', 'calories', 'is_favorite'];
 
-    protected $casts = [
-        'ingredients' => 'array',
-        'steps' => 'array',
-    ];
+    // protected $casts = [
+    //     'ingredients' => 'array',
+    //     'steps' => 'array',
+    // ];
 }

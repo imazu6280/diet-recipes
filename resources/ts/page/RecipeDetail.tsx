@@ -39,6 +39,7 @@ export const RecipeDetail = () => {
                             text="レシピを保存"
                             color={buttonColors.orange}
                             width=""
+                            type="submit"
                         />
                         <Button
                             isIcon={faStar}
@@ -46,6 +47,7 @@ export const RecipeDetail = () => {
                             text="お気に入り登録"
                             color={buttonColors.gray}
                             width=""
+                            type="button"
                         />
                     </div>
                 </div>

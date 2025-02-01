@@ -35,7 +35,7 @@ class RecipeController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'comments' => 'nullable|string',
-            'thumbnail' => 'nullable|file',
+            // 'thumbnail' => 'nullable|file',
             'calories' => 'nullable|integer',
             'people' => 'nullable|integer',
             'is_favorite' => 'nullable|boolean',
@@ -49,16 +49,16 @@ class RecipeController extends Controller
             // 'steps.*.thumbnail' => 'nullable|string',
         ]);
 
-        $filePath = null;
-        if ($request->hasFile('thumbnail')) {
-            $filePath = $request->file('thumbnail')->store('thumbnails', 'public');
-        }
+        // $filePath = null;
+        // if ($request->hasFile('thumbnail')) {
+        //     $filePath = $request->file('thumbnail')->store('thumbnails', 'public');
+        // }
 
         // レシピの保存
         $recipe = new Recipe();
         $recipe->name = $validatedData['name'];
         $recipe->comments = $validatedData['comments'];
-        $recipe->thumbnail = $filePath ?? null;
+        // $recipe->thumbnail = $filePath ?? null;
         $recipe->calories = $validatedData['calories'];
         $recipe->people = $validatedData['people'];
         $recipe->is_favorite = $validatedData['is_favorite'];

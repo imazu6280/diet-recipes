@@ -34,9 +34,10 @@ export type recipeSchema = {
     is_favorite: boolean
     created_at: string
     updated_at: string
-    // ingredients: GetIngredientResponse
+    ingredients: GetIngredientResponse
 }
 
 export type GetRecipesResponse = recipeSchema[]
 
 export type PostRecipesResponse = Omit<recipeSchema, "created_at" | "updated_at">[]
+export type PostIngredientsResponse = Omit<IngredientSchema, "created_at" | "updated_at">[]
