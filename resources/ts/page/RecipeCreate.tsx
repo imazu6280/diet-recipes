@@ -3,10 +3,16 @@ import { useRegisterCard } from "../hooks/useRegisterCard"
 import { RegisterInput } from "../component/RegisterInput"
 import { placeHolderType } from "../type/register"
 import { useRecipeCreate } from "../hooks/useRecipeCreate"
+import { useMenu } from "../hooks/useMenu"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
+import { DeleteMenuButton } from "../component/DeleteMenuButton"
 
 export const RecipeCreate = () => {
-    const { addRegister, addIngredient } = useRegisterCard()
-    const { createInputValue, CreateHandleChange, CreateRecipeSubmit } = useRecipeCreate()
+    // const { addRegister, addIngredient } = useRegisterCard()
+    const { open, toggleDeleteOpen } = useMenu()
+    const { createInputValue, addIngredient, CreateHandleChange, CreateRecipeSubmit } =
+        useRecipeCreate()
 
     const placeHolderText: placeHolderType = {
         text: ["・味やおすすめポイント", "・楽しみ方", "・この料理を作ったきっかけ"],
@@ -79,8 +85,48 @@ export const RecipeCreate = () => {
                                 className="w-2/4 p-2 break-words bg-beige rounded-md"
                             />
                         </div>
-                        {addRegister.ingredients.map((item) => {
-                            return <RegisterInput key={item.id} id={item.id} />
+                        {createInputValue.ingredients.map((item) => {
+                            return (
+                                <div className="grid grid-cols-create-ingredient-column gap-x-2 items-center">
+                                    <p>
+                                        <img src="images/bars.svg" alt="" />
+                                    </p>
+                                    <label htmlFor={`name-${item.id}`}>
+                                        <input
+                                            id={`name-${item.id}`}
+                                            type="text"
+                                            name="name"
+                                            placeholder="鶏胸肉"
+                                            value={createInputValue.ingredients[item.id]?.name}
+                                            onChange={(e) => CreateHandleChange(e, item.id)}
+                                            className="w-full p-2 break-words bg-beige rounded-md"
+                                        />
+                                    </label>
+                                    <label htmlFor={`quantity-${item.id}`}>
+                                        <input
+                                            id={`quantity-${item.id}`}
+                                            type="text"
+                                            name="quantity"
+                                            placeholder="200g"
+                                            value={createInputValue.ingredients[item.id]?.quantity}
+                                            onChange={(e) => CreateHandleChange(e, item.id)}
+                                            className="w-full p-2 break-words bg-beige rounded-md"
+                                        />
+                                    </label>
+                                    <p onClick={toggleDeleteOpen} className="relative">
+                                        <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
+                                        {open.deleteOpen && (
+                                            <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
+                                                <DeleteMenuButton
+                                                    text="材料を削除する"
+                                                    image=""
+                                                    index={0}
+                                                />
+                                            </ul>
+                                        )}
+                                    </p>
+                                </div>
+                            )
                         })}
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
@@ -101,7 +147,7 @@ export const RecipeCreate = () => {
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
                             type="button"
-                            onClick={(e) => addCard(e)}
+                            // onClick={(e) => addCard(e)}
                         >
                             <img src="images/plus.svg" alt="プラス" />
                             <span>作り方</span>

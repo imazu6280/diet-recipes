@@ -21,10 +21,10 @@ export const RegisterInput = ({ id }: Props) => {
                 <input
                     id={`name-${id}`}
                     type="text"
-                    name={`ingredients[${id}].name`}
+                    name="name"
                     placeholder="鶏胸肉"
                     value={createInputValue.ingredients[id]?.name}
-                    onChange={CreateHandleChange}
+                    onChange={(e) => CreateHandleChange(e, id)}
                     className="w-full p-2 break-words bg-beige rounded-md"
                 />
             </label>
@@ -32,10 +32,10 @@ export const RegisterInput = ({ id }: Props) => {
                 <input
                     id={`quantity-${id}`}
                     type="text"
-                    name={`ingredients[${id}].quantity`}
+                    name="quantity"
                     placeholder="200g"
                     value={createInputValue.ingredients[id]?.quantity}
-                    onChange={CreateHandleChange}
+                    onChange={(e) => CreateHandleChange(e, id)}
                     className="w-full p-2 break-words bg-beige rounded-md"
                 />
             </label>

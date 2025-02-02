@@ -23,32 +23,35 @@ export const useRegisterCard = () => {
 
     const addIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        setAddRegister((addRegister) => {
-            const newIngredients = [
-                ...addRegister.ingredients,
-                {
-                    id: addRegister.ingredients.length,
-                    name: "",
-                    calories: 0,
-                    protein: 0,
-                    carbs: 0,
-                    fat: 0,
-                    quantity: 0,
-                },
-            ]
+        const newIngredient = {
+            id: createInputValue.ingredients.length, // createInputValue の長さを基準にIDを作成
+            name: "",
+            calories: 0,
+            protein: 0,
+            carbs: 0,
+            fat: 0,
+            quantity: 0,
+        }
 
-            setCreateInputValue((prevIngredients) => ({
-                ...prevIngredients,
-                ingredients: newIngredients,
-            }))
+        setAddRegister((prevRegister) => ({
+            ...prevRegister,
+            ingredients: [...prevRegister.ingredients, newIngredient],
+        }))
 
-            return { ...addRegister, ingredients: newIngredients }
-        })
+        // `setCreateInputValue` も独立して更新
+        setCreateInputValue((prevIngredients) => ({
+            ...prevIngredients,
+            ingredients: [...prevIngredients.ingredients, newIngredient],
+        }))
     }
 
     useEffect(() => {
         console.log("Updated createInputValue:", createInputValue)
     }, [addRegister.ingredients])
+
+    useEffect(() => {
+        console.log("Updated クリエイト:", createInputValue)
+    }, [createInputValue])
 
     return { addRegister, addIngredient }
 }
