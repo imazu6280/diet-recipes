@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { PostIngredientsResponse, PostRecipesResponse } from "../type/recipes"
+import { PostRecipesResponse } from "../type/recipes"
 import { createState } from "../constants/createState"
 
 export const useRecipeCreate = () => {
@@ -30,26 +30,31 @@ export const useRecipeCreate = () => {
         }))
     }
 
-    const CreateHandleChange = (
+    const CreateHandleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target
+        console.log("name", name, "value", value)
+
+        setCreateInputValue((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }))
+    }
+
+    const handleIngredientChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-        id?: number
+        index: number
     ) => {
         const { name, value } = e.target
-        console.log("id", id, "name", name, "value", value)
 
-        if (name.startsWith("ingredients")) {
-            setCreateInputValue((prevState) => ({
-                ...prevState,
-                ingredients: prevState.ingredients.map((ingredient) =>
-                    ingredient.id === id ? { ...ingredient, [name]: value } : ingredient
-                ),
-            }))
-        } else {
-            setCreateInputValue((prevState) => ({
-                ...prevState,
-                [name]: value,
-            }))
+        const newIngredients = [...createInputValue.ingredients]
+        newIngredients[index] = {
+            ...newIngredients[index],
+            [name]: value,
         }
+        setCreateInputValue((prevState) => ({
+            ...prevState,
+            ingredients: newIngredients,
+        }))
     }
 
     const CreateRecipeSubmit = async (e: React.FormEvent) => {
@@ -68,6 +73,7 @@ export const useRecipeCreate = () => {
                     calories: createInputValue.calories,
                     people: createInputValue.people,
                     is_favorite: createInputValue.is_favorite,
+                    ingredients: createInputValue.ingredients,
                 }),
             })
 
@@ -96,5 +102,6 @@ export const useRecipeCreate = () => {
         setCreateInputValue,
         CreateRecipeSubmit,
         CreateHandleChange,
+        handleIngredientChange,
     }
 }

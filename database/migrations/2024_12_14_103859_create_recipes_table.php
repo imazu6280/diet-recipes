@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('calories');
             $table->integer('people');
             $table->boolean('is_favorite')->default(0);
-            // $table->json('ingredients');
+            $table->json('ingredients');
             // $table->json('steps');
             $table->timestamps();
         });

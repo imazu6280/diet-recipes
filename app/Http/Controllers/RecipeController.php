@@ -39,10 +39,7 @@ class RecipeController extends Controller
             'calories' => 'nullable|integer',
             'people' => 'nullable|integer',
             'is_favorite' => 'nullable|boolean',
-            // 'ingredients' => 'required|array',
-            // 'ingredients.*.id' => 'required|integer',
-            // 'ingredients.*.name' => 'required|string|max:255',
-            // 'ingredients.*.quantity' => 'required|string|max:255',
+            'ingredients' => 'required|array',
             // 'steps' => 'required|array',
             // 'steps.*.step_number' => 'required|integer',
             // 'steps.*.description' => 'required|string',
@@ -62,10 +59,8 @@ class RecipeController extends Controller
         $recipe->calories = $validatedData['calories'];
         $recipe->people = $validatedData['people'];
         $recipe->is_favorite = $validatedData['is_favorite'];
-        // $recipe->ingredients = $validatedData['ingredients'];
+        $recipe->ingredients = $validatedData['ingredients'];
         // $recipe->steps = $validatedData['steps'];
-        $recipe->created_at = now();
-        $recipe->updated_at = now();
 
         // レシピの保存
         $recipe->save();

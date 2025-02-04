@@ -30,7 +30,7 @@ export const useRegisterCard = () => {
             protein: 0,
             carbs: 0,
             fat: 0,
-            quantity: 0,
+            quantity: "",
         }
 
         setAddRegister((prevRegister) => ({

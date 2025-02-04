@@ -11,8 +11,13 @@ import { DeleteMenuButton } from "../component/DeleteMenuButton"
 export const RecipeCreate = () => {
     // const { addRegister, addIngredient } = useRegisterCard()
     const { open, toggleDeleteOpen } = useMenu()
-    const { createInputValue, addIngredient, CreateHandleChange, CreateRecipeSubmit } =
-        useRecipeCreate()
+    const {
+        createInputValue,
+        addIngredient,
+        CreateHandleChange,
+        CreateRecipeSubmit,
+        handleIngredientChange,
+    } = useRecipeCreate()
 
     const placeHolderText: placeHolderType = {
         text: ["・味やおすすめポイント", "・楽しみ方", "・この料理を作ったきっかけ"],
@@ -85,47 +90,53 @@ export const RecipeCreate = () => {
                                 className="w-2/4 p-2 break-words bg-beige rounded-md"
                             />
                         </div>
-                        {createInputValue.ingredients.map((item) => {
+                        {createInputValue.ingredients.map((item, index) => {
                             return (
-                                <div className="grid grid-cols-create-ingredient-column gap-x-2 items-center">
-                                    <p>
-                                        <img src="images/bars.svg" alt="" />
-                                    </p>
-                                    <label htmlFor={`name-${item.id}`}>
-                                        <input
-                                            id={`name-${item.id}`}
-                                            type="text"
-                                            name="name"
-                                            placeholder="鶏胸肉"
-                                            value={createInputValue.ingredients[item.id]?.name}
-                                            onChange={(e) => CreateHandleChange(e, item.id)}
-                                            className="w-full p-2 break-words bg-beige rounded-md"
-                                        />
-                                    </label>
-                                    <label htmlFor={`quantity-${item.id}`}>
-                                        <input
-                                            id={`quantity-${item.id}`}
-                                            type="text"
-                                            name="quantity"
-                                            placeholder="200g"
-                                            value={createInputValue.ingredients[item.id]?.quantity}
-                                            onChange={(e) => CreateHandleChange(e, item.id)}
-                                            className="w-full p-2 break-words bg-beige rounded-md"
-                                        />
-                                    </label>
-                                    <p onClick={toggleDeleteOpen} className="relative">
-                                        <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
-                                        {open.deleteOpen && (
-                                            <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
-                                                <DeleteMenuButton
-                                                    text="材料を削除する"
-                                                    image=""
-                                                    index={0}
-                                                />
-                                            </ul>
-                                        )}
-                                    </p>
-                                </div>
+                                <RegisterInput
+                                    key={item.id}
+                                    item={item}
+                                    index={index}
+                                    handleIngredientChange={handleIngredientChange}
+                                />
+                                // <div className="grid grid-cols-create-ingredient-column gap-x-2 items-center">
+                                //     <p>
+                                //         <img src="images/bars.svg" alt="" />
+                                //     </p>
+                                //     <label htmlFor={`name-${item.id}`}>
+                                //         <input
+                                //             id={`name-${item.id}`}
+                                //             type="text"
+                                //             name="name"
+                                //             placeholder="鶏胸肉"
+                                //             value={item.name}
+                                //             onChange={(e) => handleIngredientChange(e, index)}
+                                //             className="w-full p-2 break-words bg-beige rounded-md"
+                                //         />
+                                //     </label>
+                                //     <label htmlFor={`quantity-${item.id}`}>
+                                //         <input
+                                //             id={`quantity-${item.id}`}
+                                //             type="text"
+                                //             name="quantity"
+                                //             placeholder="200g"
+                                //             value={item.quantity}
+                                //             onChange={(e) => handleIngredientChange(e, index)}
+                                //             className="w-full p-2 break-words bg-beige rounded-md"
+                                //         />
+                                //     </label>
+                                //     <p onClick={toggleDeleteOpen} className="relative">
+                                //         <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
+                                //         {open.deleteOpen && (
+                                //             <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
+                                //                 <DeleteMenuButton
+                                //                     text="材料を削除する"
+                                //                     image=""
+                                //                     index={0}
+                                //                 />
+                                //             </ul>
+                                //         )}
+                                //     </p>
+                                // </div>
                             )
                         })}
                         <button
