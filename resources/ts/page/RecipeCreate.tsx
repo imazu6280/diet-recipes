@@ -1,22 +1,17 @@
 import { RegisterCard } from "../component/RegisterCard"
-import { useRegisterCard } from "../hooks/useRegisterCard"
 import { RegisterInput } from "../component/RegisterInput"
-import { placeHolderType } from "../type/register"
+import { placeHolderType } from "../type/placeholder"
 import { useRecipeCreate } from "../hooks/useRecipeCreate"
-import { useMenu } from "../hooks/useMenu"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
-import { DeleteMenuButton } from "../component/DeleteMenuButton"
 
 export const RecipeCreate = () => {
-    // const { addRegister, addIngredient } = useRegisterCard()
-    const { open, toggleDeleteOpen } = useMenu()
     const {
         createInputValue,
         addIngredient,
+        addSteps,
         CreateHandleChange,
         CreateRecipeSubmit,
         handleIngredientChange,
+        handleStepsChange,
     } = useRecipeCreate()
 
     const placeHolderText: placeHolderType = {
@@ -98,45 +93,6 @@ export const RecipeCreate = () => {
                                     index={index}
                                     handleIngredientChange={handleIngredientChange}
                                 />
-                                // <div className="grid grid-cols-create-ingredient-column gap-x-2 items-center">
-                                //     <p>
-                                //         <img src="images/bars.svg" alt="" />
-                                //     </p>
-                                //     <label htmlFor={`name-${item.id}`}>
-                                //         <input
-                                //             id={`name-${item.id}`}
-                                //             type="text"
-                                //             name="name"
-                                //             placeholder="鶏胸肉"
-                                //             value={item.name}
-                                //             onChange={(e) => handleIngredientChange(e, index)}
-                                //             className="w-full p-2 break-words bg-beige rounded-md"
-                                //         />
-                                //     </label>
-                                //     <label htmlFor={`quantity-${item.id}`}>
-                                //         <input
-                                //             id={`quantity-${item.id}`}
-                                //             type="text"
-                                //             name="quantity"
-                                //             placeholder="200g"
-                                //             value={item.quantity}
-                                //             onChange={(e) => handleIngredientChange(e, index)}
-                                //             className="w-full p-2 break-words bg-beige rounded-md"
-                                //         />
-                                //     </label>
-                                //     <p onClick={toggleDeleteOpen} className="relative">
-                                //         <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
-                                //         {open.deleteOpen && (
-                                //             <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
-                                //                 <DeleteMenuButton
-                                //                     text="材料を削除する"
-                                //                     image=""
-                                //                     index={0}
-                                //                 />
-                                //             </ul>
-                                //         )}
-                                //     </p>
-                                // </div>
                             )
                         })}
                         <button
@@ -151,14 +107,19 @@ export const RecipeCreate = () => {
                     <div className="flex flex-col gap-y-4 md:bg-white md:pt-4 md:pb-8 md:p-2-auto">
                         <h3 className="text-2xl font-bold">作り方</h3>
                         <ul className="grid grid-cols-4 gap-x-4 gap-y-10 pc_sm:grid-cols-2 tablet_md:grid-cols-1 sm:grid-cols-1">
-                            {/* {addRegister.cards.map((step_number) => (
-                                <RegisterCard key={step_number} step_number={step_number} />
-                            ))} */}
+                            {createInputValue.steps.map((item, index) => (
+                                <RegisterCard
+                                    key={item.id}
+                                    item={item}
+                                    index={index}
+                                    handleStepsChange={handleStepsChange}
+                                />
+                            ))}
                         </ul>
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
                             type="button"
-                            // onClick={(e) => addCard(e)}
+                            onClick={(e) => addSteps(e)}
                         >
                             <img src="images/plus.svg" alt="プラス" />
                             <span>作り方</span>

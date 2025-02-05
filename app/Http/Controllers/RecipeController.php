@@ -40,10 +40,7 @@ class RecipeController extends Controller
             'people' => 'nullable|integer',
             'is_favorite' => 'nullable|boolean',
             'ingredients' => 'required|array',
-            // 'steps' => 'required|array',
-            // 'steps.*.step_number' => 'required|integer',
-            // 'steps.*.description' => 'required|string',
-            // 'steps.*.thumbnail' => 'nullable|string',
+            'steps' => 'required|array',
         ]);
 
         // $filePath = null;
@@ -60,7 +57,7 @@ class RecipeController extends Controller
         $recipe->people = $validatedData['people'];
         $recipe->is_favorite = $validatedData['is_favorite'];
         $recipe->ingredients = $validatedData['ingredients'];
-        // $recipe->steps = $validatedData['steps'];
+        $recipe->steps = $validatedData['steps'];
 
         // レシピの保存
         $recipe->save();

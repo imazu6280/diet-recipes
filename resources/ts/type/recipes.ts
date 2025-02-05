@@ -2,12 +2,12 @@ export type stepsSchema = {
     id: number
     step_number: number
     description: string
-    thumbnail: string
+    // thumbnail: string
     created_at: string
     updated_at: string
 }
 
-export type GetStepsResponse = stepsSchema[]
+export type GetStepsResponse = Omit<stepsSchema, "created_at" | "updated_at">[]
 
 export type IngredientSchema = {
     id: number
@@ -21,17 +21,17 @@ export type IngredientSchema = {
     updated_at: string
 }
 
-export type GetIngredientResponse = IngredientSchema[]
+export type GetIngredientResponse = Omit<IngredientSchema, "created_at" | "updated_at">[]
 
 export type recipeSchema = {
     id: number
     name: string
     comments: string
-    // steps: GetStepsResponse
-    thumbnail: string
+    steps: GetStepsResponse
+    // thumbnail: string
     calories: number
     people: number
-    is_favorite: boolean
+    is_favorite: boolean | number
     created_at: string
     updated_at: string
     ingredients: GetIngredientResponse
@@ -39,5 +39,4 @@ export type recipeSchema = {
 
 export type GetRecipesResponse = recipeSchema[]
 
-export type PostRecipesResponse = Omit<recipeSchema, "created_at" | "updated_at">[]
-export type PostIngredientsResponse = Omit<IngredientSchema, "created_at" | "updated_at">[]
+export type PostRecipesResponse = Omit<recipeSchema, "created_at" | "updated_at">

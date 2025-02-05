@@ -28,10 +28,10 @@ class RecipeSeeder extends Seeder
                     ["id" => 1, "name" => "ingredient1", "calories" => rand(50, 150), "protein" => rand(1, 10), "carbs" => rand(10, 50), "fat" => rand(1, 10), "quantity" => rand(5, 200)],
                     ["id" => 2, "name" => "ingredient2", "calories" => rand(50, 150), "protein" => rand(1, 10), "carbs" => rand(10, 50), "fat" => rand(1, 10), "quantity" => rand(5, 200)]
                 ]),
-                // 'steps' => json_encode([
-                //     ["id" => 1, "step_number" => 1, "description" => "Step 1 for recipe $i", "thumbnail" => "step1.jpg"],
-                //     ["id" => 2, "step_number" => 2, "description" => "Step 2 for recipe $i", "thumbnail" => "step2.jpg"]
-                // ]),
+                'steps' => json_encode([
+                    ["id" => 1, "step_number" => 1, "description" => "Step 1 for recipe $i", "thumbnail" => "step1.jpg"],
+                    ["id" => 2, "step_number" => 2, "description" => "Step 2 for recipe $i", "thumbnail" => "step2.jpg"]
+                ]),
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

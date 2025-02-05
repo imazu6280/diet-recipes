@@ -1,4 +1,5 @@
 export const createState = {
+    id: 0,
     name: "",
     comments: "",
     // thumbnail: null as File | null,
@@ -16,12 +17,12 @@ export const createState = {
             quantity: 0,
         },
     ],
-    //     steps: [
-    //         {
-    //             id: 0,
-    //             step_number: 1,
-    //             description: "テスト1",
-    //             thumbnail: null as File | string | null,
-    //         },
-    //     ],
+    steps: [
+        {
+            id: 0,
+            step_number: 1,
+            description: "テスト1",
+            // thumbnail: null as File | string | null,
+        },
+    ],
 }

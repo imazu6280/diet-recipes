@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('people');
             $table->boolean('is_favorite')->default(0);
             $table->json('ingredients');
-            // $table->json('steps');
+            $table->json('steps');
             $table->timestamps();
         });
     }

@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { PostRecipesResponse } from "../type/recipes"
 import { createState } from "../constants/createState"
 
 export const useRecipeCreate = () => {
-    const [createInputValue, setCreateInputValue] = useState(createState)
-    const [createRecipe, setCreateRecipe] = useState<PostRecipesResponse>([])
-    // const [addRegister, setAddRegister] = useState<{
-    //     ingredients: PostIngredientsResponse
-    //     // steps?: PostStepsResponse // 将来的に steps が入る可能性がある
-    // }>({
-    //     ingredients: createInputValue.ingredients,
-    // })
+    const [createInputValue, setCreateInputValue] = useState<PostRecipesResponse>(createState)
 
     const addIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -30,9 +23,22 @@ export const useRecipeCreate = () => {
         }))
     }
 
+    const addSteps = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        const newSteps = {
+            id: createInputValue.steps.length,
+            step_number: createInputValue.steps.length + 1,
+            description: "",
+        }
+
+        setCreateInputValue((prevStep) => ({
+            ...prevStep,
+            steps: [...prevStep.steps, newSteps],
+        }))
+    }
+
     const CreateHandleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
-        console.log("name", name, "value", value)
 
         setCreateInputValue((prevState) => ({
             ...prevState,
@@ -57,9 +63,25 @@ export const useRecipeCreate = () => {
         }))
     }
 
+    const handleStepsChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        index: number
+    ) => {
+        const { name, value } = e.target
+
+        const newSteps = [...createInputValue.steps]
+        newSteps[index] = {
+            ...newSteps[index],
+            [name]: value,
+        }
+        setCreateInputValue((prevState) => ({
+            ...prevState,
+            steps: newSteps,
+        }))
+    }
+
     const CreateRecipeSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log("ingredientチェック", createInputValue)
 
         try {
             const res = await fetch(`/api/recipes/`, {
@@ -74,6 +96,7 @@ export const useRecipeCreate = () => {
                     people: createInputValue.people,
                     is_favorite: createInputValue.is_favorite,
                     ingredients: createInputValue.ingredients,
+                    steps: createInputValue.steps,
                 }),
             })
 
@@ -89,19 +112,13 @@ export const useRecipeCreate = () => {
         }
     }
 
-    useEffect(() => {
-        console.log("createInputValueが更新されました:", createInputValue)
-        console.log("ingredientsが更新されました:", createInputValue.ingredients)
-    }, [createInputValue.ingredients])
-
     return {
-        // addRegister,
         createInputValue,
-        createRecipe,
         addIngredient,
-        setCreateInputValue,
+        addSteps,
+        handleIngredientChange,
+        handleStepsChange,
         CreateRecipeSubmit,
         CreateHandleChange,
-        handleIngredientChange,
     }
 }
