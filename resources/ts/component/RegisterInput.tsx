@@ -7,11 +7,11 @@ type Props = {
     item: {
         id: number
         name: string
-        calories: number
-        protein: number
-        carbs: number
-        fat: number
-        quantity: number
+        calories: number | string
+        protein: number | string
+        carbs: number | string
+        fat: number | string
+        quantity: number | string
     }
     index: number
     handleIngredientChange: (

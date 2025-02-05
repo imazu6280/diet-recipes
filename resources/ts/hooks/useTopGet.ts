@@ -30,5 +30,5 @@ export const useTopGet = () => {
         GetRecipesFavoriteApi()
     }, [])
 
-    return { favoriteRecipes, recipes }
+    return { favoriteRecipes, recipes, setRecipes, setFavoriteRecipes }
 }

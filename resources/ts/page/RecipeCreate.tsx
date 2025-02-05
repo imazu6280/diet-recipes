@@ -127,10 +127,6 @@ export const RecipeCreate = () => {
                     </div>
                 </div>
             </div>
-            <button
-                className="block p-3 my-6 mx-auto text-white bg-slate-500"
-                onClick={CreateRecipeSubmit}
-            ></button>
         </form>
     )
 }

@@ -1,8 +1,10 @@
 import React, { useState } from "react"
 import { PostRecipesResponse } from "../type/recipes"
 import { createState } from "../constants/createState"
+import { useTopGet } from "./useTopGet"
 
 export const useRecipeCreate = () => {
+    const { setRecipes, setFavoriteRecipes } = useTopGet()
     const [createInputValue, setCreateInputValue] = useState<PostRecipesResponse>(createState)
 
     const addIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -14,7 +16,7 @@ export const useRecipeCreate = () => {
             protein: 0,
             carbs: 0,
             fat: 0,
-            quantity: 0,
+            quantity: "",
         }
 
         setCreateInputValue((prevRegister) => ({
@@ -105,10 +107,17 @@ export const useRecipeCreate = () => {
                 console.error("API Error:", errorText)
                 return
             }
+
             const result = await res.json()
-            console.log("成功:", result)
+            setRecipes((prevRecipe) => [...prevRecipe, result])
+
+            if (createInputValue.is_favorite === 1) {
+                setFavoriteRecipes((prevRecipe) => [...prevRecipe, result])
+            }
+
+            console.log("post success!!", result)
         } catch (error) {
-            console.error("post error", error)
+            console.error("post error!!", error)
         }
     }
 

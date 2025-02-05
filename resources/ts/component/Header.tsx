@@ -17,7 +17,6 @@ const headerLogo = {
 
 export const Header = () => {
     const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu()
-    const { CreateRecipeSubmit } = useRecipeCreate()
     const location = useLocation()
     const isLocationCreate = location.pathname === "/create"
 
@@ -51,7 +50,6 @@ export const Header = () => {
                     width="w-40"
                     type="submit"
                     formId="create"
-                    // onClick={CreateRecipeSubmit}
                 />
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden md:flex justify-between gap-x-6 items-center">
@@ -63,7 +61,6 @@ export const Header = () => {
                         text="公開する"
                         color={buttonColors.bgOrange}
                         width="w-40"
-                        // onClick={CreateRecipeSubmit}
                         type="submit"
                         formId="create"
                     />

@@ -9,7 +9,6 @@ type Props = {
     width: string
     type: "submit" | "reset" | "button"
     formId?: string
-    onClick?: (e: React.FormEvent) => Promise<void>
 }
 
 export const Button = ({ isIcon, alt, text, color, width, type, formId }: Props) => {
@@ -17,7 +16,6 @@ export const Button = ({ isIcon, alt, text, color, width, type, formId }: Props)
         <button
             className={`border- flex gap-x-1 justify-center items-center py-2 px-4 rounded-lg ${color} ${width}`}
             type={type}
-            // onClick={onClick}
             {...(formId && { form: formId })}
         >
             {isIcon &&

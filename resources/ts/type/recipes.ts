@@ -12,11 +12,11 @@ export type GetStepsResponse = Omit<stepsSchema, "created_at" | "updated_at">[]
 export type IngredientSchema = {
     id: number
     name: string
-    calories: number
-    protein: number
-    carbs: number
-    fat: number
-    quantity: number
+    calories: number | string
+    protein: number | string
+    carbs: number | string
+    fat: number | string
+    quantity: number | string
     created_at: string
     updated_at: string
 }
@@ -30,7 +30,7 @@ export type recipeSchema = {
     steps: GetStepsResponse
     // thumbnail: string
     calories: number
-    people: number
+    people: number | string
     is_favorite: boolean | number
     created_at: string
     updated_at: string

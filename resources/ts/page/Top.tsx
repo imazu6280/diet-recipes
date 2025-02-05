@@ -70,6 +70,7 @@ export const Top = () => {
                             text="検索"
                             color={buttonColors.bgOrange}
                             width=""
+                            type="button"
                         />
                     </div>
                 </form>
@@ -86,7 +87,7 @@ export const Top = () => {
                             >
                                 <li
                                     className="pt-16 pb-2 px-4 text-white font-bold shadow-black rounded-lg bg-center bg-cover bg-no-repeat"
-                                    style={{ backgroundImage: `url(${item.thumbnail})` }}
+                                    // style={{ backgroundImage: `url(${item.thumbnail})` }}
                                 >
                                     {item.name}
                                     <span className="block pt-1 text-xs font-light text-white">
@@ -105,7 +106,7 @@ export const Top = () => {
                                 <li key={item.id} className="bg-white shadow-black rounded-lg">
                                     <div
                                         className="pt-20 pb-4 px-4 rounded-t-lg bg-center bg-cover bg-no-repeat"
-                                        style={{ backgroundImage: `url(${item.thumbnail})` }}
+                                        // style={{ backgroundImage: `url(${item.thumbnail})` }}
                                     >
                                         <p className="text-white font-bold">{item.name}</p>
                                         <p className="pt-0.5 text-xs font-light text-white">
