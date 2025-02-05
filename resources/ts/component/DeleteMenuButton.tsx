@@ -1,5 +1,3 @@
-import { useMenu } from "../hooks/useMenu"
-
 type Props = {
     text: string
     image: string

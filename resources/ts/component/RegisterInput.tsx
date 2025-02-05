@@ -3,7 +3,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useMenu } from "../hooks/useMenu"
 import { DeleteMenuButton } from "./DeleteMenuButton"
 
-export const RegisterInput = () => {
+type Props = {
+    item: {
+        id: number
+        name: string
+        calories: number | string
+        protein: number | string
+        carbs: number | string
+        fat: number | string
+        quantity: number | string
+    }
+    index: number
+    handleIngredientChange: (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        index: number
+    ) => void
+}
+
+export const RegisterInput = ({ item, index, handleIngredientChange }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
 
     return (
@@ -11,21 +28,25 @@ export const RegisterInput = () => {
             <p>
                 <img src="images/bars.svg" alt="" />
             </p>
-            <label htmlFor="ingredient">
+            <label htmlFor={`name-${item.id}`}>
                 <input
-                    id="ingredient"
+                    id={`name-${item.id}`}
                     type="text"
-                    name="ingredient"
+                    name="name"
                     placeholder="鶏胸肉"
+                    value={item.name}
+                    onChange={(e) => handleIngredientChange(e, index)}
                     className="w-full p-2 break-words bg-beige rounded-md"
                 />
             </label>
-            <label htmlFor="quantity">
+            <label htmlFor={`quantity-${item.id}`}>
                 <input
-                    id="quantity"
+                    id={`quantity-${item.id}`}
                     type="text"
                     name="quantity"
                     placeholder="200g"
+                    value={item.quantity}
+                    onChange={(e) => handleIngredientChange(e, index)}
                     className="w-full p-2 break-words bg-beige rounded-md"
                 />
             </label>

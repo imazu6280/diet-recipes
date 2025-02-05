@@ -1,0 +1,28 @@
+export const createState = {
+    id: 0,
+    name: "",
+    comments: "",
+    // thumbnail: null as File | null,
+    calories: 0,
+    people: "",
+    is_favorite: 0,
+    ingredients: [
+        {
+            id: 0,
+            name: "",
+            calories: 0,
+            protein: 0,
+            carbs: 0,
+            fat: 0,
+            quantity: "",
+        },
+    ],
+    steps: [
+        {
+            id: 0,
+            step_number: 1,
+            description: "",
+            // thumbnail: null as File | string | null,
+        },
+    ],
+}

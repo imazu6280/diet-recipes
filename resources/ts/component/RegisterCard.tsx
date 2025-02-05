@@ -4,7 +4,17 @@ import { useMenu } from "../hooks/useMenu"
 import { DeleteMenuButton } from "./DeleteMenuButton"
 
 type Props = {
-    step_number: number
+    item: {
+        id: number
+        step_number: number
+        description: string
+        // thumbnail: string
+    }
+    index: number
+    handleStepsChange: (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        index: number
+    ) => void
 }
 
 const stepDelete = [
@@ -12,7 +22,7 @@ const stepDelete = [
     { id: 1, text: "作り方を削除" },
 ]
 
-export const RegisterCard = ({ step_number }: Props) => {
+export const RegisterCard = ({ item, index, handleStepsChange }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
 
     return (
@@ -20,7 +30,7 @@ export const RegisterCard = ({ step_number }: Props) => {
             <div className="flex justify-between">
                 <div className="flex items-center gap-x-2 md:gap-y-2 md:flex-col">
                     <span className="block w-6 h-6 text-center text-white bg-black rounded-full">
-                        {step_number}
+                        {item.step_number}
                     </span>
                     <div>
                         <img src="images/bars.svg" alt="" />
@@ -29,7 +39,6 @@ export const RegisterCard = ({ step_number }: Props) => {
                 <div className="relative md:hidden" onClick={toggleDeleteOpen}>
                     <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                     <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
-                        {/* <div className="triangle-up"></div> */}
                         {open.deleteOpen &&
                             stepDelete.map((item, index) => (
                                 <DeleteMenuButton
@@ -43,24 +52,28 @@ export const RegisterCard = ({ step_number }: Props) => {
                 </div>
             </div>
             <div className="flex flex-col gap-y-2 w-full md:flex-col-reverse">
-                <label
-                    htmlFor="detailImage"
+                {/* <label
+                    htmlFor="thumbnail"
                     className="flex flex-col justify-center items-center aspect-5/4 bg-beige rounded-lg md:w-28"
                 >
                     <input
                         type="file"
-                        name="detailImage"
-                        id="detailImage"
+                        name="thumbnail"
+                        id="thumbnail"
+                        // value={item.thumbnail}
+                        // onChange={(e) => handleStepsChange(e, index)}
                         className="hidden"
                     ></input>
                     <p>
                         <img src="images/image16.svg" alt="カメラ" />
                     </p>
-                </label>
-                <label htmlFor="detailText" className="w-full px-2 py-4 bg-beige rounded-md">
+                </label> */}
+                <label htmlFor="description" className="w-full px-2 py-4 bg-beige rounded-md">
                     <textarea
-                        name="detailText"
-                        id="detailText"
+                        name="description"
+                        id="description"
+                        value={item.description}
+                        onChange={(e) => handleStepsChange(e, index)}
                         placeholder="鶏胸肉を一口サイズにカットする"
                         className="w-full p-2 bg-beige"
                     ></textarea>

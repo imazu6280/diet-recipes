@@ -7,13 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipe extends Model
 {
- public function steps()
- {
-    return $this->hasMany(RecipeStep::class);
- }
+    protected $fillable = ['name', 'comments','people', 'calories', 'is_favorite','ingredients','steps'];
 
- public function ingredients()
- {
-    return $this->belongsToMany(Ingredient::class, 'recipe_ingredients')->withPivot('quantity');
- }
+    protected $casts = [
+        'ingredients' => 'array',
+        'steps' => 'array',
+    ];
 }

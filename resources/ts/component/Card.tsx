@@ -11,10 +11,7 @@ export const Card = ({ image, detail, step_number }: Props) => {
                 {step_number}
             </span>
             <div className="flex flex-col gap-y-2 sm:flex-col-reverse">
-                <figure
-                    className="w-full rounded-l sm:w-1/2
-                            "
-                >
+                <figure className="w-full rounded-l sm:w-1/2">
                     <img src={image} alt="" />
                 </figure>
                 <figcaption>{detail}</figcaption>

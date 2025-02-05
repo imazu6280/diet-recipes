@@ -1,10 +1,18 @@
 import { RegisterCard } from "../component/RegisterCard"
-import { useRegisterCard } from "../hooks/useRegisterCard"
 import { RegisterInput } from "../component/RegisterInput"
-import { placeHolderType } from "../type/register"
+import { placeHolderType } from "../type/placeholder"
+import { useRecipeCreate } from "../hooks/useRecipeCreate"
 
 export const RecipeCreate = () => {
-    const { addRegister, addCard, addIngredient } = useRegisterCard()
+    const {
+        createInputValue,
+        addIngredient,
+        addSteps,
+        CreateHandleChange,
+        CreateRecipeSubmit,
+        handleIngredientChange,
+        handleStepsChange,
+    } = useRecipeCreate()
 
     const placeHolderText: placeHolderType = {
         text: ["・味やおすすめポイント", "・楽しみ方", "・この料理を作ったきっかけ"],
@@ -12,11 +20,16 @@ export const RecipeCreate = () => {
     const placeholderString = placeHolderText.text.join("\n")
 
     return (
-        <form action="">
+        <form id="create" action="" onSubmit={CreateRecipeSubmit}>
             <div className="flex flex-col gap-y-6 w-inner pt-2 mx-auto md:w-full md:gap-y-4">
                 <div className="grid grid-cols-show-column gap-x-6 tablet_md:grid-cols-1 sm:grid-cols-1">
-                    <label htmlFor="mainImage" className="relative h-96 bg-beige rounded-md">
-                        <input type="file" id="mainImage" className="hidden" defaultValue="" />
+                    {/* <label htmlFor="mainImage" className="relative h-96 bg-beige rounded-md">
+                        <input
+                            type="file"
+                            id="mainImage"
+                            className="hidden"
+                            onChange={CreateHandleChange}
+                        />
                         <div className="absolute top-1/3 left-0 right-0 flex flex-col justify-center gap-y-2 text-center px-4 pointer-events-none">
                             <p className="w-16 mx-auto ">
                                 <img src="images/image15.png" alt="" />
@@ -28,7 +41,7 @@ export const RecipeCreate = () => {
                                 オリジナルではないものや料理に関係ない写真はご遠慮ください
                             </p>
                         </div>
-                    </label>
+                    </label> */}
                     <div className="flex flex-col justify-between md:gap-y-4">
                         <div className="flex flex-col gap-y-10 md:gap-y-4 md:px-2 md:py-4 md:bg-white">
                             <div className="flex flex-col gap-y-4">
@@ -38,7 +51,8 @@ export const RecipeCreate = () => {
                                         name="name"
                                         type="text"
                                         placeholder="料理名を入力してください"
-                                        defaultValue=""
+                                        value={createInputValue.name}
+                                        onChange={CreateHandleChange}
                                         className="w-full px-2 py-4 text-34px font-bold bg-beige rounded-md tablet_md:text-xl sm:text-lg"
                                     />
                                 </label>
@@ -47,6 +61,8 @@ export const RecipeCreate = () => {
                                         name="comments"
                                         id="comments"
                                         placeholder={placeholderString}
+                                        value={createInputValue.comments}
+                                        onChange={CreateHandleChange}
                                         className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
@@ -61,18 +77,27 @@ export const RecipeCreate = () => {
                             <label htmlFor="people">何人分</label>
                             <input
                                 id="people"
-                                type="text"
+                                type="number"
                                 name="people"
                                 placeholder="何人分"
-                                defaultValue=""
+                                value={createInputValue.people}
+                                onChange={CreateHandleChange}
                                 className="w-2/4 p-2 break-words bg-beige rounded-md"
                             />
                         </div>
-                        {addRegister.ingredients.map((item, index) => {
-                            return <RegisterInput key={index} />
+                        {createInputValue.ingredients.map((item, index) => {
+                            return (
+                                <RegisterInput
+                                    key={item.id}
+                                    item={item}
+                                    index={index}
+                                    handleIngredientChange={handleIngredientChange}
+                                />
+                            )
                         })}
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
+                            type="button"
                             onClick={(e) => addIngredient(e)}
                         >
                             <img src="images/plus.svg" alt="プラス" />
@@ -82,13 +107,19 @@ export const RecipeCreate = () => {
                     <div className="flex flex-col gap-y-4 md:bg-white md:pt-4 md:pb-8 md:p-2-auto">
                         <h3 className="text-2xl font-bold">作り方</h3>
                         <ul className="grid grid-cols-4 gap-x-4 gap-y-10 pc_sm:grid-cols-2 tablet_md:grid-cols-1 sm:grid-cols-1">
-                            {addRegister.cards.map((step_number) => (
-                                <RegisterCard key={step_number} step_number={step_number} />
+                            {createInputValue.steps.map((item, index) => (
+                                <RegisterCard
+                                    key={item.id}
+                                    item={item}
+                                    index={index}
+                                    handleStepsChange={handleStepsChange}
+                                />
                             ))}
                         </ul>
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
-                            onClick={(e) => addCard(e)}
+                            type="button"
+                            onClick={(e) => addSteps(e)}
                         >
                             <img src="images/plus.svg" alt="プラス" />
                             <span>作り方</span>
