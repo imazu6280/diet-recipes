@@ -2,7 +2,7 @@ export const createState = {
     id: 0,
     name: "",
     comments: "",
-    // thumbnail: null as File | null,
+    thumbnail: "",
     calories: 0,
     people: "",
     is_favorite: 0,
@@ -22,7 +22,7 @@ export const createState = {
             id: 0,
             step_number: 1,
             description: "",
-            // thumbnail: null as File | string | null,
+            thumbnail: "",
         },
     ],
 }

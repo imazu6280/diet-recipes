@@ -8,7 +8,7 @@ type Props = {
         id: number
         step_number: number
         description: string
-        // thumbnail: string
+        thumbnail: string
     }
     index: number
     handleStepsChange: (
@@ -52,7 +52,7 @@ export const RegisterCard = ({ item, index, handleStepsChange }: Props) => {
                 </div>
             </div>
             <div className="flex flex-col gap-y-2 w-full md:flex-col-reverse">
-                {/* <label
+                <label
                     htmlFor="thumbnail"
                     className="flex flex-col justify-center items-center aspect-5/4 bg-beige rounded-lg md:w-28"
                 >
@@ -60,14 +60,14 @@ export const RegisterCard = ({ item, index, handleStepsChange }: Props) => {
                         type="file"
                         name="thumbnail"
                         id="thumbnail"
-                        // value={item.thumbnail}
-                        // onChange={(e) => handleStepsChange(e, index)}
+                        value={item.thumbnail}
+                        onChange={(e) => handleStepsChange(e, index)}
                         className="hidden"
                     ></input>
                     <p>
                         <img src="images/image16.svg" alt="カメラ" />
                     </p>
-                </label> */}
+                </label>
                 <label htmlFor="description" className="w-full px-2 py-4 bg-beige rounded-md">
                     <textarea
                         name="description"

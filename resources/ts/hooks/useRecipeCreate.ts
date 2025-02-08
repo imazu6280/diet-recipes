@@ -31,6 +31,7 @@ export const useRecipeCreate = () => {
             id: createInputValue.steps.length,
             step_number: createInputValue.steps.length + 1,
             description: "",
+            thumbnail: "",
         }
 
         setCreateInputValue((prevStep) => ({
@@ -70,17 +71,36 @@ export const useRecipeCreate = () => {
         index: number
     ) => {
         const { name, value } = e.target
-
         const newSteps = [...createInputValue.steps]
+        // if (e.target instanceof HTMLInputElement && e.target.files && e.target.files.length > 0) {
+        //     // サムネイルの処理
+        //     newSteps[index] = {
+        //         ...newSteps[index],
+        //         thumbnail: e.target.files[0], // ファイルをセット
+        //     }
+        // } else {
+        // テキスト入力の処理
         newSteps[index] = {
             ...newSteps[index],
             [name]: value,
         }
+        // }
         setCreateInputValue((prevState) => ({
             ...prevState,
             steps: newSteps,
         }))
     }
+
+    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { name, files } = e.target
+
+    //     if (files && files.length > 0) {
+    //         setCreateInputValue((prevState) => ({
+    //             ...prevState,
+    //             [name]: files[0],
+    //         }))
+    //     }
+    // }
 
     const CreateRecipeSubmit = async (e: React.FormEvent) => {
         e.preventDefault()

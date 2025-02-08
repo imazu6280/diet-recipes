@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Storage;
 
 class RecipeController extends Controller
 {
@@ -35,7 +34,7 @@ class RecipeController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'comments' => 'nullable|string',
-            // 'thumbnail' => 'nullable|file',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'calories' => 'nullable|integer',
             'people' => 'nullable|integer',
             'is_favorite' => 'nullable|boolean',
@@ -43,16 +42,21 @@ class RecipeController extends Controller
             'steps' => 'required|array',
         ]);
 
-        // $filePath = null;
-        // if ($request->hasFile('thumbnail')) {
-        //     $filePath = $request->file('thumbnail')->store('thumbnails', 'public');
-        // }
+        // S3にアップロード
+        $thumbnail = $request->file('thumbnail');
+        $path = $thumbnail->store('recipe-thumbnails', 's3'); // 'recipe-thumbnails' ディレクトリに保存
+
+        // アップロードした画像のURLを取得
+        $url = Storage::disk('s3')->url($path);
+
+        dd($path);
+        // $image = Recipe::create(['url' => $url]);
 
         // レシピの保存
         $recipe = new Recipe();
         $recipe->name = $validatedData['name'];
         $recipe->comments = $validatedData['comments'];
-        // $recipe->thumbnail = $filePath ?? null;
+        $recipe->thumbnail = $url;
         $recipe->calories = $validatedData['calories'];
         $recipe->people = $validatedData['people'];
         $recipe->is_favorite = $validatedData['is_favorite'];
