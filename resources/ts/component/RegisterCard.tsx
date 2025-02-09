@@ -15,6 +15,7 @@ type Props = {
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         index: number
     ) => void
+    stepsHandleFileChange: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
 }
 
 const stepDelete = [
@@ -22,7 +23,7 @@ const stepDelete = [
     { id: 1, text: "作り方を削除" },
 ]
 
-export const RegisterCard = ({ item, index, handleStepsChange }: Props) => {
+export const RegisterCard = ({ item, index, handleStepsChange, stepsHandleFileChange }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
 
     return (
@@ -53,25 +54,27 @@ export const RegisterCard = ({ item, index, handleStepsChange }: Props) => {
             </div>
             <div className="flex flex-col gap-y-2 w-full md:flex-col-reverse">
                 <label
-                    htmlFor="thumbnail"
+                    htmlFor={`thumbnail-${index}`}
                     className="flex flex-col justify-center items-center aspect-5/4 bg-beige rounded-lg md:w-28"
                 >
                     <input
                         type="file"
                         name="thumbnail"
-                        id="thumbnail"
-                        value={item.thumbnail}
-                        onChange={(e) => handleStepsChange(e, index)}
+                        id={`thumbnail-${index}`}
+                        onChange={(e) => stepsHandleFileChange(e, index)}
                         className="hidden"
                     ></input>
                     <p>
                         <img src="images/image16.svg" alt="カメラ" />
                     </p>
                 </label>
-                <label htmlFor="description" className="w-full px-2 py-4 bg-beige rounded-md">
+                <label
+                    htmlFor={`description-${index}`}
+                    className="w-full px-2 py-4 bg-beige rounded-md"
+                >
                     <textarea
                         name="description"
-                        id="description"
+                        id={`description-${index}`}
                         value={item.description}
                         onChange={(e) => handleStepsChange(e, index)}
                         placeholder="鶏胸肉を一口サイズにカットする"

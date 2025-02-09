@@ -20,7 +20,7 @@ class RecipeSeeder extends Seeder
             $recipes[] = [
                 'name' => "Recipe $i",
                 'comments' => "This is a comment for recipe $i.",
-                // 'thumbnail' => "recipe{$i}_thumbnail.jpg",
+                'thumbnail' => "recipe{$i}_thumbnail.jpg",
                 'calories' => rand(100, 500),
                 'people' => rand(1, 6),
                 'is_favorite' => (bool)rand(0, 1),

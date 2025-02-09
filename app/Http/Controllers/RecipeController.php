@@ -30,6 +30,12 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->all();
+
+        $data['calories'] = (int) $data['calories']; // caloriesを整数に変換
+        $data['people'] = (int) $data['people'];
+        $data['is_favorite'] = (bool) $data['is_favorite'];
+
         // バリデーションルール
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -47,24 +53,39 @@ class RecipeController extends Controller
         $path = $thumbnail->store('recipe-thumbnails', 's3'); // 'recipe-thumbnails' ディレクトリに保存
 
         // アップロードした画像のURLを取得
-        $url = Storage::disk('s3')->url($path);
-
-        dd($path);
-        // $image = Recipe::create(['url' => $url]);
+        $url = Storage::disks('s3')->url($path);
 
         // レシピの保存
-        $recipe = new Recipe();
-        $recipe->name = $validatedData['name'];
-        $recipe->comments = $validatedData['comments'];
-        $recipe->thumbnail = $url;
-        $recipe->calories = $validatedData['calories'];
-        $recipe->people = $validatedData['people'];
-        $recipe->is_favorite = $validatedData['is_favorite'];
-        $recipe->ingredients = $validatedData['ingredients'];
-        $recipe->steps = $validatedData['steps'];
+        $recipe = Recipe::create([
+            'name' => $validatedData['name'],
+            'comments' => $validatedData['comments'],
+            'thumbnail' => $url,
+            'calories' => (int)$validatedData['calories'],
+            'people' => (int)$validatedData['people'],
+            'is_favorite' => (bool)$validatedData['is_favorite'],
+            'ingredients' => json_encode($validatedData['ingredients']), // ingredientsはそのままJSONとして保存
+        ]);
 
-        // レシピの保存
-        $recipe->save();
+        // ステップの保存
+        foreach ($validatedData['steps'] as $stepData) {
+            $stepThumbnail = $stepData['thumbnail'] ?? null;
+
+            // 画像のアップロード（もしあれば）
+            if ($stepThumbnail) {
+                $stepPath = $stepThumbnail->store('step-thumbnails', 's3');
+                $stepData['thumbnail'] = Storage::disks('s3')->url($stepPath);
+            }
+
+            // ステップを作成
+            $recipe->steps()->create([
+                'step_number' => (int)$stepData['step_number'],
+                'description' => $stepData['description'],
+                'thumbnail' => $stepData['thumbnail'],
+            ]);
+        }
+
+        // // レシピの保存
+        // $recipe->save();
 
         return response()->json(['message' => 'Recipe created successfully', 'recipe' => $recipe], 201);
     }

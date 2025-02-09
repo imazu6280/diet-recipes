@@ -8,10 +8,12 @@ export const RecipeCreate = () => {
         createInputValue,
         addIngredient,
         addSteps,
-        CreateHandleChange,
-        CreateRecipeSubmit,
         handleIngredientChange,
         handleStepsChange,
+        handleFileChange,
+        stepsHandleFileChange,
+        CreateRecipeSubmit,
+        CreateHandleChange,
     } = useRecipeCreate()
 
     const placeHolderText: placeHolderType = {
@@ -28,7 +30,8 @@ export const RecipeCreate = () => {
                             type="file"
                             id="mainImage"
                             className="hidden"
-                            onChange={CreateHandleChange}
+                            name="thumbnail"
+                            onChange={handleFileChange}
                         />
                         <div className="absolute top-1/3 left-0 right-0 flex flex-col justify-center gap-y-2 text-center px-4 pointer-events-none">
                             <p className="w-16 mx-auto ">
@@ -113,6 +116,7 @@ export const RecipeCreate = () => {
                                     item={item}
                                     index={index}
                                     handleStepsChange={handleStepsChange}
+                                    stepsHandleFileChange={stepsHandleFileChange}
                                 />
                             ))}
                         </ul>
