@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipe extends Model
 {
-    protected $fillable = ['name', 'comments','people', 'calories', 'is_favorite','ingredients'];
+    protected $fillable = ['name', 'comments','people','thumbnail', 'calories', 'is_favorite'];
 
-    protected $casts = [
-        'ingredients' => 'array',
-    ];
+    public function ingredients()
+    {
+        return $this->hasMany(Ingredient::class); // 1対多のリレーション
+    }
 
     public function steps()
     {

@@ -8,7 +8,7 @@ type Props = {
         id: number
         step_number: number
         description: string
-        thumbnail: string
+        thumbnail: string | File
     }
     index: number
     handleStepsChange: (

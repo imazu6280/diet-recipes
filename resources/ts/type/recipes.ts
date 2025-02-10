@@ -2,7 +2,7 @@ export type stepsSchema = {
     id: number
     step_number: number
     description: string
-    thumbnail: string
+    thumbnail: string | File
     created_at: string
     updated_at: string
 }
@@ -28,7 +28,7 @@ export type recipeSchema = {
     name: string
     comments: string
     steps: GetStepsResponse
-    thumbnail: string
+    thumbnail: string | File
     calories: number
     people: number | string
     is_favorite: boolean | number
