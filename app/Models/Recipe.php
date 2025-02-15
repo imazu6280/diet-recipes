@@ -11,7 +11,9 @@ class Recipe extends Model
 
     public function ingredients()
     {
-        return $this->hasMany(Ingredient::class); // 1対多のリレーション
+        return $this->belongsToMany(Ingredient::class, 'recipe_ingredient')
+                    ->withPivot('quantity') // 中間テーブルのカラムを追加
+                    ->withTimestamps();
     }
 
     public function steps()

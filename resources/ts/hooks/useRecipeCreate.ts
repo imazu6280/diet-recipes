@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { PostRecipesResponse } from "../type/recipes"
 import { createState } from "../constants/createState"
 import { useTopGet } from "./useTopGet"
@@ -127,17 +127,17 @@ export const useRecipeCreate = () => {
         formData.append("calories", createInputValue.calories.toString())
         formData.append("people", createInputValue.people.toString())
         formData.append("is_favorite", createInputValue.is_favorite.toString())
-        formData.append("ingredients", JSON.stringify(createInputValue.ingredients))
+        // formData.append("ingredients", JSON.stringify(createInputValue.ingredients))
 
         // Ingredients and Steps
-        // createInputValue.ingredients.map((ingredient, index) => {
-        //     formData.append(`ingredients[${index}][name]`, ingredient.name)
-        //     formData.append(`ingredients[${index}][calories]`, ingredient.calories.toString())
-        //     formData.append(`ingredients[${index}][protein]`, ingredient.protein.toString())
-        //     formData.append(`ingredients[${index}][carbs]`, ingredient.carbs.toString())
-        //     formData.append(`ingredients[${index}][fat]`, ingredient.fat.toString())
-        //     formData.append(`ingredients[${index}][quantity]`, ingredient.quantity.toString())
-        // })
+        createInputValue.ingredients.map((ingredient, index) => {
+            formData.append(`ingredients[${index}][name]`, ingredient.name)
+            formData.append(`ingredients[${index}][calories]`, ingredient.calories.toString())
+            formData.append(`ingredients[${index}][protein]`, ingredient.protein.toString())
+            formData.append(`ingredients[${index}][carbs]`, ingredient.carbs.toString())
+            formData.append(`ingredients[${index}][fat]`, ingredient.fat.toString())
+            formData.append(`ingredients[${index}][quantity]`, ingredient.quantity.toString())
+        })
 
         createInputValue.steps.map((step, index) => {
             formData.append(`steps[${index}][step_number]`, step.step_number.toString())
@@ -173,10 +173,6 @@ export const useRecipeCreate = () => {
             console.error("post error!!", error)
         }
     }
-
-    useEffect(() => {
-        console.log("createInputValue", createInputValue)
-    }, [createInputValue])
 
     return {
         createInputValue,

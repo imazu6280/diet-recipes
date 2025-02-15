@@ -32,7 +32,6 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-
         try {
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
@@ -43,6 +42,7 @@ class RecipeController extends Controller
                 'is_favorite' => 'required|boolean',
                 'ingredients' => 'required|array',
                 'steps' => 'required|array',
+                // 'steps.*.thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -53,20 +53,10 @@ class RecipeController extends Controller
 
         // S3にアップロード
         $thumbnail = $request->file('thumbnail');
-        Log::info('Thumbnail file details', [
-            'original_name' => $thumbnail->getClientOriginalName(),
-            'mime_type' => $thumbnail->getMimeType(),
-            'size' => $thumbnail->getSize(),
-        ]);
-
-        $path = $thumbnail->store('recipe-thumbnails', 's3'); // 'recipe-thumbnails' ディレクトリに保存
-
-        Log::info("Uploaded file path: " . $path);
+        $path = $thumbnail->store('recipe-thumbnails', 's3');
 
         // アップロードした画像のURLを取得
         $url = Storage::disk('s3')->url($path);
-
-        Log::info('Generated S3 URL:', ['url' => $url]);
 
 
         // レシピの保存
@@ -77,40 +67,34 @@ class RecipeController extends Controller
             'calories' => $validatedData['calories'],
             'people' => $validatedData['people'],
             'is_favorite' => $validatedData['is_favorite'],
-            'ingredients' => json_decode($validatedData['ingredients'], true),
-            // 'ingredients' => $validatedData['ingredients'],
         ]);
 
         // ingredientsのリレーションを保存
         foreach ($validatedData['ingredients'] as $ingredientData) {
             // 食材の名前と数量などの詳細情報を保存
-            $ingredient = Ingredient::firstOrCreate([
-                'name' => $ingredientData['name'],
-            ], [
-                'fat' => $ingredientData['fat'],
-                'carbs' => $ingredientData['carbs'],
-                'protein' => $ingredientData['protein'],
-                'calories' => $ingredientData['calories'],
-                'quantity' => $ingredientData['quantity'],
-            ]);
+            $ingredient = Ingredient::updateOrCreate(
+                ['name' => $ingredientData['name']],  // 検索条件
+                [ // 更新または作成するデータ
+                    'fat' => $ingredientData['fat'],
+                    'carbs' => $ingredientData['carbs'],
+                    'protein' => $ingredientData['protein'],
+                    'calories' => $ingredientData['calories'],
+                ]
+            );
 
             // リレーションに追加
-            // $recipe->ingredients()->attach($ingredient->id, [
-            //     'quantity' => $ingredientData['quantity'], // 例えば食材に対する量
-            // ]);
+            $recipe->ingredients()->attach($ingredient->id, [
+                'quantity' => $ingredientData['quantity'], // 例えば食材に対する量
+            ]);
         }
 
 
         // ステップの保存
         foreach ($validatedData['steps'] as $stepData) {
-            // 画像のアップロード（thumbnailは必ずある）
-            Log::info('Processing step', ['stepData' => $stepData]);
 
             $stepPath = $stepData['thumbnail']->store('step-thumbnails', 's3');
-            Log::info('Step thumbnail uploaded', ['stepPath' => $stepPath]);
 
             $stepData['thumbnail'] = Storage::disk('s3')->url($stepPath);
-            Log::info('Generated S3 URL for thumbnail', ['thumbnailUrl' => $stepData['thumbnail']]);
 
             // ステップを作成
             $step = $recipe->steps()->create([
@@ -119,11 +103,14 @@ class RecipeController extends Controller
                 'thumbnail' => $stepData['thumbnail'],
             ]);
 
-            Log::info('Step created', ['step' => $step]);
         }
 
 
-        return response()->json(['message' => 'Recipe created successfully', 'recipe' => $recipe], 201);
+        return response()->json([
+            'recipe' => $recipe,
+            'ingredients' => $recipe->ingredients,
+            'steps' => $step,
+        ], 201);
     }
 
 

@@ -17,6 +17,8 @@ class Ingredient extends Model
 
     public function recipe()
     {
-        return $this->belongsTo(Recipe::class);  // Recipeとのリレーション
+        return $this->belongsToMany(Recipe::class, 'recipe_ingredient')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
     }
 }

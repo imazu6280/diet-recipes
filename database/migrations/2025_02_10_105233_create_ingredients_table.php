@@ -18,8 +18,6 @@ return new class extends Migration
             $table->integer('carbs');
             $table->integer('protein');
             $table->integer('calories');
-            $table->string('quantity');
-            $table->foreignId('recipe_id')->constrained()->onDelete('cascade'); // 外部キーでリレーション
             $table->timestamps();
         });
     }
