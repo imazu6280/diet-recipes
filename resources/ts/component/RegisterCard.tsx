@@ -11,6 +11,7 @@ type Props = {
         thumbnail: string | File
     }
     index: number
+    stepImage: string[]
     handleStepsChange: (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         index: number
@@ -23,7 +24,13 @@ const stepDelete = [
     { id: 1, text: "作り方を削除" },
 ]
 
-export const RegisterCard = ({ item, index, handleStepsChange, stepsHandleFileChange }: Props) => {
+export const RegisterCard = ({
+    item,
+    index,
+    stepImage,
+    handleStepsChange,
+    stepsHandleFileChange,
+}: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
 
     return (
@@ -55,7 +62,8 @@ export const RegisterCard = ({ item, index, handleStepsChange, stepsHandleFileCh
             <div className="flex flex-col gap-y-2 w-full md:flex-col-reverse">
                 <label
                     htmlFor={`thumbnail-${index}`}
-                    className="flex flex-col justify-center items-center aspect-5/4 bg-beige rounded-lg md:w-28"
+                    className={`flex flex-col justify-center items-center aspect-5/4 rounded-lg md:w-28
+         ${stepImage[index] ? "" : "bg-beige"}`}
                 >
                     <input
                         type="file"
@@ -65,7 +73,15 @@ export const RegisterCard = ({ item, index, handleStepsChange, stepsHandleFileCh
                         className="hidden"
                     ></input>
                     <p>
-                        <img src="images/image16.svg" alt="カメラ" />
+                        {stepImage[index] ? ( // prevImage[index]を使用
+                            <img
+                                src={stepImage[index]} // インデックスに対応する画像を表示
+                                alt="プレビュー"
+                                className="w-full h-full object-cover rounded-lg"
+                            />
+                        ) : (
+                            <img src="images/image16.svg" alt="カメラ" />
+                        )}
                     </p>
                 </label>
                 <label

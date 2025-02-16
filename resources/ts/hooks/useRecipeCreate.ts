@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { PostRecipesResponse } from "../type/recipes"
 import { createState } from "../constants/createState"
 import { useTopGet } from "./useTopGet"
@@ -6,6 +6,14 @@ import { useTopGet } from "./useTopGet"
 export const useRecipeCreate = () => {
     const { setRecipes, setFavoriteRecipes } = useTopGet()
     const [createInputValue, setCreateInputValue] = useState<PostRecipesResponse>(createState)
+    const [prevImage, setPrevImage] = useState<{
+        mainImage: string
+        stepImage: string[]
+    }>({
+        mainImage: "",
+        stepImage: [],
+    })
+    const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
     const addIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -85,9 +93,16 @@ export const useRecipeCreate = () => {
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files } = e.target
-        console.log("name", name, "files", files)
 
         if (files && files.length > 0) {
+            const file = files[0]
+            const fileUrl = URL.createObjectURL(file)
+
+            setPrevImage((prev) => ({
+                ...prev,
+                mainImage: fileUrl,
+            }))
+
             setCreateInputValue((prevState) => ({
                 ...prevState,
                 [name]: files[0],
@@ -97,17 +112,20 @@ export const useRecipeCreate = () => {
 
     const stepsHandleFileChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const { name, files } = e.target
-        console.log("name", name, "files", files)
 
         if (files && files.length > 0) {
             const file = files[0]
+            const fileUrl = URL.createObjectURL(file)
+            setPrevImage((prev) => ({
+                ...prev,
+                stepImage: prev.stepImage && [...prev.stepImage, fileUrl],
+            }))
 
-            // 画像ファイルをステップの特定のインデックスにセット
             setCreateInputValue((prevState) => {
                 const updatedSteps = [...prevState.steps]
                 updatedSteps[index] = {
                     ...updatedSteps[index],
-                    [name]: file, // nameはfile（例えばthumbnail）になる
+                    [name]: file,
                 }
                 return {
                     ...prevState,
@@ -120,6 +138,44 @@ export const useRecipeCreate = () => {
     const CreateRecipeSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
+        const validateForm = () => {
+            const newErrors: { [key: string]: string } = {}
+
+            // 必須項目チェック
+            if (!createInputValue.name) newErrors.name = "名前は必須です"
+            if (!createInputValue.comments) newErrors.comments = "コメントは必須です"
+            if (!createInputValue.thumbnail) newErrors.thumbnail = "サムネイルは必須です"
+            if (createInputValue.calories <= 0)
+                newErrors.calories = "カロリーは0より大きい値を指定してください"
+            if (createInputValue.people <= 0) newErrors.people = "人数は1以上で指定してください"
+
+            // 食材のバリデーション
+            createInputValue.ingredients.forEach((ingredient, index) => {
+                if (!ingredient.name) {
+                    newErrors[`ingredients[${index}][name]`] = "食材名は必須です"
+                }
+                // if (ingredient.calories <= 0) {
+                //     newErrors[`ingredients[${index}][calories]`] = "食材のカロリーは0より大きい値を指定してください"
+                // }
+                // 他のフィールドに対するバリデーションも追加できます
+            })
+
+            // ステップのバリデーション
+            createInputValue.steps.forEach((step, index) => {
+                if (!step.description) {
+                    newErrors[`steps[${index}][description]`] = "ステップの説明は必須です"
+                }
+            })
+
+            setErrors(newErrors)
+
+            // エラーがある場合は送信しない
+            return Object.keys(newErrors).length === 0
+        }
+
+        const isValid = validateForm()
+        if (!isValid) return
+
         const formData = new FormData()
         formData.append("name", createInputValue.name)
         formData.append("comments", createInputValue.comments)
@@ -127,9 +183,7 @@ export const useRecipeCreate = () => {
         formData.append("calories", createInputValue.calories.toString())
         formData.append("people", createInputValue.people.toString())
         formData.append("is_favorite", createInputValue.is_favorite.toString())
-        // formData.append("ingredients", JSON.stringify(createInputValue.ingredients))
 
-        // Ingredients and Steps
         createInputValue.ingredients.map((ingredient, index) => {
             formData.append(`ingredients[${index}][name]`, ingredient.name)
             formData.append(`ingredients[${index}][calories]`, ingredient.calories.toString())
@@ -146,8 +200,6 @@ export const useRecipeCreate = () => {
                 formData.append(`steps[${index}][thumbnail]`, step.thumbnail)
             }
         })
-
-        console.log("post create", formData)
 
         try {
             const res = await fetch(`/api/recipes/`, {
@@ -174,8 +226,13 @@ export const useRecipeCreate = () => {
         }
     }
 
+    useEffect(() => {
+        console.log({ prevImage })
+    }, [])
+
     return {
         createInputValue,
+        prevImage,
         addIngredient,
         addSteps,
         handleIngredientChange,

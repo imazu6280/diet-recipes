@@ -6,6 +6,7 @@ import { useRecipeCreate } from "../hooks/useRecipeCreate"
 export const RecipeCreate = () => {
     const {
         createInputValue,
+        prevImage,
         addIngredient,
         addSteps,
         handleIngredientChange,
@@ -25,7 +26,12 @@ export const RecipeCreate = () => {
         <form id="create" action="" onSubmit={CreateRecipeSubmit}>
             <div className="flex flex-col gap-y-6 w-inner pt-2 mx-auto md:w-full md:gap-y-4">
                 <div className="grid grid-cols-show-column gap-x-6 tablet_md:grid-cols-1 sm:grid-cols-1">
-                    <label htmlFor="mainImage" className="relative h-96 bg-beige rounded-md">
+                    <label
+                        htmlFor="mainImage"
+                        className={`relative w-full rounded-md ${
+                            prevImage.mainImage ? "bg-none" : "h-96 bg-beige"
+                        }`}
+                    >
                         <input
                             type="file"
                             id="mainImage"
@@ -33,17 +39,23 @@ export const RecipeCreate = () => {
                             name="thumbnail"
                             onChange={handleFileChange}
                         />
-                        <div className="absolute top-1/3 left-0 right-0 flex flex-col justify-center gap-y-2 text-center px-4 pointer-events-none">
-                            <p className="w-16 mx-auto ">
-                                <img src="images/image15.png" alt="" />
+                        {prevImage.mainImage ? (
+                            <p className="w-full object-cover rounded-md lg:max-h-96 bg-transparent">
+                                <img src={prevImage.mainImage} alt="" />
                             </p>
-                            <p className="text-lg text-bold text-gray-opacity">
-                                料理の写真をのせる
-                            </p>
-                            <p className="text-sm text-gray-opacity">
-                                オリジナルではないものや料理に関係ない写真はご遠慮ください
-                            </p>
-                        </div>
+                        ) : (
+                            <div className="absolute top-1/3 left-0 right-0 flex flex-col justify-center gap-y-2 text-center px-4 pointer-events-none">
+                                <p className="w-16 mx-auto ">
+                                    <img src="images/image15.png" alt="" />
+                                </p>
+                                <p className="text-lg text-bold text-gray-opacity">
+                                    料理の写真をのせる
+                                </p>
+                                <p className="text-sm text-gray-opacity">
+                                    オリジナルではないものや料理に関係ない写真はご遠慮ください
+                                </p>
+                            </div>
+                        )}
                     </label>
                     <div className="flex flex-col justify-between md:gap-y-4">
                         <div className="flex flex-col gap-y-10 md:gap-y-4 md:px-2 md:py-4 md:bg-white">
@@ -115,6 +127,7 @@ export const RecipeCreate = () => {
                                     key={item.id}
                                     item={item}
                                     index={index}
+                                    stepImage={prevImage.stepImage}
                                     handleStepsChange={handleStepsChange}
                                     stepsHandleFileChange={stepsHandleFileChange}
                                 />
