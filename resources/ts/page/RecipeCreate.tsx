@@ -92,10 +92,10 @@ export const RecipeCreate = () => {
                             <label htmlFor="people">何人分</label>
                             <input
                                 id="people"
-                                type="number"
+                                type="text"
                                 name="people"
                                 placeholder="何人分"
-                                value={createInputValue.people}
+                                value={createInputValue.people ?? ""}
                                 onChange={CreateHandleChange}
                                 className="w-2/4 p-2 break-words bg-beige rounded-md"
                             />

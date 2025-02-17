@@ -4,7 +4,7 @@ export const createState = {
     comments: "",
     thumbnail: "",
     calories: 0,
-    people: "",
+    people: null,
     is_favorite: 0,
     ingredients: [
         {

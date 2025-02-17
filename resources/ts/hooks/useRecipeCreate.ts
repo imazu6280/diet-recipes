@@ -142,15 +142,19 @@ export const useRecipeCreate = () => {
             const newErrors: { [key: string]: string } = {}
 
             // 必須項目チェック
-            if (!createInputValue.name) newErrors.name = "名前は必須です"
+            if (!createInputValue.name) newErrors.name = "料理名は必須です"
             if (!createInputValue.comments) newErrors.comments = "コメントは必須です"
             if (!createInputValue.thumbnail) newErrors.thumbnail = "サムネイルは必須です"
-            if (createInputValue.calories <= 0)
+            if (Number(createInputValue.calories) <= 0) {
                 newErrors.calories = "カロリーは0より大きい値を指定してください"
-            if (createInputValue.people <= 0) newErrors.people = "人数は1以上で指定してください"
+            }
+            if (Number(createInputValue.people) <= 0) {
+                // peopleをnumber型に変換
+                newErrors.people = "人数は1以上で指定してください"
+            }
 
             // 食材のバリデーション
-            createInputValue.ingredients.forEach((ingredient, index) => {
+            createInputValue.ingredients.map((ingredient, index) => {
                 if (!ingredient.name) {
                     newErrors[`ingredients[${index}][name]`] = "食材名は必須です"
                 }
@@ -181,7 +185,7 @@ export const useRecipeCreate = () => {
         formData.append("comments", createInputValue.comments)
         formData.append("thumbnail", createInputValue.thumbnail)
         formData.append("calories", createInputValue.calories.toString())
-        formData.append("people", createInputValue.people.toString())
+        formData.append("people", (createInputValue.people ?? 0).toString())
         formData.append("is_favorite", createInputValue.is_favorite.toString())
 
         createInputValue.ingredients.map((ingredient, index) => {
