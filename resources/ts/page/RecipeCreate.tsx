@@ -7,6 +7,7 @@ export const RecipeCreate = () => {
     const {
         createInputValue,
         prevImage,
+        errors,
         addIngredient,
         addSteps,
         handleIngredientChange,
@@ -81,6 +82,17 @@ export const RecipeCreate = () => {
                                         className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
+                                <ul>
+                                    {errors && (
+                                        <ul>
+                                            {Object.keys(errors).map((key) => (
+                                                <li key={key} className="text-red">
+                                                    {errors[key]}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </ul>
                             </div>
                         </div>
                     </div>

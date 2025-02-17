@@ -20,11 +20,11 @@ export const useRecipeCreate = () => {
         const newIngredient = {
             id: createInputValue.ingredients.length,
             name: "",
-            calories: 0,
-            protein: 0,
-            carbs: 0,
-            fat: 0,
-            quantity: "",
+            calories: null,
+            protein: null,
+            carbs: null,
+            fat: null,
+            quantity: null,
         }
 
         setCreateInputValue((prevRegister) => ({
@@ -68,9 +68,25 @@ export const useRecipeCreate = () => {
             ...newIngredients[index],
             [name]: value,
         }
+
+        const proteinNumber = Number(newIngredients[index].protein) || 0
+        const fatNumber = Number(newIngredients[index].fat) || 0
+        const carbsNumber = Number(newIngredients[index].carbs) || 0
+
+        const caloriesNumber = proteinNumber * 4 + fatNumber * 9 + carbsNumber * 4
+        newIngredients[index].calories = Number(caloriesNumber.toFixed(2))
+
+        const caloriesArray = newIngredients.map((item) => item.calories || 0)
+        let totalCalories = 0
+
+        for (let numberCalories of caloriesArray) {
+            totalCalories += numberCalories
+        }
+
         setCreateInputValue((prevState) => ({
             ...prevState,
             ingredients: newIngredients,
+            calories: totalCalories,
         }))
     }
 
@@ -141,31 +157,20 @@ export const useRecipeCreate = () => {
         const validateForm = () => {
             const newErrors: { [key: string]: string } = {}
 
-            // 必須項目チェック
             if (!createInputValue.name) newErrors.name = "料理名は必須です"
             if (!createInputValue.comments) newErrors.comments = "コメントは必須です"
             if (!createInputValue.thumbnail) newErrors.thumbnail = "サムネイルは必須です"
-            if (Number(createInputValue.calories) <= 0) {
-                newErrors.calories = "カロリーは0より大きい値を指定してください"
-            }
             if (Number(createInputValue.people) <= 0) {
-                // peopleをnumber型に変換
                 newErrors.people = "人数は1以上で指定してください"
             }
 
-            // 食材のバリデーション
             createInputValue.ingredients.map((ingredient, index) => {
                 if (!ingredient.name) {
                     newErrors[`ingredients[${index}][name]`] = "食材名は必須です"
                 }
-                // if (ingredient.calories <= 0) {
-                //     newErrors[`ingredients[${index}][calories]`] = "食材のカロリーは0より大きい値を指定してください"
-                // }
-                // 他のフィールドに対するバリデーションも追加できます
             })
 
-            // ステップのバリデーション
-            createInputValue.steps.forEach((step, index) => {
+            createInputValue.steps.map((step, index) => {
                 if (!step.description) {
                     newErrors[`steps[${index}][description]`] = "ステップの説明は必須です"
                 }
@@ -173,7 +178,6 @@ export const useRecipeCreate = () => {
 
             setErrors(newErrors)
 
-            // エラーがある場合は送信しない
             return Object.keys(newErrors).length === 0
         }
 
@@ -184,17 +188,23 @@ export const useRecipeCreate = () => {
         formData.append("name", createInputValue.name)
         formData.append("comments", createInputValue.comments)
         formData.append("thumbnail", createInputValue.thumbnail)
-        formData.append("calories", createInputValue.calories.toString())
+        formData.append("calories", (createInputValue.calories ?? 0).toString())
         formData.append("people", (createInputValue.people ?? 0).toString())
         formData.append("is_favorite", createInputValue.is_favorite.toString())
 
         createInputValue.ingredients.map((ingredient, index) => {
             formData.append(`ingredients[${index}][name]`, ingredient.name)
-            formData.append(`ingredients[${index}][calories]`, ingredient.calories.toString())
-            formData.append(`ingredients[${index}][protein]`, ingredient.protein.toString())
-            formData.append(`ingredients[${index}][carbs]`, ingredient.carbs.toString())
-            formData.append(`ingredients[${index}][fat]`, ingredient.fat.toString())
-            formData.append(`ingredients[${index}][quantity]`, ingredient.quantity.toString())
+            formData.append(
+                `ingredients[${index}][calories]`,
+                (ingredient.calories ?? 0).toString()
+            )
+            formData.append(`ingredients[${index}][protein]`, (ingredient.protein ?? 0).toString())
+            formData.append(`ingredients[${index}][carbs]`, (ingredient.carbs ?? 0).toString())
+            formData.append(`ingredients[${index}][fat]`, (ingredient.fat ?? 0).toString())
+            formData.append(
+                `ingredients[${index}][quantity]`,
+                (ingredient.quantity ?? 0).toString()
+            )
         })
 
         createInputValue.steps.map((step, index) => {
@@ -231,12 +241,13 @@ export const useRecipeCreate = () => {
     }
 
     useEffect(() => {
-        console.log({ prevImage })
-    }, [])
+        console.log({ createInputValue })
+    }, [createInputValue])
 
     return {
         createInputValue,
         prevImage,
+        errors,
         addIngredient,
         addSteps,
         handleIngredientChange,

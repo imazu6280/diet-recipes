@@ -10,11 +10,11 @@ export const createState = {
         {
             id: 0,
             name: "",
-            calories: 0,
-            protein: 0,
-            carbs: 0,
-            fat: 0,
-            quantity: "",
+            calories: null,
+            protein: null,
+            carbs: null,
+            fat: null,
+            quantity: null,
         },
     ],
     steps: [
