@@ -151,6 +151,59 @@ export const useRecipeCreate = () => {
         }
     }
 
+    const handleDeleteBtn = (id: number, type: string) => {
+        console.log({ id, type })
+
+        if (type === "ingredients" && createInputValue.ingredients.length > 1) {
+            const newIngredients = createInputValue.ingredients.filter(
+                (ingredient) => ingredient.id !== id
+            )
+            console.log("New Ingredients:", newIngredients)
+            setCreateInputValue((prevState) => {
+                console.log("Prev State:", prevState)
+                return {
+                    ...prevState,
+                    ingredients: newIngredients,
+                }
+            })
+        } else if (type === "steps" && createInputValue.steps.length > 1) {
+            const newSteps = createInputValue.steps.filter((steps) => steps.id !== id)
+            const updatedSteps = newSteps.map((step, index) => ({
+                ...step,
+                step_number: index + 1,
+            }))
+            setCreateInputValue((prevState) => {
+                return {
+                    ...prevState,
+                    steps: updatedSteps,
+                }
+            })
+        }
+
+        // setCreateInputValue((prevState) => {
+        //     console.log({ prevState })
+        //     if (type === "ingredient") {
+        //         const newIngredients = prevState.ingredients.filter(
+        //             (ingredient) => ingredient.id !== id
+        //         )
+        //         return {
+        //             ...prevState,
+        //             ingredients: newIngredients,
+        //         }
+        //     } else {
+        //         return {
+        //             ...prevState,
+        //             steps: prevState.steps
+        //                 .filter((step) => step.id !== id)
+        //                 .map((step, index) => ({
+        //                     ...step,
+        //                     step_number: index + 1, // 削除後の `step_number` を再調整
+        //                 })),
+        //         }
+        //     }
+        // })
+    }
+
     const CreateRecipeSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
@@ -254,6 +307,7 @@ export const useRecipeCreate = () => {
         handleStepsChange,
         handleFileChange,
         stepsHandleFileChange,
+        handleDeleteBtn,
         CreateRecipeSubmit,
         CreateHandleChange,
     }

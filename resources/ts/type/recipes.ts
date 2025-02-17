@@ -29,7 +29,7 @@ export type recipeSchema = {
     comments: string
     steps: GetStepsResponse
     thumbnail: string | File
-    calories: number | null
+    calories: number
     people: number | null
     is_favorite: boolean | number
     created_at: string

@@ -13,6 +13,7 @@ export const RecipeCreate = () => {
         handleIngredientChange,
         handleStepsChange,
         handleFileChange,
+        handleDeleteBtn,
         stepsHandleFileChange,
         CreateRecipeSubmit,
         CreateHandleChange,
@@ -25,7 +26,7 @@ export const RecipeCreate = () => {
 
     return (
         <form id="create" action="" onSubmit={CreateRecipeSubmit}>
-            <div className="flex flex-col gap-y-6 w-inner pt-2 mx-auto md:w-full md:gap-y-4">
+            <div className="flex flex-col gap-y-6 w-inner mx-auto lg:pt-2 md:w-full md:gap-y-4">
                 <div className="grid grid-cols-show-column gap-x-6 tablet_md:grid-cols-1 sm:grid-cols-1">
                     <label
                         htmlFor="mainImage"
@@ -41,7 +42,7 @@ export const RecipeCreate = () => {
                             onChange={handleFileChange}
                         />
                         {prevImage.mainImage ? (
-                            <p className="w-full object-cover rounded-md lg:max-h-96 bg-transparent">
+                            <p className="w-full object-cover rounded-md lg:max-h-96 bg-white">
                                 <img src={prevImage.mainImage} alt="" />
                             </p>
                         ) : (
@@ -119,6 +120,7 @@ export const RecipeCreate = () => {
                                     item={item}
                                     index={index}
                                     handleIngredientChange={handleIngredientChange}
+                                    handleDeleteBtn={handleDeleteBtn}
                                 />
                             )
                         })}
@@ -142,6 +144,7 @@ export const RecipeCreate = () => {
                                     stepImage={prevImage.stepImage}
                                     handleStepsChange={handleStepsChange}
                                     stepsHandleFileChange={stepsHandleFileChange}
+                                    handleDeleteBtn={handleDeleteBtn}
                                 />
                             ))}
                         </ul>

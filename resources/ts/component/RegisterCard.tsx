@@ -17,6 +17,7 @@ type Props = {
         index: number
     ) => void
     stepsHandleFileChange: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
+    handleDeleteBtn: (id: number, type: string) => void
 }
 
 const stepDelete = [
@@ -30,6 +31,7 @@ export const RegisterCard = ({
     stepImage,
     handleStepsChange,
     stepsHandleFileChange,
+    handleDeleteBtn,
 }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
 
@@ -54,6 +56,9 @@ export const RegisterCard = ({
                                     text={item.text}
                                     image=""
                                     index={index}
+                                    id={item.id}
+                                    type="steps"
+                                    handleDeleteBtn={handleDeleteBtn}
                                 />
                             ))}
                     </ul>
@@ -104,7 +109,14 @@ export const RegisterCard = ({
                     <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
                         {open.deleteOpen &&
                             stepDelete.map((item) => (
-                                <DeleteMenuButton text={item.text} image="" index={0} />
+                                <DeleteMenuButton
+                                    text={item.text}
+                                    image=""
+                                    index={0}
+                                    id={item.id}
+                                    type="steps"
+                                    handleDeleteBtn={handleDeleteBtn}
+                                />
                             ))}
                     </ul>
                 )}

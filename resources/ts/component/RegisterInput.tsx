@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useMenu } from "../hooks/useMenu"
 import { DeleteMenuButton } from "./DeleteMenuButton"
 import { IngredientSchema } from "../type/recipes"
+import { useRecipeCreate } from "../hooks/useRecipeCreate"
 
 type Props = {
     item: Omit<IngredientSchema, "created_at" | "updated_at">
@@ -11,9 +12,10 @@ type Props = {
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         index: number
     ) => void
+    handleDeleteBtn: (id: number, type: string) => void
 }
 
-export const RegisterInput = ({ item, index, handleIngredientChange }: Props) => {
+export const RegisterInput = ({ item, index, handleIngredientChange, handleDeleteBtn }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
 
     return (
@@ -36,7 +38,7 @@ export const RegisterInput = ({ item, index, handleIngredientChange }: Props) =>
                 <label>
                     <input
                         id={`quantity-${item.id}`}
-                        type="text"
+                        type="number"
                         name="quantity"
                         placeholder="20(g)"
                         value={item.quantity ?? ""}
@@ -44,20 +46,28 @@ export const RegisterInput = ({ item, index, handleIngredientChange }: Props) =>
                         className="w-full p-2 break-words bg-beige rounded-md"
                     />
                 </label>
-                <p onClick={toggleDeleteOpen} className="relative">
+                <div onClick={toggleDeleteOpen} className="relative">
                     <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                     {open.deleteOpen && (
                         <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
-                            <DeleteMenuButton text="材料を削除する" image="" index={0} />
+                            <DeleteMenuButton
+                                text="材料を削除する"
+                                image=""
+                                index={0}
+                                id={item.id}
+                                type="ingredients"
+                                handleDeleteBtn={handleDeleteBtn}
+                            />
+                            {/* <li onClick={() => handleDeleteBtn(item.id, "ingredients")}>削除</li> */}
                         </ul>
                     )}
-                </p>
+                </div>
             </div>
             <div className="grid grid-cols-3 gap-2">
                 <label>
                     <input
                         id={`protein-${item.id}`}
-                        type="text"
+                        type="number"
                         name="protein"
                         placeholder="P(g)"
                         value={item.protein ?? ""}
@@ -68,7 +78,7 @@ export const RegisterInput = ({ item, index, handleIngredientChange }: Props) =>
                 <label>
                     <input
                         id={`fat-${item.id}`}
-                        type="text"
+                        type="number"
                         name="fat"
                         placeholder="F(g)"
                         value={item.fat ?? ""}
@@ -79,7 +89,7 @@ export const RegisterInput = ({ item, index, handleIngredientChange }: Props) =>
                 <label>
                     <input
                         id={`carbs-${item.id}`}
-                        type="text"
+                        type="number"
                         name="carbs"
                         placeholder="C(g)"
                         value={item.carbs ?? ""}
