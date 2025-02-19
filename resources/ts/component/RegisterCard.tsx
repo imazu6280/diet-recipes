@@ -18,6 +18,7 @@ type Props = {
     ) => void
     stepsHandleFileChange: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
     handleDeleteBtn: (id: number, type: string) => void
+    addSteps: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void
 }
 
 const stepDelete = [
@@ -32,6 +33,7 @@ export const RegisterCard = ({
     handleStepsChange,
     stepsHandleFileChange,
     handleDeleteBtn,
+    addSteps,
 }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
 
@@ -99,7 +101,7 @@ export const RegisterCard = ({
                         value={item.description}
                         onChange={(e) => handleStepsChange(e, index)}
                         placeholder="鶏胸肉を一口サイズにカットする"
-                        className="w-full p-2 bg-beige"
+                        className="w-full p-2 lg:text-sm bg-beige"
                     ></textarea>
                 </label>
             </div>
@@ -110,12 +112,14 @@ export const RegisterCard = ({
                         {open.deleteOpen &&
                             stepDelete.map((item) => (
                                 <DeleteMenuButton
+                                    key={item.id}
                                     text={item.text}
                                     image=""
                                     index={0}
                                     id={item.id}
                                     type="steps"
                                     handleDeleteBtn={handleDeleteBtn}
+                                    addSteps={addSteps}
                                 />
                             ))}
                     </ul>

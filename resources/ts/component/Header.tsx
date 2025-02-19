@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
 import { DeleteMenuButton } from "./DeleteMenuButton"
+import { sideLink } from "../constants/sideLink"
 import { useRecipeCreate } from "../hooks/useRecipeCreate"
 
 const headerLogo = {
@@ -17,30 +18,33 @@ const headerLogo = {
 
 export const Header = () => {
     const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu()
+    const { createInputValue, favoriteToggleBtn } = useRecipeCreate()
     const location = useLocation()
     const isLocationCreate = location.pathname === "/create"
 
     return isLocationCreate ? (
         <header className="sticky top-0 z-30">
             <div className="p-2 flex justify-end gap-x-4 bg-white z-10 md:hidden">
-                <p>
-                    <Button
-                        isIcon="images/trash-red.svg"
-                        alt="削除"
-                        text="削除"
-                        color={buttonColors.red}
-                        width="w-40"
-                        type="button"
-                    />
-                </p>
-
                 <Button
-                    isIcon=""
-                    alt="保存して確認"
-                    text="保存して確認"
-                    color={buttonColors.gray}
+                    isIcon="images/trash-red.svg"
+                    alt="削除"
+                    text="削除"
+                    color={buttonColors.red}
                     width="w-40"
                     type="button"
+                />
+                <Button
+                    isIcon={sideLink[0].icon}
+                    alt="お気に入り"
+                    text="お気に入り"
+                    color={`${
+                        createInputValue.is_favorite === 0
+                            ? buttonColors.gray
+                            : buttonColors.bgOrange
+                    }`}
+                    width="w-40"
+                    type="button"
+                    favoriteToggleBtn={favoriteToggleBtn}
                 />
                 <Button
                     isIcon=""
@@ -68,7 +72,7 @@ export const Header = () => {
                         <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                         {open.deleteOpen && (
                             <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-sm">
-                                <DeleteMenuButton text="削除" image="images/trash.svg" index={0} />
+                                {/* <DeleteMenuButton text="削除" image="images/trash.svg" index={0} /> */}
                             </ul>
                         )}
                     </p>

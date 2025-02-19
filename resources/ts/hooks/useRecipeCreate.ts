@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { PostRecipesResponse } from "../type/recipes"
 import { createState } from "../constants/createState"
 import { useTopGet } from "./useTopGet"
@@ -33,7 +33,7 @@ export const useRecipeCreate = () => {
         }))
     }
 
-    const addSteps = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const addSteps = (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => {
         e.preventDefault()
         const newSteps = {
             id: createInputValue.steps.length,
@@ -151,16 +151,19 @@ export const useRecipeCreate = () => {
         }
     }
 
-    const handleDeleteBtn = (id: number, type: string) => {
-        console.log({ id, type })
+    const favoriteToggleBtn = () => {
+        setCreateInputValue((prev) => ({
+            ...prev,
+            is_favorite: prev.is_favorite === 1 ? 0 : 1,
+        }))
+    }
 
+    const handleDeleteBtn = (id: number, type: string) => {
         if (type === "ingredients" && createInputValue.ingredients.length > 1) {
             const newIngredients = createInputValue.ingredients.filter(
                 (ingredient) => ingredient.id !== id
             )
-            console.log("New Ingredients:", newIngredients)
             setCreateInputValue((prevState) => {
-                console.log("Prev State:", prevState)
                 return {
                     ...prevState,
                     ingredients: newIngredients,
@@ -179,29 +182,6 @@ export const useRecipeCreate = () => {
                 }
             })
         }
-
-        // setCreateInputValue((prevState) => {
-        //     console.log({ prevState })
-        //     if (type === "ingredient") {
-        //         const newIngredients = prevState.ingredients.filter(
-        //             (ingredient) => ingredient.id !== id
-        //         )
-        //         return {
-        //             ...prevState,
-        //             ingredients: newIngredients,
-        //         }
-        //     } else {
-        //         return {
-        //             ...prevState,
-        //             steps: prevState.steps
-        //                 .filter((step) => step.id !== id)
-        //                 .map((step, index) => ({
-        //                     ...step,
-        //                     step_number: index + 1, // 削除後の `step_number` を再調整
-        //                 })),
-        //         }
-        //     }
-        // })
     }
 
     const CreateRecipeSubmit = async (e: React.FormEvent) => {
@@ -217,17 +197,17 @@ export const useRecipeCreate = () => {
                 newErrors.people = "人数は1以上で指定してください"
             }
 
-            createInputValue.ingredients.map((ingredient, index) => {
-                if (!ingredient.name) {
-                    newErrors[`ingredients[${index}][name]`] = "食材名は必須です"
-                }
-            })
+            const firstIngredientError = createInputValue.ingredients.find(
+                (ingredient) => !ingredient.name
+            )
+            if (firstIngredientError) {
+                newErrors["ingredients"] = "食材名は必須です"
+            }
 
-            createInputValue.steps.map((step, index) => {
-                if (!step.description) {
-                    newErrors[`steps[${index}][description]`] = "ステップの説明は必須です"
-                }
-            })
+            const firstStepError = createInputValue.steps.find((step) => !step.description)
+            if (firstStepError) {
+                newErrors["steps"] = "ステップの説明は必須です"
+            }
 
             setErrors(newErrors)
 
@@ -293,10 +273,6 @@ export const useRecipeCreate = () => {
         }
     }
 
-    useEffect(() => {
-        console.log({ createInputValue })
-    }, [createInputValue])
-
     return {
         createInputValue,
         prevImage,
@@ -308,6 +284,7 @@ export const useRecipeCreate = () => {
         handleFileChange,
         stepsHandleFileChange,
         handleDeleteBtn,
+        favoriteToggleBtn,
         CreateRecipeSubmit,
         CreateHandleChange,
     }

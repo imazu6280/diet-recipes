@@ -2,6 +2,9 @@ import { RegisterCard } from "../component/RegisterCard"
 import { RegisterInput } from "../component/RegisterInput"
 import { placeHolderType } from "../type/placeholder"
 import { useRecipeCreate } from "../hooks/useRecipeCreate"
+import { Button } from "../component/Button"
+import { sideLink } from "../constants/sideLink"
+import { buttonColors } from "../constants/buttonColors"
 
 export const RecipeCreate = () => {
     const {
@@ -15,6 +18,7 @@ export const RecipeCreate = () => {
         handleFileChange,
         handleDeleteBtn,
         stepsHandleFileChange,
+        favoriteToggleBtn,
         CreateRecipeSubmit,
         CreateHandleChange,
     } = useRecipeCreate()
@@ -83,9 +87,22 @@ export const RecipeCreate = () => {
                                         className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
-                                <ul>
+                                <div className="flex justify-between gap-y-4 md:flex-col">
+                                    <Button
+                                        isIcon={sideLink[0].icon}
+                                        alt="お気に入り登録"
+                                        text="お気に入り"
+                                        color={`${
+                                            createInputValue.is_favorite === 0
+                                                ? buttonColors.gray
+                                                : buttonColors.bgOrange
+                                        }`}
+                                        width="w-40"
+                                        type="button"
+                                        favoriteToggleBtn={favoriteToggleBtn}
+                                    />
                                     {errors && (
-                                        <ul>
+                                        <ul className="flex flex-col gap-y-1">
                                             {Object.keys(errors).map((key) => (
                                                 <li key={key} className="text-red">
                                                     {errors[key]}
@@ -93,7 +110,7 @@ export const RecipeCreate = () => {
                                             ))}
                                         </ul>
                                     )}
-                                </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -105,9 +122,10 @@ export const RecipeCreate = () => {
                             <label htmlFor="people">何人分</label>
                             <input
                                 id="people"
-                                type="text"
+                                type="number"
                                 name="people"
                                 placeholder="何人分"
+                                min={0}
                                 value={createInputValue.people ?? ""}
                                 onChange={CreateHandleChange}
                                 className="w-2/4 p-2 break-words bg-beige rounded-md"
@@ -145,6 +163,7 @@ export const RecipeCreate = () => {
                                     handleStepsChange={handleStepsChange}
                                     stepsHandleFileChange={stepsHandleFileChange}
                                     handleDeleteBtn={handleDeleteBtn}
+                                    addSteps={addSteps}
                                 />
                             ))}
                         </ul>
