@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ingredient;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-
 
 class RecipeController extends Controller
 {
@@ -14,7 +15,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = Recipe::all();
+        $recipes = Recipe::with('steps')->get();
         return response()->json($recipes);
     }
 
@@ -31,38 +32,85 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        // バリデーションルール
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'comments' => 'nullable|string',
-            // 'thumbnail' => 'nullable|file',
-            'calories' => 'nullable|integer',
-            'people' => 'nullable|integer',
-            'is_favorite' => 'nullable|boolean',
-            'ingredients' => 'required|array',
-            'steps' => 'required|array',
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'comments' => 'nullable|string',
+                'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
+                'calories' => 'required|integer',
+                'people' => 'required|integer',
+                'is_favorite' => 'required|boolean',
+                'ingredients' => 'required|array',
+                'steps' => 'required|array',
+                // 'steps.*.thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed', ['errors' => $e->errors()]);
+            return response()->json(['errors' => $e->errors()], 422);
+        }
+
+
+        // S3にアップロード
+        $thumbnail = $request->file('thumbnail');
+        $path = $thumbnail->store('recipe-thumbnails', 's3');
+
+        // アップロードした画像のURLを取得
+        $url = Storage::disk('s3')->url($path);
+
+
+        // レシピの保存
+        $recipe = Recipe::create([
+            'name' => $validatedData['name'],
+            'comments' => $validatedData['comments'],
+            'thumbnail' => $url,
+            'calories' => $validatedData['calories'],
+            'people' => $validatedData['people'],
+            'is_favorite' => $validatedData['is_favorite'],
         ]);
 
-        // $filePath = null;
-        // if ($request->hasFile('thumbnail')) {
-        //     $filePath = $request->file('thumbnail')->store('thumbnails', 'public');
-        // }
+        // ingredientsのリレーションを保存
+        foreach ($validatedData['ingredients'] as $ingredientData) {
+            // 食材の名前と数量などの詳細情報を保存
+            $ingredient = Ingredient::updateOrCreate(
+                ['name' => $ingredientData['name']],  // 検索条件
+                [ // 更新または作成するデータ
+                    'fat' => $ingredientData['fat'],
+                    'carbs' => $ingredientData['carbs'],
+                    'protein' => $ingredientData['protein'],
+                    'calories' => $ingredientData['calories'],
+                ]
+            );
 
-        // レシピの保存
-        $recipe = new Recipe();
-        $recipe->name = $validatedData['name'];
-        $recipe->comments = $validatedData['comments'];
-        // $recipe->thumbnail = $filePath ?? null;
-        $recipe->calories = $validatedData['calories'];
-        $recipe->people = $validatedData['people'];
-        $recipe->is_favorite = $validatedData['is_favorite'];
-        $recipe->ingredients = $validatedData['ingredients'];
-        $recipe->steps = $validatedData['steps'];
+            // リレーションに追加
+            $recipe->ingredients()->attach($ingredient->id, [
+                'quantity' => $ingredientData['quantity'], // 例えば食材に対する量
+            ]);
+        }
 
-        // レシピの保存
-        $recipe->save();
 
-        return response()->json(['message' => 'Recipe created successfully', 'recipe' => $recipe], 201);
+        // ステップの保存
+        foreach ($validatedData['steps'] as $stepData) {
+
+            $stepPath = $stepData['thumbnail']->store('step-thumbnails', 's3');
+
+            $stepData['thumbnail'] = Storage::disk('s3')->url($stepPath);
+
+            // ステップを作成
+            $step = $recipe->steps()->create([
+                'step_number' => $stepData['step_number'],
+                'description' => $stepData['description'],
+                'thumbnail' => $stepData['thumbnail'],
+            ]);
+
+        }
+
+
+        return response()->json([
+            'recipe' => $recipe,
+            'ingredients' => $recipe->ingredients,
+            'steps' => $step,
+        ], 201);
     }
 
 
@@ -135,7 +183,9 @@ class RecipeController extends Controller
 
     public function favorites()
     {
-        $favoriteRecipes = Recipe::where('is_favorite', 1)->get();
+        $favoriteRecipes = Recipe::with('steps')
+        ->where('is_favorite', 1)
+        ->get();
 
         return response()->json($favoriteRecipes);
     }

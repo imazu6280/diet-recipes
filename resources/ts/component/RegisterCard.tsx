@@ -8,13 +8,17 @@ type Props = {
         id: number
         step_number: number
         description: string
-        // thumbnail: string
+        thumbnail: string | File
     }
     index: number
+    stepImage: string[]
     handleStepsChange: (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         index: number
     ) => void
+    stepsHandleFileChange: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
+    handleDeleteBtn: (id: number, type: string) => void
+    addSteps: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void
 }
 
 const stepDelete = [
@@ -22,7 +26,15 @@ const stepDelete = [
     { id: 1, text: "作り方を削除" },
 ]
 
-export const RegisterCard = ({ item, index, handleStepsChange }: Props) => {
+export const RegisterCard = ({
+    item,
+    index,
+    stepImage,
+    handleStepsChange,
+    stepsHandleFileChange,
+    handleDeleteBtn,
+    addSteps,
+}: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
 
     return (
@@ -46,36 +58,50 @@ export const RegisterCard = ({ item, index, handleStepsChange }: Props) => {
                                     text={item.text}
                                     image=""
                                     index={index}
+                                    id={item.id}
+                                    type="steps"
+                                    handleDeleteBtn={handleDeleteBtn}
                                 />
                             ))}
                     </ul>
                 </div>
             </div>
             <div className="flex flex-col gap-y-2 w-full md:flex-col-reverse">
-                {/* <label
-                    htmlFor="thumbnail"
-                    className="flex flex-col justify-center items-center aspect-5/4 bg-beige rounded-lg md:w-28"
+                <label
+                    htmlFor={`thumbnail-${index}`}
+                    className={`flex flex-col justify-center items-center aspect-5/4 rounded-lg md:w-28
+         ${stepImage[index] ? "" : "bg-beige"}`}
                 >
                     <input
                         type="file"
                         name="thumbnail"
-                        id="thumbnail"
-                        // value={item.thumbnail}
-                        // onChange={(e) => handleStepsChange(e, index)}
+                        id={`thumbnail-${index}`}
+                        onChange={(e) => stepsHandleFileChange(e, index)}
                         className="hidden"
                     ></input>
                     <p>
-                        <img src="images/image16.svg" alt="カメラ" />
+                        {stepImage[index] ? ( // prevImage[index]を使用
+                            <img
+                                src={stepImage[index]} // インデックスに対応する画像を表示
+                                alt="プレビュー"
+                                className="w-full h-full object-cover rounded-lg"
+                            />
+                        ) : (
+                            <img src="images/image16.svg" alt="カメラ" />
+                        )}
                     </p>
-                </label> */}
-                <label htmlFor="description" className="w-full px-2 py-4 bg-beige rounded-md">
+                </label>
+                <label
+                    htmlFor={`description-${index}`}
+                    className="w-full px-2 py-4 bg-beige rounded-md"
+                >
                     <textarea
                         name="description"
-                        id="description"
+                        id={`description-${index}`}
                         value={item.description}
                         onChange={(e) => handleStepsChange(e, index)}
                         placeholder="鶏胸肉を一口サイズにカットする"
-                        className="w-full p-2 bg-beige"
+                        className="w-full p-2 lg:text-sm bg-beige"
                     ></textarea>
                 </label>
             </div>
@@ -85,7 +111,16 @@ export const RegisterCard = ({ item, index, handleStepsChange }: Props) => {
                     <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
                         {open.deleteOpen &&
                             stepDelete.map((item) => (
-                                <DeleteMenuButton text={item.text} image="" index={0} />
+                                <DeleteMenuButton
+                                    key={item.id}
+                                    text={item.text}
+                                    image=""
+                                    index={0}
+                                    id={item.id}
+                                    type="steps"
+                                    handleDeleteBtn={handleDeleteBtn}
+                                    addSteps={addSteps}
+                                />
                             ))}
                     </ul>
                 )}
