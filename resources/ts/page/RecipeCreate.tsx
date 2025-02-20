@@ -1,10 +1,13 @@
 import { RegisterCard } from "../component/RegisterCard"
-import { RegisterInput } from "../component/RegisterInput"
+// import { RegisterInput } from "../component/RegisterInput"
 import { placeHolderType } from "../type/placeholder"
 import { useRecipeCreate } from "../hooks/useRecipeCreate"
 import { Button } from "../component/Button"
 import { sideLink } from "../constants/sideLink"
 import { buttonColors } from "../constants/buttonColors"
+import { DndContext } from "@dnd-kit/core"
+import { SortableContext } from "@dnd-kit/sortable"
+import { RegisterInput } from "../component/RegisterInput"
 
 export const RecipeCreate = () => {
     const {
@@ -19,6 +22,8 @@ export const RecipeCreate = () => {
         handleDeleteBtn,
         stepsHandleFileChange,
         favoriteToggleBtn,
+        handleIngredientsDrag,
+        handleStepDrag,
         CreateRecipeSubmit,
         CreateHandleChange,
     } = useRecipeCreate()
@@ -101,11 +106,11 @@ export const RecipeCreate = () => {
                                         type="button"
                                         favoriteToggleBtn={favoriteToggleBtn}
                                     />
-                                    {errors && (
+                                    {errors.length > 0 && (
                                         <ul className="flex flex-col gap-y-1">
-                                            {Object.keys(errors).map((key) => (
-                                                <li key={key} className="text-red">
-                                                    {errors[key]}
+                                            {errors.map((message, index) => (
+                                                <li key={index} className="text-red">
+                                                    {message}
                                                 </li>
                                             ))}
                                         </ul>
@@ -131,17 +136,29 @@ export const RecipeCreate = () => {
                                 className="w-2/4 p-2 break-words bg-beige rounded-md"
                             />
                         </div>
-                        {createInputValue.ingredients.map((item, index) => {
-                            return (
-                                <RegisterInput
-                                    key={item.id}
-                                    item={item}
-                                    index={index}
-                                    handleIngredientChange={handleIngredientChange}
-                                    handleDeleteBtn={handleDeleteBtn}
-                                />
-                            )
-                        })}
+                        <DndContext onDragEnd={handleIngredientsDrag}>
+                            <SortableContext items={createInputValue.ingredients}>
+                                {createInputValue.ingredients.map((item, index) => {
+                                    return (
+                                        // <Draggable
+                                        //     key={item.id}
+                                        //     id={item.id}
+                                        //     index={index}
+                                        //     item={item}
+                                        //     handleIngredientChange={handleIngredientChange}
+                                        //     handleDeleteBtn={handleDeleteBtn}
+                                        // />
+                                        <RegisterInput
+                                            key={item.id}
+                                            item={item}
+                                            index={index}
+                                            handleIngredientChange={handleIngredientChange}
+                                            handleDeleteBtn={handleDeleteBtn}
+                                        />
+                                    )
+                                })}
+                            </SortableContext>
+                        </DndContext>
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
                             type="button"
@@ -154,18 +171,22 @@ export const RecipeCreate = () => {
                     <div className="flex flex-col gap-y-4 md:bg-white md:pt-4 md:pb-8 md:p-2-auto">
                         <h3 className="text-2xl font-bold">作り方</h3>
                         <ul className="grid grid-cols-4 gap-x-4 gap-y-10 pc_sm:grid-cols-2 tablet_md:grid-cols-1 sm:grid-cols-1">
-                            {createInputValue.steps.map((item, index) => (
-                                <RegisterCard
-                                    key={item.id}
-                                    item={item}
-                                    index={index}
-                                    stepImage={prevImage.stepImage}
-                                    handleStepsChange={handleStepsChange}
-                                    stepsHandleFileChange={stepsHandleFileChange}
-                                    handleDeleteBtn={handleDeleteBtn}
-                                    addSteps={addSteps}
-                                />
-                            ))}
+                            <DndContext onDragEnd={handleStepDrag}>
+                                <SortableContext items={createInputValue.steps}>
+                                    {createInputValue.steps.map((item, index) => (
+                                        <RegisterCard
+                                            key={item.id}
+                                            item={item}
+                                            index={index}
+                                            stepImage={prevImage.stepImage}
+                                            handleStepsChange={handleStepsChange}
+                                            stepsHandleFileChange={stepsHandleFileChange}
+                                            handleDeleteBtn={handleDeleteBtn}
+                                            addSteps={addSteps}
+                                        />
+                                    ))}
+                                </SortableContext>
+                            </DndContext>
                         </ul>
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"

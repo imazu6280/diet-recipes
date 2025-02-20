@@ -71,20 +71,18 @@ class RecipeController extends Controller
 
         // ingredientsのリレーションを保存
         foreach ($validatedData['ingredients'] as $ingredientData) {
-            // 食材の名前と数量などの詳細情報を保存
+
+            // 食材の作成または更新
             $ingredient = Ingredient::updateOrCreate(
-                ['name' => $ingredientData['name']],  // 検索条件
-                [ // 更新または作成するデータ
-                    'fat' => $ingredientData['fat'],
-                    'carbs' => $ingredientData['carbs'],
-                    'protein' => $ingredientData['protein'],
-                    'calories' => $ingredientData['calories'],
-                ]
+                ['name' => $ingredientData['name']]
             );
 
-            // リレーションに追加
             $recipe->ingredients()->attach($ingredient->id, [
-                'quantity' => $ingredientData['quantity'], // 例えば食材に対する量
+                'fat' => $ingredientData['fat'],
+                'carbs' => $ingredientData['carbs'],
+                'protein' => $ingredientData['protein'],
+                'calories' => $ingredientData['calories'],
+                'quantity' => $ingredientData['quantity'],
             ]);
         }
 

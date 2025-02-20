@@ -4,6 +4,8 @@ import { useMenu } from "../hooks/useMenu"
 import { DeleteMenuButton } from "./DeleteMenuButton"
 import { IngredientSchema } from "../type/recipes"
 import { useRecipeCreate } from "../hooks/useRecipeCreate"
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 
 type Props = {
     item: Omit<IngredientSchema, "created_at" | "updated_at">
@@ -18,10 +20,17 @@ type Props = {
 export const RegisterInput = ({ item, index, handleIngredientChange, handleDeleteBtn }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
 
+    const { attributes, listeners, setNodeRef, transform } = useSortable({
+        id: item.id,
+    })
+    const style = {
+        transform: CSS.Transform.toString(transform),
+    }
+
     return (
-        <div className="flex flex-col gap-y-2">
+        <div ref={setNodeRef} style={style} className="flex flex-col gap-y-2">
             <div className="grid grid-cols-create-ingredient-column gap-x-2 items-center">
-                <p>
+                <p {...listeners} {...attributes}>
                     <img src="images/bars.svg" alt="" />
                 </p>
                 <label>

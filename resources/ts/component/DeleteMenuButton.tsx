@@ -6,6 +6,7 @@ type Props = {
     type: string
     handleDeleteBtn: (id: number, type: string) => void
     addSteps?: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void
+    step_number?: number
 }
 
 export const DeleteMenuButton = ({
@@ -16,6 +17,7 @@ export const DeleteMenuButton = ({
     type,
     handleDeleteBtn,
     addSteps,
+    step_number,
 }: Props) => {
     return (
         <>
@@ -23,9 +25,16 @@ export const DeleteMenuButton = ({
                 className={`relative flex items-center gap-x-2 w-40 p-2 text-gray-opacity border-gray-opacity border-1 bg-white z-50 first:rounded-t-modal last-of-type:rounded-b-modal hover:bg-beige
                     ${index > 0 && "border-t-0 rounded-t-none"}
                     ${index === length + 1 && "rounded-b-modal rounded-t-none"}`}
-                onClick={(e) =>
-                    text === "作り方を追加" && addSteps ? addSteps(e) : handleDeleteBtn(id, type)
-                }
+                onClick={(e) => {
+                    if (text === "作り方を追加" && addSteps) {
+                        addSteps(e)
+                    } else {
+                        const deleteByStepNumber = text === "作り方を削除"
+                        const idOrStep: number =
+                            deleteByStepNumber && step_number !== undefined ? step_number : id
+                        handleDeleteBtn(idOrStep, type)
+                    }
+                }}
             >
                 {image && (
                     <p className="w-5 h-5">

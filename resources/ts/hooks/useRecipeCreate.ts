@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import { PostRecipesResponse } from "../type/recipes"
 import { createState } from "../constants/createState"
 import { useTopGet } from "./useTopGet"
+import { DragEndEvent } from "@dnd-kit/core"
+import { arrayMove } from "@dnd-kit/sortable"
 
 export const useRecipeCreate = () => {
     const { setRecipes, setFavoriteRecipes } = useTopGet()
@@ -13,7 +15,7 @@ export const useRecipeCreate = () => {
         mainImage: "",
         stepImage: [],
     })
-    const [errors, setErrors] = useState<{ [key: string]: string }>({})
+    const [errors, setErrors] = useState<string[]>([])
 
     const addIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -132,10 +134,14 @@ export const useRecipeCreate = () => {
         if (files && files.length > 0) {
             const file = files[0]
             const fileUrl = URL.createObjectURL(file)
-            setPrevImage((prev) => ({
-                ...prev,
-                stepImage: prev.stepImage && [...prev.stepImage, fileUrl],
-            }))
+            setPrevImage((prev) => {
+                const updatedStepImages = [...prev.stepImage]
+                updatedStepImages[index] = fileUrl
+                return {
+                    ...prev,
+                    stepImage: updatedStepImages,
+                }
+            })
 
             setCreateInputValue((prevState) => {
                 const updatedSteps = [...prevState.steps]
@@ -170,48 +176,101 @@ export const useRecipeCreate = () => {
                 }
             })
         } else if (type === "steps" && createInputValue.steps.length > 1) {
-            const newSteps = createInputValue.steps.filter((steps) => steps.id !== id)
+            const newSteps = createInputValue.steps.filter((step) => step.step_number !== id)
+
+            const newImages = prevImage.stepImage.filter((_, index) => index !== id - 1)
             const updatedSteps = newSteps.map((step, index) => ({
                 ...step,
                 step_number: index + 1,
             }))
-            setCreateInputValue((prevState) => {
-                return {
-                    ...prevState,
-                    steps: updatedSteps,
-                }
-            })
+
+            setCreateInputValue((prevState) => ({
+                ...prevState,
+                steps: updatedSteps,
+            }))
+
+            setPrevImage((prev) => ({
+                ...prev,
+                stepImage: newImages,
+            }))
         }
+    }
+
+    const handleIngredientsDrag = (e: DragEndEvent) => {
+        const { active, over } = e
+        if (!active || !over || active.id === over.id) return
+
+        const oldIndex = createInputValue.ingredients.findIndex((item) => item.id === active.id)
+        const newIndex = createInputValue.ingredients.findIndex((item) => item.id === over.id)
+
+        if (oldIndex === -1 || newIndex === -1) return
+
+        const newIngredients = arrayMove(createInputValue.ingredients, oldIndex, newIndex)
+
+        setCreateInputValue((prevState) => ({
+            ...prevState,
+            ingredients: newIngredients,
+        }))
+    }
+
+    const handleStepDrag = (e: DragEndEvent) => {
+        const { active, over } = e
+
+        if (!active || !over || active.id === over.id) return
+
+        const oldIndex = createInputValue.steps.findIndex((item) => item.id === active.id)
+        const newIndex = createInputValue.steps.findIndex((item) => item.id === over.id)
+
+        if (oldIndex === -1 || newIndex === -1) return
+
+        const newSteps = arrayMove(createInputValue.steps, oldIndex, newIndex)
+
+        const updatedSteps = newSteps.map((step, index) => ({
+            ...step,
+            step_number: index + 1,
+        }))
+
+        const newImages = arrayMove(prevImage.stepImage, oldIndex, newIndex)
+
+        setCreateInputValue((prevState) => ({
+            ...prevState,
+            steps: updatedSteps,
+        }))
+
+        setPrevImage((prev) => ({
+            ...prev,
+            stepImage: newImages,
+        }))
     }
 
     const CreateRecipeSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
         const validateForm = () => {
-            const newErrors: { [key: string]: string } = {}
+            let newErrors: string[] = []
 
-            if (!createInputValue.name) newErrors.name = "料理名は必須です"
-            if (!createInputValue.comments) newErrors.comments = "コメントは必須です"
-            if (!createInputValue.thumbnail) newErrors.thumbnail = "サムネイルは必須です"
+            if (!createInputValue.name) newErrors = [...newErrors, "料理名は必須です"]
+            if (!createInputValue.comments) newErrors = [...newErrors, "コメントは必須です"]
+            if (!createInputValue.thumbnail) newErrors = [...newErrors, "サムネイルは必須です"]
             if (Number(createInputValue.people) <= 0) {
-                newErrors.people = "人数は1以上で指定してください"
+                newErrors = [...newErrors, "人数は1以上で指定してください"]
             }
 
             const firstIngredientError = createInputValue.ingredients.find(
                 (ingredient) => !ingredient.name
             )
             if (firstIngredientError) {
-                newErrors["ingredients"] = "食材名は必須です"
+                newErrors = [...newErrors, "食材名は必須です"]
             }
 
             const firstStepError = createInputValue.steps.find((step) => !step.description)
             if (firstStepError) {
-                newErrors["steps"] = "ステップの説明は必須です"
+                newErrors = [...newErrors, "ステップの説明は必須です"]
             }
 
             setErrors(newErrors)
 
-            return Object.keys(newErrors).length === 0
+            return newErrors.length === 0
         }
 
         const isValid = validateForm()
@@ -284,6 +343,8 @@ export const useRecipeCreate = () => {
         handleFileChange,
         stepsHandleFileChange,
         handleDeleteBtn,
+        handleIngredientsDrag,
+        handleStepDrag,
         favoriteToggleBtn,
         CreateRecipeSubmit,
         CreateHandleChange,

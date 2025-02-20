@@ -12,7 +12,7 @@ class Recipe extends Model
     public function ingredients()
     {
         return $this->belongsToMany(Ingredient::class, 'recipe_ingredient')
-                    ->withPivot('quantity') // 中間テーブルのカラムを追加
+        ->withPivot('fat', 'carbs', 'protein', 'calories','quantity') // 中間テーブルのカラムを追加
                     ->withTimestamps();
     }
 
