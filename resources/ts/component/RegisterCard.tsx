@@ -2,6 +2,8 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useMenu } from "../hooks/useMenu"
 import { DeleteMenuButton } from "./DeleteMenuButton"
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 
 type Props = {
     item: {
@@ -36,15 +38,25 @@ export const RegisterCard = ({
     addSteps,
 }: Props) => {
     const { open, toggleDeleteOpen } = useMenu()
+    const { attributes, listeners, setNodeRef, transform } = useSortable({
+        id: item.id,
+    })
+    const style = {
+        transform: CSS.Transform.toString(transform),
+    }
 
     return (
-        <li className="flex flex-col gap-y-2 md:gap-x-4 md:flex-row md:items-start md:justify-between">
+        <li
+            ref={setNodeRef}
+            style={style}
+            className="flex flex-col gap-y-2 md:gap-x-4 md:flex-row md:items-start md:justify-between"
+        >
             <div className="flex justify-between">
                 <div className="flex items-center gap-x-2 md:gap-y-2 md:flex-col">
                     <span className="block w-6 h-6 text-center text-white bg-black rounded-full">
                         {item.step_number}
                     </span>
-                    <div>
+                    <div {...listeners} {...attributes}>
                         <img src="images/bars.svg" alt="" />
                     </div>
                 </div>
@@ -52,24 +64,26 @@ export const RegisterCard = ({
                     <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                     <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
                         {open.deleteOpen &&
-                            stepDelete.map((item, index) => (
+                            stepDelete.map((items, index) => (
                                 <DeleteMenuButton
                                     key={index}
-                                    text={item.text}
+                                    text={items.text}
                                     image=""
                                     index={index}
-                                    id={item.id}
+                                    id={items.id}
                                     type="steps"
                                     handleDeleteBtn={handleDeleteBtn}
+                                    addSteps={addSteps}
+                                    step_number={item.step_number}
                                 />
                             ))}
                     </ul>
                 </div>
             </div>
-            <div className="flex flex-col gap-y-2 w-full md:flex-col-reverse">
+            <div className="flex flex-col gap-y-2 w-full">
                 <label
                     htmlFor={`thumbnail-${index}`}
-                    className={`flex flex-col justify-center items-center aspect-5/4 rounded-lg md:w-28
+                    className={`flex flex-col justify-center items-center aspect-5/4 rounded-lg
          ${stepImage[index] ? "" : "bg-beige"}`}
                 >
                     <input
@@ -110,16 +124,17 @@ export const RegisterCard = ({
                 {open.deleteOpen && (
                     <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
                         {open.deleteOpen &&
-                            stepDelete.map((item) => (
+                            stepDelete.map((items) => (
                                 <DeleteMenuButton
-                                    key={item.id}
-                                    text={item.text}
+                                    key={items.id}
+                                    text={items.text}
                                     image=""
                                     index={0}
-                                    id={item.id}
+                                    id={items.id}
                                     type="steps"
                                     handleDeleteBtn={handleDeleteBtn}
                                     addSteps={addSteps}
+                                    step_number={item.step_number}
                                 />
                             ))}
                     </ul>
