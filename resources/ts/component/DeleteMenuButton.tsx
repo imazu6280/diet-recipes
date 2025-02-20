@@ -29,11 +29,10 @@ export const DeleteMenuButton = ({
                     if (text === "作り方を追加" && addSteps) {
                         addSteps(e)
                     } else {
-                        // id または step_number を使い分ける
-                        const deleteByStepNumber = text === "作り方を削除" // 例えば削除時に step_number を使用する場合
+                        const deleteByStepNumber = text === "作り方を削除"
                         const idOrStep: number =
                             deleteByStepNumber && step_number !== undefined ? step_number : id
-                        handleDeleteBtn(idOrStep, type) // どちらかを渡す
+                        handleDeleteBtn(idOrStep, type)
                     }
                 }}
             >
