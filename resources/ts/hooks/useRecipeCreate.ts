@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { PostRecipesResponse } from "../type/recipes"
 import { createState } from "../constants/createState"
 import { useTopGet } from "./useTopGet"
@@ -186,12 +186,12 @@ export const useRecipeCreate = () => {
 
             setCreateInputValue((prevState) => ({
                 ...prevState,
-                steps: updatedSteps, // 手順番号を再計算して更新
+                steps: updatedSteps,
             }))
 
             setPrevImage((prev) => ({
                 ...prev,
-                stepImage: newImages, // サムネイルも更新
+                stepImage: newImages,
             }))
         }
     }
@@ -331,10 +331,6 @@ export const useRecipeCreate = () => {
             console.error("post error!!", error)
         }
     }
-
-    useEffect(() => {
-        console.log({ createInputValue })
-    }, [createInputValue])
 
     return {
         createInputValue,
