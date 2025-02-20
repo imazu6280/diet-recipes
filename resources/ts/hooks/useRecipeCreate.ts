@@ -176,8 +176,9 @@ export const useRecipeCreate = () => {
                 }
             })
         } else if (type === "steps" && createInputValue.steps.length > 1) {
-            const newSteps = createInputValue.steps.filter((steps) => steps.id !== id)
+            const newSteps = createInputValue.steps.filter((step) => step.step_number !== id)
 
+            const newImages = prevImage.stepImage.filter((_, index) => index !== id - 1)
             const updatedSteps = newSteps.map((step, index) => ({
                 ...step,
                 step_number: index + 1,
@@ -186,6 +187,11 @@ export const useRecipeCreate = () => {
             setCreateInputValue((prevState) => ({
                 ...prevState,
                 steps: updatedSteps, // 手順番号を再計算して更新
+            }))
+
+            setPrevImage((prev) => ({
+                ...prev,
+                stepImage: newImages, // サムネイルも更新
             }))
         }
     }
