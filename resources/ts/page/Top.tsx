@@ -88,7 +88,7 @@ export const Top = () => {
                                 <li
                                     className="pt-16 pb-2 px-4 text-white font-bold shadow-black rounded-lg bg-top bg-cover bg-no-repeat"
                                     style={{
-                                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${item.thumbnail})`,
+                                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${item.thumbnail})`,
                                     }}
                                 >
                                     {item.name}
@@ -107,8 +107,10 @@ export const Top = () => {
                             <Link to={`show/${item.id}`} key={item.id}>
                                 <li key={item.id} className="bg-white shadow-black rounded-lg">
                                     <div
-                                        className="pt-20 pb-4 px-4 rounded-t-lg bg-center bg-cover bg-no-repeat"
-                                        style={{ backgroundImage: `url(${item.thumbnail})` }}
+                                        className="pt-20 pb-4 px-4 rounded-t-lg bg-top bg-cover bg-no-repeat"
+                                        style={{
+                                            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3)), url(${item.thumbnail})`,
+                                        }}
                                     >
                                         <p className="text-white font-bold">{item.name}</p>
                                         <p className="pt-0.5 text-xs font-light text-white">
