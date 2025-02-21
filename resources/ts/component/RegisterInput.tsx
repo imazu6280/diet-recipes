@@ -50,7 +50,7 @@ export const RegisterInput = ({ item, index, handleIngredientChange, handleDelet
                         type="number"
                         name="quantity"
                         placeholder="20(g)"
-                        value={item.quantity ?? ""}
+                        value={item.pivot.quantity ?? ""}
                         onChange={(e) => handleIngredientChange(e, index)}
                         className="w-full p-2 break-words bg-beige rounded-md"
                     />
@@ -79,7 +79,7 @@ export const RegisterInput = ({ item, index, handleIngredientChange, handleDelet
                         type="number"
                         name="protein"
                         placeholder="P(g)"
-                        value={item.protein ?? ""}
+                        value={item.pivot.protein ?? ""}
                         onChange={(e) => handleIngredientChange(e, index)}
                         className="w-full p-2 break-words bg-beige rounded-md"
                     />
@@ -90,7 +90,7 @@ export const RegisterInput = ({ item, index, handleIngredientChange, handleDelet
                         type="number"
                         name="fat"
                         placeholder="F(g)"
-                        value={item.fat ?? ""}
+                        value={item.pivot.fat ?? ""}
                         onChange={(e) => handleIngredientChange(e, index)}
                         className="w-full p-2 break-words bg-beige rounded-md"
                     />
@@ -101,7 +101,7 @@ export const RegisterInput = ({ item, index, handleIngredientChange, handleDelet
                         type="number"
                         name="carbs"
                         placeholder="C(g)"
-                        value={item.carbs ?? ""}
+                        value={item.pivot.carbs ?? ""}
                         onChange={(e) => handleIngredientChange(e, index)}
                         className="w-full p-2 break-words bg-beige rounded-md"
                     />

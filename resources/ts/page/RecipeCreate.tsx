@@ -1,5 +1,5 @@
 import { RegisterCard } from "../component/RegisterCard"
-// import { RegisterInput } from "../component/RegisterInput"
+import { RegisterInput } from "../component/RegisterInput"
 import { placeHolderType } from "../type/placeholder"
 import { useRecipeCreate } from "../hooks/useRecipeCreate"
 import { Button } from "../component/Button"
@@ -7,7 +7,6 @@ import { sideLink } from "../constants/sideLink"
 import { buttonColors } from "../constants/buttonColors"
 import { DndContext } from "@dnd-kit/core"
 import { SortableContext } from "@dnd-kit/sortable"
-import { RegisterInput } from "../component/RegisterInput"
 
 export const RecipeCreate = () => {
     const {

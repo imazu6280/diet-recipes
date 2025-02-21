@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { PostRecipesResponse } from "../type/recipes"
 import { createState } from "../constants/createState"
 import { useTopGet } from "./useTopGet"
@@ -22,11 +22,13 @@ export const useRecipeCreate = () => {
         const newIngredient = {
             id: createInputValue.ingredients.length,
             name: "",
-            calories: null,
-            protein: null,
-            carbs: null,
-            fat: null,
-            quantity: null,
+            pivot: {
+                calories: null,
+                protein: null,
+                carbs: null,
+                fat: null,
+                quantity: null,
+            },
         }
 
         setCreateInputValue((prevRegister) => ({
@@ -64,21 +66,34 @@ export const useRecipeCreate = () => {
         index: number
     ) => {
         const { name, value } = e.target
+        const numericValue = ["quantity", "protein", "fat", "carbs"].includes(name)
+            ? Number(value) || 0
+            : value
 
         const newIngredients = [...createInputValue.ingredients]
-        newIngredients[index] = {
-            ...newIngredients[index],
-            [name]: value,
+        if (name === "name") {
+            newIngredients[index] = {
+                ...newIngredients[index],
+                [name]: value,
+            }
+        } else {
+            newIngredients[index] = {
+                ...newIngredients[index],
+                pivot: {
+                    ...newIngredients[index].pivot,
+                    [name]: numericValue,
+                },
+            }
         }
 
-        const proteinNumber = Number(newIngredients[index].protein) || 0
-        const fatNumber = Number(newIngredients[index].fat) || 0
-        const carbsNumber = Number(newIngredients[index].carbs) || 0
+        const proteinNumber = Number(newIngredients[index].pivot.protein) || 0
+        const fatNumber = Number(newIngredients[index].pivot.fat) || 0
+        const carbsNumber = Number(newIngredients[index].pivot.carbs) || 0
 
         const caloriesNumber = proteinNumber * 4 + fatNumber * 9 + carbsNumber * 4
-        newIngredients[index].calories = Number(caloriesNumber.toFixed(2))
+        newIngredients[index].pivot.calories = Number(caloriesNumber.toFixed(2))
 
-        const caloriesArray = newIngredients.map((item) => item.calories || 0)
+        const caloriesArray = newIngredients.map((item) => item.pivot.calories || 0)
         let totalCalories = 0
 
         for (let numberCalories of caloriesArray) {
@@ -288,14 +303,20 @@ export const useRecipeCreate = () => {
             formData.append(`ingredients[${index}][name]`, ingredient.name)
             formData.append(
                 `ingredients[${index}][calories]`,
-                (ingredient.calories ?? 0).toString()
+                (ingredient.pivot.calories ?? 0).toString()
             )
-            formData.append(`ingredients[${index}][protein]`, (ingredient.protein ?? 0).toString())
-            formData.append(`ingredients[${index}][carbs]`, (ingredient.carbs ?? 0).toString())
-            formData.append(`ingredients[${index}][fat]`, (ingredient.fat ?? 0).toString())
+            formData.append(
+                `ingredients[${index}][protein]`,
+                (ingredient.pivot.protein ?? 0).toString()
+            )
+            formData.append(
+                `ingredients[${index}][carbs]`,
+                (ingredient.pivot.carbs ?? 0).toString()
+            )
+            formData.append(`ingredients[${index}][fat]`, (ingredient.pivot.fat ?? 0).toString())
             formData.append(
                 `ingredients[${index}][quantity]`,
-                (ingredient.quantity ?? 0).toString()
+                (ingredient.pivot.quantity ?? 0).toString()
             )
         })
 
@@ -331,6 +352,10 @@ export const useRecipeCreate = () => {
             console.error("post error!!", error)
         }
     }
+
+    useEffect(() => {
+        console.log({ createInputValue })
+    }, [createInputValue])
 
     return {
         createInputValue,

@@ -10,11 +10,13 @@ export const createState = {
         {
             id: 0,
             name: "",
-            calories: null,
-            protein: null,
-            carbs: null,
-            fat: null,
-            quantity: null,
+            pivot: {
+                calories: null,
+                protein: null,
+                carbs: null,
+                fat: null,
+                quantity: null,
+            },
         },
     ],
     steps: [

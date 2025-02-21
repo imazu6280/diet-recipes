@@ -10,6 +10,7 @@ export const useTopGet = () => {
             const res = await fetch("/api/recipes")
             const json = await res.json()
             setRecipes(json)
+            console.log({ json })
         } catch (error) {
             console.error("recipe get error", error)
         }
