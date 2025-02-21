@@ -34,19 +34,6 @@ export const Header = () => {
                     type="button"
                 />
                 <Button
-                    isIcon={sideLink[0].icon}
-                    alt="お気に入り"
-                    text="お気に入り"
-                    color={`${
-                        createInputValue.is_favorite === 0
-                            ? buttonColors.gray
-                            : buttonColors.bgOrange
-                    }`}
-                    width="w-40"
-                    type="button"
-                    favoriteToggleBtn={favoriteToggleBtn}
-                />
-                <Button
                     isIcon=""
                     alt="公開する"
                     text="公開する"
