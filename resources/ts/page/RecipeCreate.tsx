@@ -91,10 +91,10 @@ export const RecipeCreate = () => {
                                         className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
-                                <div className="flex gap-y-4 flex-col">
+                                <div className="flex justify-between gap-y-4 md:flex-col">
                                     <Button
                                         isIcon={sideLink[0].icon}
-                                        alt="お気に入り"
+                                        alt="お気に入り登録"
                                         text="お気に入り"
                                         color={`${
                                             createInputValue.is_favorite === 0
