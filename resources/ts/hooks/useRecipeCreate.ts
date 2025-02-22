@@ -4,8 +4,13 @@ import { createState } from "../constants/createState"
 import { useTopGet } from "./useTopGet"
 import { DragEndEvent } from "@dnd-kit/core"
 import { arrayMove } from "@dnd-kit/sortable"
+import { useDispatch, useSelector } from "react-redux"
+import { toggleFavorite } from "../redux/favoriteToggleSlice"
+import { RootState } from "../redux/store"
 
 export const useRecipeCreate = () => {
+    const dispatch = useDispatch()
+    const isFavorite = useSelector((state: RootState) => state.favorite.is_favorite)
     const { setRecipes, setFavoriteRecipes } = useTopGet()
     const [createInputValue, setCreateInputValue] = useState<PostRecipesResponse>(createState)
     const [prevImage, setPrevImage] = useState<{
@@ -173,9 +178,10 @@ export const useRecipeCreate = () => {
     }
 
     const favoriteToggleBtn = () => {
+        dispatch(toggleFavorite())
         setCreateInputValue((prev) => ({
             ...prev,
-            is_favorite: prev.is_favorite === 1 ? 0 : 1,
+            is_favorite: isFavorite === 1 ? 0 : 1,
         }))
     }
 
@@ -297,7 +303,7 @@ export const useRecipeCreate = () => {
         formData.append("thumbnail", createInputValue.thumbnail)
         formData.append("calories", (createInputValue.calories ?? 0).toString())
         formData.append("people", (createInputValue.people ?? 0).toString())
-        formData.append("is_favorite", createInputValue.is_favorite.toString())
+        formData.append("is_favorite", isFavorite.toString())
 
         createInputValue.ingredients.map((ingredient, index) => {
             formData.append(`ingredients[${index}][name]`, ingredient.name)

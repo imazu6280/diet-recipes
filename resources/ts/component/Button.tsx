@@ -24,7 +24,9 @@ export const Button = ({
 }: Props) => {
     return (
         <button
-            className={`border- flex gap-x-1 justify-center items-center py-2 px-4 rounded-lg ${color} ${width}`}
+            className={`border- flex gap-x-1 justify-center items-center py-2 px-4 rounded-lg ${color} ${width} ${
+                alt === "お気に入り登録" && "pc_sm:hidden lg:hidden"
+            }`}
             type={type}
             {...(formId && { form: formId })}
             onClick={favoriteToggleBtn}

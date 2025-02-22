@@ -9,6 +9,8 @@ import { useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
 import { DeleteMenuButton } from "./DeleteMenuButton"
+import { sideLink } from "../constants/sideLink"
+import { useRecipeCreate } from "../hooks/useRecipeCreate"
 
 const headerLogo = {
     logo: "DIET-RECIPES",
@@ -16,7 +18,7 @@ const headerLogo = {
 
 export const Header = () => {
     const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu()
-
+    const { createInputValue, favoriteToggleBtn } = useRecipeCreate()
     const location = useLocation()
     const isLocationCreate = location.pathname === "/create"
 
@@ -30,6 +32,19 @@ export const Header = () => {
                     color={buttonColors.red}
                     width="w-40"
                     type="button"
+                />
+                <Button
+                    isIcon={sideLink[0].icon}
+                    alt="お気に入り"
+                    text="お気に入り"
+                    color={`${
+                        createInputValue.is_favorite === 0
+                            ? buttonColors.gray
+                            : buttonColors.bgOrange
+                    }`}
+                    width="w-40"
+                    type="button"
+                    favoriteToggleBtn={favoriteToggleBtn}
                 />
                 <Button
                     isIcon=""
