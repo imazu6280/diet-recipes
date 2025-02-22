@@ -21,6 +21,7 @@ export const useDetailGet = () => {
     useEffect(() => {
         if (id) {
             GetRecipesDetailApi(Number(id))
+            console.log({ recipesDetail })
         }
     }, [id])
 

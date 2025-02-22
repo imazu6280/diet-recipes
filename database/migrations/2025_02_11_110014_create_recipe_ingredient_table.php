@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('carbs')->default(0); // 炭水化物
             $table->integer('protein')->default(0); // タンパク質
             $table->integer('calories')->default(0); // カロリー
-            $table->decimal('quantity', 8, 2); // 食材の量（gや個数）
+            $table->integer('quantity')->default(0); // 食材の量（gや個数）
             $table->timestamps(); // created_at / updated_at
         });
     }

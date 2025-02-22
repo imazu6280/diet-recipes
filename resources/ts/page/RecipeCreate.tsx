@@ -1,5 +1,5 @@
 import { RegisterCard } from "../component/RegisterCard"
-// import { RegisterInput } from "../component/RegisterInput"
+import { RegisterInput } from "../component/RegisterInput"
 import { placeHolderType } from "../type/placeholder"
 import { useRecipeCreate } from "../hooks/useRecipeCreate"
 import { Button } from "../component/Button"
@@ -7,7 +7,6 @@ import { sideLink } from "../constants/sideLink"
 import { buttonColors } from "../constants/buttonColors"
 import { DndContext } from "@dnd-kit/core"
 import { SortableContext } from "@dnd-kit/sortable"
-import { RegisterInput } from "../component/RegisterInput"
 
 export const RecipeCreate = () => {
     const {
@@ -92,10 +91,10 @@ export const RecipeCreate = () => {
                                         className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
-                                <div className="flex justify-between gap-y-4 md:flex-col">
+                                <div className="flex gap-y-4 flex-col">
                                     <Button
                                         isIcon={sideLink[0].icon}
-                                        alt="お気に入り登録"
+                                        alt="お気に入り"
                                         text="お気に入り"
                                         color={`${
                                             createInputValue.is_favorite === 0
@@ -140,14 +139,6 @@ export const RecipeCreate = () => {
                             <SortableContext items={createInputValue.ingredients}>
                                 {createInputValue.ingredients.map((item, index) => {
                                     return (
-                                        // <Draggable
-                                        //     key={item.id}
-                                        //     id={item.id}
-                                        //     index={index}
-                                        //     item={item}
-                                        //     handleIngredientChange={handleIngredientChange}
-                                        //     handleDeleteBtn={handleDeleteBtn}
-                                        // />
                                         <RegisterInput
                                             key={item.id}
                                             item={item}
