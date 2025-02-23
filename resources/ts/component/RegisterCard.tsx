@@ -1,32 +1,35 @@
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useMenu } from "../hooks/useMenu"
-import { DeleteMenuButton } from "./DeleteMenuButton"
-import { useSortable } from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMenu } from "../hooks/useMenu";
+import { DeleteMenuButton } from "./DeleteMenuButton";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type Props = {
     item: {
-        id: number
-        step_number: number
-        description: string
-        thumbnail: string | File
-    }
-    index: number
-    stepImage: string[]
+        id: number;
+        step_number: number;
+        description: string;
+        thumbnail: string | File;
+    };
+    index: number;
+    stepImage: string[];
     handleStepsChange: (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         index: number
-    ) => void
-    stepsHandleFileChange: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
-    handleDeleteBtn: (id: number, type: string) => void
-    addSteps: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void
-}
+    ) => void;
+    stepsHandleFileChange: (
+        e: React.ChangeEvent<HTMLInputElement>,
+        index: number
+    ) => void;
+    handleDeleteBtn: (id: number, type: string) => void;
+    addSteps: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void;
+};
 
 const stepDelete = [
     { id: 0, text: "作り方を追加" },
     { id: 1, text: "作り方を削除" },
-]
+];
 
 export const RegisterCard = ({
     item,
@@ -37,13 +40,13 @@ export const RegisterCard = ({
     handleDeleteBtn,
     addSteps,
 }: Props) => {
-    const { open, toggleDeleteOpen } = useMenu()
+    const { open, toggleDeleteOpen } = useMenu();
     const { attributes, listeners, setNodeRef, transform } = useSortable({
         id: item.id,
-    })
+    });
     const style = {
         transform: CSS.Transform.toString(transform),
-    }
+    };
 
     return (
         <li
@@ -57,7 +60,7 @@ export const RegisterCard = ({
                         {item.step_number}
                     </span>
                     <div {...listeners} {...attributes}>
-                        <img src="images/bars.svg" alt="" />
+                        <img src="/images/bars.svg" alt="" />
                     </div>
                 </div>
                 <div className="relative md:hidden" onClick={toggleDeleteOpen}>
@@ -101,7 +104,7 @@ export const RegisterCard = ({
                                 className="w-full h-full object-cover rounded-lg"
                             />
                         ) : (
-                            <img src="images/image16.svg" alt="カメラ" />
+                            <img src="/images/image16.svg" alt="カメラ" />
                         )}
                     </p>
                 </label>
@@ -119,7 +122,10 @@ export const RegisterCard = ({
                     ></textarea>
                 </label>
             </div>
-            <div className="relative hidden md:block" onClick={toggleDeleteOpen}>
+            <div
+                className="relative hidden md:block"
+                onClick={toggleDeleteOpen}
+            >
                 <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
                 {open.deleteOpen && (
                     <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-lg">
@@ -141,5 +147,5 @@ export const RegisterCard = ({
                 )}
             </div>
         </li>
-    )
-}
+    );
+};

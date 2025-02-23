@@ -1,11 +1,11 @@
-import { sideLink } from "../constants/sideLink"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { sideLink } from "../constants/text";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type Props = {
     open: {
-        sideOpen: boolean
-    }
-}
+        sideOpen: boolean;
+    };
+};
 
 export const Navbar = ({ open }: Props) => {
     return (
@@ -26,13 +26,18 @@ export const Navbar = ({ open }: Props) => {
                 {sideLink.map((item) => (
                     <li
                         key={item.id}
-                        className={`mr-1 tb:text-sm ${item.id === 0 && "text-orange"}`}
+                        className={`mr-1 tb:text-sm ${
+                            item.id === 0 && "text-orange"
+                        }`}
                     >
-                        <FontAwesomeIcon icon={item.icon} style={{ marginRight: "10px" }} />
+                        <FontAwesomeIcon
+                            icon={item.icon}
+                            style={{ marginRight: "10px" }}
+                        />
                         {item.label}
                     </li>
                 ))}
             </ul>
         </nav>
-    )
-}
+    );
+};

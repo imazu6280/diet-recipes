@@ -1,17 +1,18 @@
-import React from "react"
-import { createRoot } from "react-dom/client"
-import { Sidebar } from "./component/Sidebar"
-import { Top } from "./page/Top"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Header } from "./component/Header"
-import { Footer } from "./component/Footer"
-import { RecipeDetail } from "./page/RecipeDetail"
-import { RecipeCreate } from "./page/RecipeCreate"
-import { Provider } from "react-redux"
-import { store } from "./redux/store"
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { Sidebar } from "./component/Sidebar";
+import { Top } from "./page/Top";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Header } from "./component/Header";
+import { Footer } from "./component/Footer";
+import { RecipeDetail } from "./page/RecipeDetail";
+import { RecipeCreate } from "./page/RecipeCreate";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import { RecipeEdit } from "./page/RecipeEdit";
 
-const container = document.getElementById("app")
-const root = createRoot(container!) // createRoot(container!) if you use TypeScript
+const container = document.getElementById("app");
+const root = createRoot(container!); // createRoot(container!) if you use TypeScript
 
 root.render(
     <React.StrictMode>
@@ -24,8 +25,18 @@ root.render(
                         <div className="pl-4 pr-6 tb:px-0">
                             <Routes>
                                 <Route path="/" element={<Top />} />
-                                <Route path="/show/:id" element={<RecipeDetail />} />
-                                <Route path="/create" element={<RecipeCreate />} />
+                                <Route
+                                    path="/show/:id"
+                                    element={<RecipeDetail />}
+                                />
+                                <Route
+                                    path="/create"
+                                    element={<RecipeCreate />}
+                                />
+                                <Route
+                                    path="/edit/:id"
+                                    element={<RecipeEdit />}
+                                />
                             </Routes>
                         </div>
                         <Footer />
@@ -34,4 +45,4 @@ root.render(
             </BrowserRouter>
         </Provider>
     </React.StrictMode>
-)
+);
