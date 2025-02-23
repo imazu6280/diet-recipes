@@ -1,37 +1,42 @@
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useMenu } from "../hooks/useMenu"
-import { DeleteMenuButton } from "./DeleteMenuButton"
-import { IngredientSchema } from "../type/recipes"
-import { useRecipeCreate } from "../hooks/useRecipeCreate"
-import { useSortable } from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMenu } from "../hooks/useMenu";
+import { DeleteMenuButton } from "./DeleteMenuButton";
+import { IngredientSchema } from "../type/recipes";
+import { useRecipeCreate } from "../hooks/useRecipeCreate";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type Props = {
-    item: Omit<IngredientSchema, "created_at" | "updated_at">
-    index: number
+    item: Omit<IngredientSchema, "created_at" | "updated_at">;
+    index: number;
     handleIngredientChange: (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         index: number
-    ) => void
-    handleDeleteBtn: (id: number, type: string) => void
-}
+    ) => void;
+    handleDeleteBtn: (id: number, type: string) => void;
+};
 
-export const RegisterInput = ({ item, index, handleIngredientChange, handleDeleteBtn }: Props) => {
-    const { open, toggleDeleteOpen } = useMenu()
+export const RegisterInput = ({
+    item,
+    index,
+    handleIngredientChange,
+    handleDeleteBtn,
+}: Props) => {
+    const { open, toggleDeleteOpen } = useMenu();
 
     const { attributes, listeners, setNodeRef, transform } = useSortable({
         id: item.id,
-    })
+    });
     const style = {
         transform: CSS.Transform.toString(transform),
-    }
+    };
 
     return (
         <div ref={setNodeRef} style={style} className="flex flex-col gap-y-2">
             <div className="grid grid-cols-create-ingredient-column gap-x-2 items-center">
                 <p {...listeners} {...attributes}>
-                    <img src="images/bars.svg" alt="" />
+                    <img src="/images/bars.svg" alt="" />
                 </p>
                 <label>
                     <input
@@ -108,5 +113,5 @@ export const RegisterInput = ({ item, index, handleIngredientChange, handleDelet
                 </label>
             </div>
         </div>
-    )
-}
+    );
+};

@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { sideLink } from "../constants/sideLink"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { sideLink } from "../constants/text";
 
 export const Sidebar = () => {
     return (
@@ -14,13 +14,18 @@ export const Sidebar = () => {
                 {sideLink.map((item) => (
                     <li
                         key={item.id}
-                        className={`mr-1 tb:text-sm ${item.id === 0 && "text-orange"}`}
+                        className={`mr-1 tb:text-sm ${
+                            item.id === 0 && "text-orange"
+                        }`}
                     >
-                        <FontAwesomeIcon icon={item.icon} style={{ marginRight: "10px" }} />
+                        <FontAwesomeIcon
+                            icon={item.icon}
+                            style={{ marginRight: "10px" }}
+                        />
                         {item.label}
                     </li>
                 ))}
             </ul>
         </nav>
-    )
-}
+    );
+};

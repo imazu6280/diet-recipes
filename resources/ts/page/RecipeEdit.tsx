@@ -1,6 +1,5 @@
 import { RegisterCard } from "../component/RegisterCard";
 import { RegisterInput } from "../component/RegisterInput";
-import { placeHolderType } from "../type/placeholder";
 import { useRecipeCreate } from "../hooks/useRecipeCreate";
 import { Button } from "../component/Button";
 import { placeholderString, sideLink } from "../constants/text";
@@ -8,7 +7,7 @@ import { buttonColors } from "../constants/buttonColors";
 import { DndContext } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 
-export const RecipeCreate = () => {
+export const RecipeEdit = () => {
     const {
         createInputValue,
         prevImage,
@@ -28,7 +27,7 @@ export const RecipeCreate = () => {
     } = useRecipeCreate();
 
     return (
-        <form id="create" action="" onSubmit={CreateRecipeSubmit}>
+        <form id="edit" action="" onSubmit={CreateRecipeSubmit}>
             <div className="flex flex-col gap-y-6 w-inner mx-auto lg:pt-2 md:w-full md:gap-y-4">
                 <div className="grid grid-cols-show-column gap-x-6 tablet_md:grid-cols-1 sm:grid-cols-1">
                     <label
@@ -51,7 +50,7 @@ export const RecipeCreate = () => {
                         ) : (
                             <div className="absolute top-1/3 left-0 right-0 flex flex-col justify-center gap-y-2 text-center px-4 pointer-events-none">
                                 <p className="w-16 mx-auto ">
-                                    <img src="images/image15.png" alt="" />
+                                    <img src="/images/image15.png" alt="" />
                                 </p>
                                 <p className="text-lg text-bold text-gray-opacity">
                                     料理の写真をのせる
@@ -161,7 +160,7 @@ export const RecipeCreate = () => {
                             type="button"
                             onClick={(e) => addIngredient(e)}
                         >
-                            <img src="images/plus.svg" alt="プラス" />
+                            <img src="/images/plus.svg" alt="プラス" />
                             <span>材料</span>
                         </button>
                     </div>
@@ -198,7 +197,7 @@ export const RecipeCreate = () => {
                             type="button"
                             onClick={(e) => addSteps(e)}
                         >
-                            <img src="images/plus.svg" alt="プラス" />
+                            <img src="/images/plus.svg" alt="プラス" />
                             <span>作り方</span>
                         </button>
                     </div>

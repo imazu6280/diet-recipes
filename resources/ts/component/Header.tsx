@@ -1,38 +1,41 @@
-import { SearchInput } from "./SearchInput"
-import { Button } from "./Button"
-import { buttonColors } from "../constants/buttonColors"
-import { useMenu } from "../hooks/useMenu"
-import { SideMenuType } from "../type/sideMenu"
-import { MenuButton } from "./MenuButton"
-import { Navbar } from "./Navbar"
-import { useLocation } from "react-router-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
-import { DeleteMenuButton } from "./DeleteMenuButton"
-import { sideLink } from "../constants/sideLink"
-import { useRecipeCreate } from "../hooks/useRecipeCreate"
+import { SearchInput } from "./SearchInput";
+import { Button } from "./Button";
+import { buttonColors } from "../constants/buttonColors";
+import { useMenu } from "../hooks/useMenu";
+import { SideMenuType } from "../type/sideMenu";
+import { MenuButton } from "./MenuButton";
+import { Navbar } from "./Navbar";
+import { useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { DeleteMenuButton } from "./DeleteMenuButton";
+import { sideLink } from "../constants/text";
+import { useRecipeCreate } from "../hooks/useRecipeCreate";
 
 const headerLogo = {
     logo: "DIET-RECIPES",
-}
+};
 
 export const Header = () => {
-    const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu()
-    const { createInputValue, favoriteToggleBtn } = useRecipeCreate()
-    const location = useLocation()
-    const isLocationCreate = location.pathname === "/create"
+    const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu();
+    const { createInputValue, favoriteToggleBtn } = useRecipeCreate();
+    const location = useLocation();
+    const isLocation = location.pathname === "/create" || "/edit";
+    const isLocationEdit = location.pathname.includes("/edit/");
 
-    return isLocationCreate ? (
+    return isLocation ? (
         <header className="sticky top-0 z-30">
             <div className="p-2 flex justify-end gap-x-4 bg-white z-10 md:hidden">
-                <Button
-                    isIcon="images/trash-red.svg"
-                    alt="削除"
-                    text="削除"
-                    color={buttonColors.red}
-                    width="w-40"
-                    type="button"
-                />
+                {isLocationEdit && (
+                    <Button
+                        isIcon="/images/trash-red.svg"
+                        alt="削除"
+                        text="削除"
+                        color={buttonColors.red}
+                        width="w-40"
+                        type="button"
+                    />
+                )}
                 <Button
                     isIcon={sideLink[0].icon}
                     alt="お気に入り"
@@ -68,14 +71,23 @@ export const Header = () => {
                         type="submit"
                         formId="create"
                     />
-                    <p onClick={toggleDeleteOpen} className="relative">
-                        <FontAwesomeIcon icon={faEllipsis} className="text-gray" />
+                    <div onClick={toggleDeleteOpen} className="relative">
+                        <FontAwesomeIcon
+                            icon={faEllipsis}
+                            className="text-gray"
+                        />
                         {open.deleteOpen && (
                             <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-sm">
-                                {/* <DeleteMenuButton text="削除" image="images/trash.svg" index={0} /> */}
+                                <DeleteMenuButton
+                                    key=""
+                                    text="削除"
+                                    image="/images/trash.svg"
+                                    index={0}
+                                    type=""
+                                />
                             </ul>
                         )}
-                    </p>
+                    </div>
                 </div>
             </div>
         </header>
@@ -94,7 +106,12 @@ export const Header = () => {
             <div className="px-4 py-3 bg-white z-10 hidden tablet_md:grid grid-cols-header-tb-column gap-x-6 items-center">
                 <h1 className="text-lg font-bold">{headerLogo.logo}</h1>
                 <form action="">
-                    <SearchInput isStyle={true} id="search" type="text" top="top-0" />
+                    <SearchInput
+                        isStyle={true}
+                        id="search"
+                        type="text"
+                        top="top-0"
+                    />
                 </form>
                 <Button
                     isIcon="/images/header-write.svg"
@@ -120,17 +137,24 @@ export const Header = () => {
                 </div>
                 <div className="grid grid-cols-header-column gap-5">
                     <form action="">
-                        <SearchInput isStyle={true} id="search" type="text" top="top-0" />
+                        <SearchInput
+                            isStyle={true}
+                            id="search"
+                            type="text"
+                            top="top-0"
+                        />
                     </form>
                     <MenuButton open={open} menuOpen={menuOpen} />
                 </div>
             </div>
             <div
                 onClick={menuOpen}
-                className={`inset-0 ${open.sideOpen ? "fixed z-50 bg-gray-opacity" : "z-0"}`}
+                className={`inset-0 ${
+                    open.sideOpen ? "fixed z-50 bg-gray-opacity" : "z-0"
+                }`}
             >
                 <Navbar open={open} />
             </div>
         </header>
-    )
-}
+    );
+};
