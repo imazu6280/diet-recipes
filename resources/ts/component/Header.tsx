@@ -20,7 +20,8 @@ export const Header = () => {
     const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu();
     const { createInputValue, favoriteToggleBtn } = useRecipeCreate();
     const location = useLocation();
-    const isLocation = location.pathname === "/create" || "/edit";
+    const isLocation =
+        location.pathname === "/create" || location.pathname.includes("/edit/");
     const isLocationEdit = location.pathname.includes("/edit/");
 
     return isLocation ? (
