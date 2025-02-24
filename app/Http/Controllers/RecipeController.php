@@ -160,7 +160,36 @@ class RecipeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $recipe = Recipe::find($id);
+
+        if(!$recipe) {
+            return response()->json(['error' => 'Recipe not found'], 404);
+        }
+
+        $steps = $recipe->steps;
+        $ingredients = $recipe->ingredients;
+
+        $latestSteps = collect($steps)->groupBy('step_number')->map(function ($group) {
+            return $group->sortByDesc('id')->first();
+        })
+        ->sortBy('step_number')
+        ->values();
+
+        $recipeUpdates = [
+            'id' => $recipe->id,
+            'name' => $recipe->name,
+            'comments' => $recipe->comments,
+            'thumbnail' => $recipe->thumbnail,
+            'calories' => $recipe->calories,
+            'people' => $recipe->people,
+            'is_favorite' => $recipe->is_favorite,
+            'steps' => $latestSteps,
+            'ingredients' => $ingredients,
+            'created_at' => $recipe->created_at,
+            'updated_at' => $recipe->updated_at,
+        ];
+
+        return response()->json($recipeUpdates);
     }
 
     /**
@@ -168,7 +197,78 @@ class RecipeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            // リクエストのバリデーション
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'comments' => 'nullable|string',
+                'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', // サムネイルは更新時はオプションにする
+                'calories' => 'required|integer',
+                'people' => 'required|integer',
+                'is_favorite' => 'required|boolean',
+                'ingredients' => 'required|array',
+                'steps' => 'required|array',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed', ['errors' => $e->errors()]);
+            return response()->json(['errors' => $e->errors()], 422);
+        }
+    
+        // レシピの取得
+        $recipe = Recipe::findOrFail($id);
+    
+        // サムネイルが新しく送られてきた場合にアップロードする
+        if ($request->hasFile('thumbnail')) {
+            $thumbnail = $request->file('thumbnail');
+            $path = $thumbnail->store('recipe-thumbnails', 's3');
+            $url = Storage::disk('s3')->url($path);
+            $validatedData['thumbnail'] = $url; // サムネイルURLを更新
+        }
+    
+        // レシピの更新
+        $recipe->update([
+            'name' => $validatedData['name'],
+            'comments' => $validatedData['comments'],
+            'thumbnail' => $validatedData['thumbnail'] ?? $recipe->thumbnail, // 既存のサムネイルがある場合はそれを保持
+            'calories' => $validatedData['calories'],
+            'people' => $validatedData['people'],
+            'is_favorite' => $validatedData['is_favorite'],
+        ]);
+    
+        // 食材の更新（古い食材を削除して新しい食材を追加）
+        $recipe->ingredients()->detach(); // 既存の食材を削除
+        foreach ($validatedData['ingredients'] as $ingredientData) {
+            $ingredient = Ingredient::updateOrCreate(
+                ['name' => $ingredientData['name']]
+            );
+    
+            $recipe->ingredients()->attach($ingredient->id, [
+                'fat' => $ingredientData['fat'],
+                'carbs' => $ingredientData['carbs'],
+                'protein' => $ingredientData['protein'],
+                'calories' => $ingredientData['calories'],
+                'quantity' => $ingredientData['quantity'],
+            ]);
+        }
+    
+        // ステップの更新（古いステップを削除して新しいステップを追加）
+        $recipe->steps()->delete(); // 既存のステップを削除
+        foreach ($validatedData['steps'] as $stepData) {
+            $stepPath = $stepData['thumbnail']->store('step-thumbnails', 's3');
+            $stepData['thumbnail'] = Storage::disk('s3')->url($stepPath);
+    
+            $recipe->steps()->create([
+                'step_number' => $stepData['step_number'],
+                'description' => $stepData['description'],
+                'thumbnail' => $stepData['thumbnail'],
+            ]);
+        }
+    
+        return response()->json([
+            'recipe' => $recipe,
+            'ingredients' => $recipe->ingredients,
+            'steps' => $recipe->steps,
+        ], 200);
     }
 
     /**

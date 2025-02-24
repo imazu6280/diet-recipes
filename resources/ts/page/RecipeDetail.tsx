@@ -5,9 +5,11 @@ import { buttonColors } from "../constants/buttonColors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDetailGet } from "../hooks/useDetailGet";
 import { Link, useParams } from "react-router-dom";
+import { useRecipeUpdate } from "../hooks/useRecipeUpdate";
 
 export const RecipeDetail = () => {
     const { recipesDetail } = useDetailGet();
+    const { getRecipeToEdit } = useRecipeUpdate();
     const recipesStep = recipesDetail?.steps;
     const recipeIngredient = recipesDetail?.ingredients;
 
@@ -40,7 +42,7 @@ export const RecipeDetail = () => {
                         </p>
                     </div>
                     <div className="flex gap-x-4 md:justify-between md:py-4 md:p-2-auto md:gap-0 md:bg-white">
-                        <Link to={`/edit/${id}`}>
+                        <Link to={`/edit/${id}`} onClick={getRecipeToEdit}>
                             <Button
                                 isIcon="/images/image17.svg"
                                 alt="レシピを編集する"

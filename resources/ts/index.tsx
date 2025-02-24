@@ -11,6 +11,8 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { RecipeEdit } from "./page/RecipeEdit";
 
+export const API_URL = "api/recipes";
+
 const container = document.getElementById("app");
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
 
