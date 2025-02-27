@@ -431,15 +431,12 @@ export const useRecipeUpdate = () => {
             }
         });
 
-        formData.append("_method", "PATCH");
+        formData.append("_method", "PUT");
 
         try {
             const res = await fetch(`/api/recipes/${id}`, {
                 method: "POST",
                 body: formData,
-                headers: {
-                    "X-HTTP-Method-Override": "PUT",
-                },
             });
 
             if (!res.ok) {

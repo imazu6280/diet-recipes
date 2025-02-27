@@ -204,7 +204,6 @@ class RecipeController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'comments' => 'nullable|string',
-                'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240|url', // 既存の画像は省略可能
                 'calories' => 'required|integer',
                 'people' => 'required|integer',
                 'is_favorite' => 'required|boolean',
@@ -212,6 +211,18 @@ class RecipeController extends Controller
                 'steps' => 'required|array',
                 // 'steps.*.thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             ]);
+
+            if ($request->hasFile('thumbnail')) {
+                // 画像ファイルが存在する場合、画像のバリデーションを適用
+                $request->validate([
+                    'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:10240',
+                ]);
+            } elseif ($request->filled('thumbnail')) {
+                // URLが文字列として送信されている場合
+                $request->validate([
+                    'thumbnail' => 'url',
+                ]);
+            }
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
@@ -221,13 +232,25 @@ class RecipeController extends Controller
         // レシピを見つける
         $recipe = Recipe::findOrFail($id);
 
-        // サムネイルの更新（新しい画像がアップロードされている場合）
-        if ($request->hasFile('thumbnail')) {
-            $thumbnail = $request->file('thumbnail');
-            $path = $thumbnail->store('recipe-thumbnails', 's3');
-            $url = Storage::disk('s3')->url($path);
-            $recipe->thumbnail = $url;
-        }
+       // サムネイルの処理
+       if ($request->hasFile('thumbnail') && $request->file('thumbnail')->isValid()) {
+        // 画像ファイルが送信されている場合
+        // S3に画像ファイルを保存し、URLを取得
+        $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 's3');
+        // S3のURLを取得
+        $thumbnailUrl = Storage::disk('s3')->url($thumbnailPath);
+    } elseif ($request->filled('thumbnail')) {
+        // 既存のURLが送信されている場合
+        $thumbnailUrl = $request->input('thumbnail'); // URLそのまま使用
+    } else {
+        // 画像もURLも送信されていない場合
+        $thumbnailUrl = ""; // 必要に応じてデフォルト値
+    }
+
+    // データベースの更新処理（例）
+    $recipe = Recipe::find($id);
+    $recipe->thumbnail = $thumbnailUrl;
+    $recipe->save();
 
         // レシピの更新
         $recipe->update([
@@ -259,11 +282,17 @@ class RecipeController extends Controller
 
         // ステップの更新
         foreach ($validatedData['steps'] as $stepData) {
-
             // ステップサムネイルのアップロード（新しい画像があれば更新）
-            if (isset($stepData['thumbnail'])) {
-                $stepPath = $stepData['thumbnail']->store('step-thumbnails', 's3');
+            if ($request->hasFile('steps.' . $stepData['step_number'] . '.thumbnail')) {
+                $file = $request->file('steps.' . $stepData['step_number'] . '.thumbnail');
+                $stepPath = $file->store('step-thumbnails', 's3');
                 $stepData['thumbnail'] = Storage::disk('s3')->url($stepPath);
+            } elseif (isset($stepData['thumbnail']) && is_string($stepData['thumbnail'])) {
+                // 既存のURLが送信されている場合
+                $stepData['thumbnail'] = $stepData['thumbnail']; // URLそのまま使用
+            } else {
+                // 画像もURLも送信されていない場合
+                $stepData['thumbnail'] = ""; // 必要に応じてデフォルト値
             }
 
             // ステップの作成または更新
@@ -271,7 +300,7 @@ class RecipeController extends Controller
                 ['step_number' => $stepData['step_number']],
                 [
                     'description' => $stepData['description'],
-                    'thumbnail' => $stepData['thumbnail'] ?? null,
+                    'thumbnail' => $stepData['thumbnail'],
                 ]
             );
         }
@@ -279,7 +308,7 @@ class RecipeController extends Controller
         return response()->json([
             'recipe' => $recipe,
             'ingredients' => $recipe->ingredients,
-            'steps' => $recipe->steps,
+            'steps' => $step
         ], 200);
     }
 
