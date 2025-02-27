@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { Sidebar } from "./component/Sidebar";
 import { Top } from "./page/Top";
+import { Sidebar } from "./component/Sidebar";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Header } from "./component/Header";
 import { Footer } from "./component/Footer";
@@ -10,8 +10,6 @@ import { RecipeCreate } from "./page/RecipeCreate";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { RecipeEdit } from "./page/RecipeEdit";
-
-export const API_URL = "api/recipes";
 
 const container = document.getElementById("app");
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript

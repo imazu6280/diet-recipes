@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { recipeSchema } from "../type/recipes";
+import { PutRecipesResponse, recipeSchema } from "../type/recipes";
 import { createState } from "../constants/createState";
 import { useTopGet } from "./useTopGet";
 import { DragEndEvent } from "@dnd-kit/core";
@@ -7,7 +7,6 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../redux/favoriteToggleSlice";
 import { RootState } from "../redux/store";
-import { API_URL } from "..";
 import { useParams } from "react-router-dom";
 
 export const useRecipeUpdate = () => {
@@ -302,26 +301,56 @@ export const useRecipeUpdate = () => {
 
     const getRecipeToEdit = async () => {
         try {
-            const res = await fetch(`${API_URL}/${id}`);
+            const res = await fetch(`/api/recipes/edit/${id}`);
             const json: Omit<recipeSchema, "created_at" | "updated_at"> =
                 await res.json();
             setUpdateInputValue(json);
-        } catch (error) {}
+            setPrevImage({
+                mainImage: json.thumbnail,
+                stepImage: json.steps.map((item) => item.thumbnail),
+            });
+        } catch (error) {
+            console.error("get error!!", error);
+        }
     };
 
     const updateCreateRecipeSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log(
+            "現在の updateInputValue:",
+            JSON.stringify(updateInputValue, null, 2)
+        );
 
         const validateForm = () => {
+            if (
+                !updateInputValue ||
+                Object.keys(updateInputValue).length === 0
+            ) {
+                console.log("updateInputValue が空です！");
+                return false;
+            }
+
             let newErrors: string[] = [];
 
-            if (!updateInputValue.name)
+            console.log("バリデーション開始:", updateInputValue);
+
+            if (!updateInputValue.name) {
+                console.log("料理名が未入力");
                 newErrors = [...newErrors, "料理名は必須です"];
-            if (!updateInputValue.comments)
+            }
+
+            if (!updateInputValue.comments) {
+                console.log("コメントが未入力");
                 newErrors = [...newErrors, "コメントは必須です"];
-            if (!updateInputValue.thumbnail)
+            }
+
+            if (!updateInputValue.thumbnail) {
+                console.log("サムネイルが未設定");
                 newErrors = [...newErrors, "サムネイルは必須です"];
+            }
+
             if (Number(updateInputValue.people) <= 0) {
+                console.log("人数が無効:", updateInputValue.people);
                 newErrors = [...newErrors, "人数は1以上で指定してください"];
             }
 
@@ -329,6 +358,7 @@ export const useRecipeUpdate = () => {
                 (ingredient) => !ingredient.name
             );
             if (firstIngredientError) {
+                console.log("食材名が未入力の食材あり:", firstIngredientError);
                 newErrors = [...newErrors, "食材名は必須です"];
             }
 
@@ -336,8 +366,14 @@ export const useRecipeUpdate = () => {
                 (step) => !step.description
             );
             if (firstStepError) {
+                console.log(
+                    "ステップの説明が未入力のステップあり:",
+                    firstStepError
+                );
                 newErrors = [...newErrors, "ステップの説明は必須です"];
             }
+
+            console.log("バリデーションエラー:", newErrors);
 
             setErrors(newErrors);
 
@@ -348,6 +384,8 @@ export const useRecipeUpdate = () => {
         if (!isValid) return;
 
         const formData = new FormData();
+        console.log({ formData });
+
         formData.append("name", updateInputValue.name);
         formData.append("comments", updateInputValue.comments);
         formData.append("thumbnail", updateInputValue.thumbnail);
@@ -393,10 +431,15 @@ export const useRecipeUpdate = () => {
             }
         });
 
+        formData.append("_method", "PATCH");
+
         try {
-            const res = await fetch(API_URL, {
+            const res = await fetch(`/api/recipes/${id}`, {
                 method: "POST",
                 body: formData,
+                headers: {
+                    "X-HTTP-Method-Override": "PUT",
+                },
             });
 
             if (!res.ok) {
@@ -412,15 +455,20 @@ export const useRecipeUpdate = () => {
                 setFavoriteRecipes((prevRecipe) => [...prevRecipe, result]);
             }
 
-            console.log("post success!!", result);
+            console.log("PUT success!!", result);
         } catch (error) {
-            console.error("post error!!", error);
+            console.error("PUT error!!", error);
         }
     };
 
     useEffect(() => {
         getRecipeToEdit();
+        console.log({ updateInputValue });
     }, []);
+
+    useEffect(() => {
+        console.log("updateInputValueが変更されました:", updateInputValue);
+    }, [updateInputValue]);
 
     return {
         updateInputValue,

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { GetRecipesResponse } from "../type/recipes";
-import { API_URL } from "..";
 
 export const useTopGet = () => {
     const [recipes, setRecipes] = useState<GetRecipesResponse>([]);
@@ -10,7 +9,7 @@ export const useTopGet = () => {
 
     const GetRecipesAllApi = async () => {
         try {
-            const res = await fetch(API_URL);
+            const res = await fetch("/api/recipes");
             const json = await res.json();
             setRecipes(json);
         } catch (error) {
@@ -20,7 +19,7 @@ export const useTopGet = () => {
 
     const GetRecipesFavoriteApi = async () => {
         try {
-            const res = await fetch(`${API_URL}/favorites`);
+            const res = await fetch("/api/recipes/favorites");
             const json = await res.json();
             setFavoriteRecipes(json);
         } catch (error) {

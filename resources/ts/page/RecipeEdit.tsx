@@ -6,6 +6,7 @@ import { buttonColors } from "../constants/buttonColors";
 import { DndContext } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 import { useRecipeUpdate } from "../hooks/useRecipeUpdate";
+import { useParams } from "react-router-dom";
 
 export const RecipeEdit = () => {
     const {
@@ -25,6 +26,8 @@ export const RecipeEdit = () => {
         updateFavoriteToggleBtn,
         updateCreateRecipeSubmit,
     } = useRecipeUpdate();
+
+    const { id } = useParams();
 
     return (
         <form id="edit" action="" onSubmit={updateCreateRecipeSubmit}>

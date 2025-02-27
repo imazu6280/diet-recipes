@@ -197,51 +197,57 @@ class RecipeController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        Log::info('Update Request Data: ', $request->all());
         try {
-            // リクエストのバリデーション
+            Log::info('Update Request Data: ', $request->all());
+            // バリデーション
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'comments' => 'nullable|string',
-                'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', // サムネイルは更新時はオプションにする
+                'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240|url', // 既存の画像は省略可能
                 'calories' => 'required|integer',
                 'people' => 'required|integer',
                 'is_favorite' => 'required|boolean',
                 'ingredients' => 'required|array',
                 'steps' => 'required|array',
+                // 'steps.*.thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             ]);
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return response()->json(['errors' => $e->errors()], 422);
         }
-    
-        // レシピの取得
+
+        // レシピを見つける
         $recipe = Recipe::findOrFail($id);
-    
-        // サムネイルが新しく送られてきた場合にアップロードする
+
+        // サムネイルの更新（新しい画像がアップロードされている場合）
         if ($request->hasFile('thumbnail')) {
             $thumbnail = $request->file('thumbnail');
             $path = $thumbnail->store('recipe-thumbnails', 's3');
             $url = Storage::disk('s3')->url($path);
-            $validatedData['thumbnail'] = $url; // サムネイルURLを更新
+            $recipe->thumbnail = $url;
         }
-    
+
         // レシピの更新
         $recipe->update([
             'name' => $validatedData['name'],
             'comments' => $validatedData['comments'],
-            'thumbnail' => $validatedData['thumbnail'] ?? $recipe->thumbnail, // 既存のサムネイルがある場合はそれを保持
             'calories' => $validatedData['calories'],
             'people' => $validatedData['people'],
             'is_favorite' => $validatedData['is_favorite'],
         ]);
-    
-        // 食材の更新（古い食材を削除して新しい食材を追加）
-        $recipe->ingredients()->detach(); // 既存の食材を削除
+
+        // ingredientsのリレーションを更新
+        $recipe->ingredients()->detach(); // 既存のリレーションを削除
         foreach ($validatedData['ingredients'] as $ingredientData) {
+
+            // 食材の作成または更新
             $ingredient = Ingredient::updateOrCreate(
                 ['name' => $ingredientData['name']]
             );
-    
+
+            // 食材の関連を追加
             $recipe->ingredients()->attach($ingredient->id, [
                 'fat' => $ingredientData['fat'],
                 'carbs' => $ingredientData['carbs'],
@@ -250,20 +256,26 @@ class RecipeController extends Controller
                 'quantity' => $ingredientData['quantity'],
             ]);
         }
-    
-        // ステップの更新（古いステップを削除して新しいステップを追加）
-        $recipe->steps()->delete(); // 既存のステップを削除
+
+        // ステップの更新
         foreach ($validatedData['steps'] as $stepData) {
-            $stepPath = $stepData['thumbnail']->store('step-thumbnails', 's3');
-            $stepData['thumbnail'] = Storage::disk('s3')->url($stepPath);
-    
-            $recipe->steps()->create([
-                'step_number' => $stepData['step_number'],
-                'description' => $stepData['description'],
-                'thumbnail' => $stepData['thumbnail'],
-            ]);
+
+            // ステップサムネイルのアップロード（新しい画像があれば更新）
+            if (isset($stepData['thumbnail'])) {
+                $stepPath = $stepData['thumbnail']->store('step-thumbnails', 's3');
+                $stepData['thumbnail'] = Storage::disk('s3')->url($stepPath);
+            }
+
+            // ステップの作成または更新
+            $step = $recipe->steps()->updateOrCreate(
+                ['step_number' => $stepData['step_number']],
+                [
+                    'description' => $stepData['description'],
+                    'thumbnail' => $stepData['thumbnail'] ?? null,
+                ]
+            );
         }
-    
+
         return response()->json([
             'recipe' => $recipe,
             'ingredients' => $recipe->ingredients,

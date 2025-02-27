@@ -7,7 +7,6 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../redux/favoriteToggleSlice";
 import { RootState } from "../redux/store";
-import { API_URL } from "..";
 
 export const useRecipeCreate = () => {
     const dispatch = useDispatch();
@@ -383,7 +382,7 @@ export const useRecipeCreate = () => {
         });
 
         try {
-            const res = await fetch(API_URL, {
+            const res = await fetch("api/recipes", {
                 method: "POST",
                 body: formData,
             });
