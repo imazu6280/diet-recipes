@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PutRecipesResponse, recipeSchema } from "../type/recipes";
+import { recipeSchema } from "../type/recipes";
 import { createState } from "../constants/createState";
 import { useTopGet } from "./useTopGet";
 import { DragEndEvent } from "@dnd-kit/core";
@@ -316,41 +316,23 @@ export const useRecipeUpdate = () => {
 
     const updateCreateRecipeSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(
-            "現在の updateInputValue:",
-            JSON.stringify(updateInputValue, null, 2)
-        );
 
         const validateForm = () => {
-            if (
-                !updateInputValue ||
-                Object.keys(updateInputValue).length === 0
-            ) {
-                console.log("updateInputValue が空です！");
-                return false;
-            }
-
             let newErrors: string[] = [];
 
-            console.log("バリデーション開始:", updateInputValue);
-
             if (!updateInputValue.name) {
-                console.log("料理名が未入力");
                 newErrors = [...newErrors, "料理名は必須です"];
             }
 
             if (!updateInputValue.comments) {
-                console.log("コメントが未入力");
                 newErrors = [...newErrors, "コメントは必須です"];
             }
 
             if (!updateInputValue.thumbnail) {
-                console.log("サムネイルが未設定");
                 newErrors = [...newErrors, "サムネイルは必須です"];
             }
 
             if (Number(updateInputValue.people) <= 0) {
-                console.log("人数が無効:", updateInputValue.people);
                 newErrors = [...newErrors, "人数は1以上で指定してください"];
             }
 
@@ -358,7 +340,6 @@ export const useRecipeUpdate = () => {
                 (ingredient) => !ingredient.name
             );
             if (firstIngredientError) {
-                console.log("食材名が未入力の食材あり:", firstIngredientError);
                 newErrors = [...newErrors, "食材名は必須です"];
             }
 
@@ -366,14 +347,8 @@ export const useRecipeUpdate = () => {
                 (step) => !step.description
             );
             if (firstStepError) {
-                console.log(
-                    "ステップの説明が未入力のステップあり:",
-                    firstStepError
-                );
                 newErrors = [...newErrors, "ステップの説明は必須です"];
             }
-
-            console.log("バリデーションエラー:", newErrors);
 
             setErrors(newErrors);
 
@@ -384,7 +359,6 @@ export const useRecipeUpdate = () => {
         if (!isValid) return;
 
         const formData = new FormData();
-        console.log({ formData });
 
         formData.append("name", updateInputValue.name);
         formData.append("comments", updateInputValue.comments);
@@ -453,6 +427,8 @@ export const useRecipeUpdate = () => {
             }
 
             console.log("PUT success!!", result);
+
+            location.href = `/show/${id}`;
         } catch (error) {
             console.error("PUT error!!", error);
         }
@@ -460,12 +436,7 @@ export const useRecipeUpdate = () => {
 
     useEffect(() => {
         getRecipeToEdit();
-        console.log({ updateInputValue });
     }, []);
-
-    useEffect(() => {
-        console.log("updateInputValueが変更されました:", updateInputValue);
-    }, [updateInputValue]);
 
     return {
         updateInputValue,

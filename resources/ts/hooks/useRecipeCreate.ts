@@ -401,6 +401,8 @@ export const useRecipeCreate = () => {
             }
 
             console.log("post success!!", result);
+
+            location.href = "/";
         } catch (error) {
             console.error("post error!!", error);
         }

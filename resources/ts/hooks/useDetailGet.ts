@@ -10,7 +10,6 @@ export const useDetailGet = () => {
         try {
             const res = await fetch(`/api/recipes/${id}`);
             const json: recipeSchema = await res.json();
-            console.log("json", json);
 
             setRecipesDetail(json);
         } catch (error) {

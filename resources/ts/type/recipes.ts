@@ -56,16 +56,3 @@ export type PostRecipesResponse = Omit<
         thumbnail: string | File;
     })[];
 };
-
-export type PutRecipesResponse = Omit<
-    recipeSchema,
-    "created_at" | "updated_at"
-> & {
-    thumbnail: string | File;
-    steps: (Pick<
-        stepsSchema,
-        "id" | "step_number" | "description" | "thumbnail"
-    > & {
-        thumbnail: string | File;
-    })[];
-};
