@@ -1,33 +1,36 @@
 import { RegisterCard } from "../component/RegisterCard";
 import { RegisterInput } from "../component/RegisterInput";
-import { useRecipeCreate } from "../hooks/useRecipeCreate";
 import { Button } from "../component/Button";
 import { placeholderString, sideLink } from "../constants/text";
 import { buttonColors } from "../constants/buttonColors";
 import { DndContext } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
+import { useRecipeUpdate } from "../hooks/useRecipeUpdate";
+import { useParams } from "react-router-dom";
 
 export const RecipeEdit = () => {
     const {
-        createInputValue,
+        updateInputValue,
         prevImage,
         errors,
-        addIngredient,
-        addSteps,
-        handleIngredientChange,
-        handleStepsChange,
-        handleFileChange,
-        handleDeleteBtn,
-        stepsHandleFileChange,
-        favoriteToggleBtn,
-        handleIngredientsDrag,
-        handleStepDrag,
-        CreateRecipeSubmit,
-        CreateHandleChange,
-    } = useRecipeCreate();
+        updateAddIngredient,
+        updateAddSteps,
+        updateCreateHandleChange,
+        updateHandleIngredientChange,
+        updateHandleStepsChange,
+        updateHandleFileChange,
+        updateStepsHandleFileChange,
+        updateHandleDeleteBtn,
+        updateHandleIngredientsDrag,
+        updateHandleStepDrag,
+        updateFavoriteToggleBtn,
+        updateCreateRecipeSubmit,
+    } = useRecipeUpdate();
+
+    const { id } = useParams();
 
     return (
-        <form id="edit" action="" onSubmit={CreateRecipeSubmit}>
+        <form id="edit" action="" onSubmit={updateCreateRecipeSubmit}>
             <div className="flex flex-col gap-y-6 w-inner mx-auto lg:pt-2 md:w-full md:gap-y-4">
                 <div className="grid grid-cols-show-column gap-x-6 tablet_md:grid-cols-1 sm:grid-cols-1">
                     <label
@@ -41,7 +44,7 @@ export const RecipeEdit = () => {
                             id="mainImage"
                             className="hidden"
                             name="thumbnail"
-                            onChange={handleFileChange}
+                            onChange={updateHandleFileChange}
                         />
                         {prevImage.mainImage ? (
                             <p className="w-full object-cover rounded-md lg:max-h-96 bg-white">
@@ -70,8 +73,8 @@ export const RecipeEdit = () => {
                                         name="name"
                                         type="text"
                                         placeholder="料理名を入力してください"
-                                        value={createInputValue.name}
-                                        onChange={CreateHandleChange}
+                                        value={updateInputValue.name}
+                                        onChange={updateCreateHandleChange}
                                         className="w-full px-2 py-4 text-34px font-bold bg-beige rounded-md tablet_md:text-xl sm:text-lg"
                                     />
                                 </label>
@@ -80,8 +83,8 @@ export const RecipeEdit = () => {
                                         name="comments"
                                         id="comments"
                                         placeholder={placeholderString}
-                                        value={createInputValue.comments}
-                                        onChange={CreateHandleChange}
+                                        value={updateInputValue.comments}
+                                        onChange={updateCreateHandleChange}
                                         className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
@@ -91,13 +94,15 @@ export const RecipeEdit = () => {
                                         alt="お気に入り登録"
                                         text="お気に入り"
                                         color={`${
-                                            createInputValue.is_favorite === 0
+                                            updateInputValue.is_favorite === 0
                                                 ? buttonColors.gray
                                                 : buttonColors.bgOrange
                                         }`}
                                         width="w-40"
                                         type="button"
-                                        favoriteToggleBtn={favoriteToggleBtn}
+                                        favoriteToggleBtn={
+                                            updateFavoriteToggleBtn
+                                        }
                                     />
                                     {errors.length > 0 && (
                                         <ul className="flex flex-col gap-y-1">
@@ -127,16 +132,16 @@ export const RecipeEdit = () => {
                                 name="people"
                                 placeholder="何人分"
                                 min={0}
-                                value={createInputValue.people ?? ""}
-                                onChange={CreateHandleChange}
+                                value={updateInputValue.people ?? ""}
+                                onChange={updateCreateHandleChange}
                                 className="w-2/4 p-2 break-words bg-beige rounded-md"
                             />
                         </div>
-                        <DndContext onDragEnd={handleIngredientsDrag}>
+                        <DndContext onDragEnd={updateHandleIngredientsDrag}>
                             <SortableContext
-                                items={createInputValue.ingredients}
+                                items={updateInputValue.ingredients}
                             >
-                                {createInputValue.ingredients.map(
+                                {updateInputValue.ingredients.map(
                                     (item, index) => {
                                         return (
                                             <RegisterInput
@@ -144,10 +149,10 @@ export const RecipeEdit = () => {
                                                 item={item}
                                                 index={index}
                                                 handleIngredientChange={
-                                                    handleIngredientChange
+                                                    updateHandleIngredientChange
                                                 }
                                                 handleDeleteBtn={
-                                                    handleDeleteBtn
+                                                    updateHandleDeleteBtn
                                                 }
                                             />
                                         );
@@ -158,7 +163,7 @@ export const RecipeEdit = () => {
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
                             type="button"
-                            onClick={(e) => addIngredient(e)}
+                            onClick={(e) => updateAddIngredient(e)}
                         >
                             <img src="/images/plus.svg" alt="プラス" />
                             <span>材料</span>
@@ -167,9 +172,9 @@ export const RecipeEdit = () => {
                     <div className="flex flex-col gap-y-4 md:bg-white md:pt-4 md:pb-8 md:p-2-auto">
                         <h3 className="text-2xl font-bold">作り方</h3>
                         <ul className="grid grid-cols-4 gap-x-4 gap-y-10 pc_sm:grid-cols-2 tablet_md:grid-cols-1 sm:grid-cols-1">
-                            <DndContext onDragEnd={handleStepDrag}>
-                                <SortableContext items={createInputValue.steps}>
-                                    {createInputValue.steps.map(
+                            <DndContext onDragEnd={updateHandleStepDrag}>
+                                <SortableContext items={updateInputValue.steps}>
+                                    {updateInputValue.steps.map(
                                         (item, index) => (
                                             <RegisterCard
                                                 key={item.id}
@@ -177,15 +182,15 @@ export const RecipeEdit = () => {
                                                 index={index}
                                                 stepImage={prevImage.stepImage}
                                                 handleStepsChange={
-                                                    handleStepsChange
+                                                    updateHandleStepsChange
                                                 }
                                                 stepsHandleFileChange={
-                                                    stepsHandleFileChange
+                                                    updateStepsHandleFileChange
                                                 }
                                                 handleDeleteBtn={
-                                                    handleDeleteBtn
+                                                    updateHandleDeleteBtn
                                                 }
-                                                addSteps={addSteps}
+                                                addSteps={updateAddSteps}
                                             />
                                         )
                                     )}
@@ -195,7 +200,7 @@ export const RecipeEdit = () => {
                         <button
                             className="flex justify-center items-center gap-x-2 text-black font-bold"
                             type="button"
-                            onClick={(e) => addSteps(e)}
+                            onClick={(e) => updateAddSteps(e)}
                         >
                             <img src="/images/plus.svg" alt="プラス" />
                             <span>作り方</span>

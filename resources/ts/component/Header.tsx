@@ -50,15 +50,27 @@ export const Header = () => {
                     type="button"
                     favoriteToggleBtn={favoriteToggleBtn}
                 />
-                <Button
-                    isIcon=""
-                    alt="公開する"
-                    text="公開する"
-                    color={buttonColors.bgOrange}
-                    width="w-40"
-                    type="submit"
-                    formId="create"
-                />
+                {isLocationEdit ? (
+                    <Button
+                        isIcon=""
+                        alt="更新する"
+                        text="更新する"
+                        color={buttonColors.bgOrange}
+                        width="w-40"
+                        type="submit"
+                        formId="edit"
+                    />
+                ) : (
+                    <Button
+                        isIcon=""
+                        alt="公開する"
+                        text="公開する"
+                        color={buttonColors.bgOrange}
+                        width="w-40"
+                        type="submit"
+                        formId="create"
+                    />
+                )}
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden md:flex justify-between gap-x-6 items-center">
                 <h1 className="text-lg font-bold">{headerLogo.logo}</h1>

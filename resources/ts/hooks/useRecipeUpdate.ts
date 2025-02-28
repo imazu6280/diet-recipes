@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { PostRecipesResponse } from "../type/recipes";
+import React, { useEffect, useState } from "react";
+import { recipeSchema } from "../type/recipes";
 import { createState } from "../constants/createState";
 import { useTopGet } from "./useTopGet";
 import { DragEndEvent } from "@dnd-kit/core";
@@ -7,15 +7,17 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../redux/favoriteToggleSlice";
 import { RootState } from "../redux/store";
+import { useParams } from "react-router-dom";
 
-export const useRecipeCreate = () => {
+export const useRecipeUpdate = () => {
+    const { id } = useParams();
     const dispatch = useDispatch();
     const isFavorite = useSelector(
         (state: RootState) => state.favorite.is_favorite
     );
     const { setRecipes, setFavoriteRecipes } = useTopGet();
-    const [createInputValue, setCreateInputValue] =
-        useState<PostRecipesResponse>(createState);
+    const [updateInputValue, setUpdateInputValue] =
+        useState<Omit<recipeSchema, "created_at" | "updated_at">>(createState);
     const [prevImage, setPrevImage] = useState<{
         mainImage: string;
         stepImage: string[];
@@ -25,10 +27,10 @@ export const useRecipeCreate = () => {
     });
     const [errors, setErrors] = useState<string[]>([]);
 
-    const addIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const updateAddIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const newIngredient = {
-            id: createInputValue.ingredients.length,
+            id: updateInputValue.ingredients.length,
             name: "",
             pivot: {
                 calories: null,
@@ -39,41 +41,41 @@ export const useRecipeCreate = () => {
             },
         };
 
-        setCreateInputValue((prevRegister) => ({
+        setUpdateInputValue((prevRegister) => ({
             ...prevRegister,
             ingredients: [...prevRegister.ingredients, newIngredient],
         }));
     };
 
-    const addSteps = (
+    const updateAddSteps = (
         e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>
     ) => {
         e.preventDefault();
         const newSteps = {
-            id: createInputValue.steps.length,
-            step_number: createInputValue.steps.length + 1,
+            id: updateInputValue.steps.length,
+            step_number: updateInputValue.steps.length + 1,
             description: "",
             thumbnail: "",
         };
 
-        setCreateInputValue((prevStep) => ({
+        setUpdateInputValue((prevStep) => ({
             ...prevStep,
             steps: [...prevStep.steps, newSteps],
         }));
     };
 
-    const CreateHandleChange = (
+    const updateCreateHandleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const { name, value } = e.target;
 
-        setCreateInputValue((prevState) => ({
+        setUpdateInputValue((prevState) => ({
             ...prevState,
             [name]: value,
         }));
     };
 
-    const handleIngredientChange = (
+    const updateHandleIngredientChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         index: number
     ) => {
@@ -84,7 +86,7 @@ export const useRecipeCreate = () => {
             ? Number(value) || 0
             : value;
 
-        const newIngredients = [...createInputValue.ingredients];
+        const newIngredients = [...updateInputValue.ingredients];
         if (name === "name") {
             newIngredients[index] = {
                 ...newIngredients[index],
@@ -119,31 +121,31 @@ export const useRecipeCreate = () => {
             totalCalories += numberCalories;
         }
 
-        setCreateInputValue((prevState) => ({
+        setUpdateInputValue((prevState) => ({
             ...prevState,
             ingredients: newIngredients,
             calories: totalCalories,
         }));
     };
 
-    const handleStepsChange = (
+    const updateHandleStepsChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         index: number
     ) => {
         const { name, value } = e.target;
-        const newSteps = [...createInputValue.steps];
+        const newSteps = [...updateInputValue.steps];
 
         newSteps[index] = {
             ...newSteps[index],
             [name]: value,
         };
-        setCreateInputValue((prevState) => ({
+        setUpdateInputValue((prevState) => ({
             ...prevState,
             steps: newSteps,
         }));
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const updateHandleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files } = e.target;
 
         if (files && files.length > 0) {
@@ -155,14 +157,14 @@ export const useRecipeCreate = () => {
                 mainImage: fileUrl,
             }));
 
-            setCreateInputValue((prevState) => ({
+            setUpdateInputValue((prevState) => ({
                 ...prevState,
                 [name]: files[0],
             }));
         }
     };
 
-    const stepsHandleFileChange = (
+    const updateStepsHandleFileChange = (
         e: React.ChangeEvent<HTMLInputElement>,
         index: number
     ) => {
@@ -180,7 +182,7 @@ export const useRecipeCreate = () => {
                 };
             });
 
-            setCreateInputValue((prevState) => {
+            setUpdateInputValue((prevState) => {
                 const updatedSteps = [...prevState.steps];
                 updatedSteps[index] = {
                     ...updatedSteps[index],
@@ -194,27 +196,27 @@ export const useRecipeCreate = () => {
         }
     };
 
-    const favoriteToggleBtn = () => {
+    const updateFavoriteToggleBtn = () => {
         dispatch(toggleFavorite());
-        setCreateInputValue((prev) => ({
+        setUpdateInputValue((prev) => ({
             ...prev,
             is_favorite: isFavorite === 1 ? 0 : 1,
         }));
     };
 
-    const handleDeleteBtn = (id: number, type: string) => {
-        if (type === "ingredients" && createInputValue.ingredients.length > 1) {
-            const newIngredients = createInputValue.ingredients.filter(
+    const updateHandleDeleteBtn = (id: number, type: string) => {
+        if (type === "ingredients" && updateInputValue.ingredients.length > 1) {
+            const newIngredients = updateInputValue.ingredients.filter(
                 (ingredient) => ingredient.id !== id
             );
-            setCreateInputValue((prevState) => {
+            setUpdateInputValue((prevState) => {
                 return {
                     ...prevState,
                     ingredients: newIngredients,
                 };
             });
-        } else if (type === "steps" && createInputValue.steps.length > 1) {
-            const newSteps = createInputValue.steps.filter(
+        } else if (type === "steps" && updateInputValue.steps.length > 1) {
+            const newSteps = updateInputValue.steps.filter(
                 (step) => step.step_number !== id
             );
 
@@ -226,7 +228,7 @@ export const useRecipeCreate = () => {
                 step_number: index + 1,
             }));
 
-            setCreateInputValue((prevState) => ({
+            setUpdateInputValue((prevState) => ({
                 ...prevState,
                 steps: updatedSteps,
             }));
@@ -238,46 +240,46 @@ export const useRecipeCreate = () => {
         }
     };
 
-    const handleIngredientsDrag = (e: DragEndEvent) => {
+    const updateHandleIngredientsDrag = (e: DragEndEvent) => {
         const { active, over } = e;
         if (!active || !over || active.id === over.id) return;
 
-        const oldIndex = createInputValue.ingredients.findIndex(
+        const oldIndex = updateInputValue.ingredients.findIndex(
             (item) => item.id === active.id
         );
-        const newIndex = createInputValue.ingredients.findIndex(
+        const newIndex = updateInputValue.ingredients.findIndex(
             (item) => item.id === over.id
         );
 
         if (oldIndex === -1 || newIndex === -1) return;
 
         const newIngredients = arrayMove(
-            createInputValue.ingredients,
+            updateInputValue.ingredients,
             oldIndex,
             newIndex
         );
 
-        setCreateInputValue((prevState) => ({
+        setUpdateInputValue((prevState) => ({
             ...prevState,
             ingredients: newIngredients,
         }));
     };
 
-    const handleStepDrag = (e: DragEndEvent) => {
+    const updateHandleStepDrag = (e: DragEndEvent) => {
         const { active, over } = e;
 
         if (!active || !over || active.id === over.id) return;
 
-        const oldIndex = createInputValue.steps.findIndex(
+        const oldIndex = updateInputValue.steps.findIndex(
             (item) => item.id === active.id
         );
-        const newIndex = createInputValue.steps.findIndex(
+        const newIndex = updateInputValue.steps.findIndex(
             (item) => item.id === over.id
         );
 
         if (oldIndex === -1 || newIndex === -1) return;
 
-        const newSteps = arrayMove(createInputValue.steps, oldIndex, newIndex);
+        const newSteps = arrayMove(updateInputValue.steps, oldIndex, newIndex);
 
         const updatedSteps = newSteps.map((step, index) => ({
             ...step,
@@ -286,7 +288,7 @@ export const useRecipeCreate = () => {
 
         const newImages = arrayMove(prevImage.stepImage, oldIndex, newIndex);
 
-        setCreateInputValue((prevState) => ({
+        setUpdateInputValue((prevState) => ({
             ...prevState,
             steps: updatedSteps,
         }));
@@ -297,30 +299,51 @@ export const useRecipeCreate = () => {
         }));
     };
 
-    const CreateRecipeSubmit = async (e: React.FormEvent) => {
+    const getRecipeToEdit = async () => {
+        try {
+            const res = await fetch(`/api/recipes/edit/${id}`);
+            const json: Omit<recipeSchema, "created_at" | "updated_at"> =
+                await res.json();
+            setUpdateInputValue(json);
+            setPrevImage({
+                mainImage: json.thumbnail,
+                stepImage: json.steps.map((item) => item.thumbnail),
+            });
+        } catch (error) {
+            console.error("get error!!", error);
+        }
+    };
+
+    const updateCreateRecipeSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const validateForm = () => {
             let newErrors: string[] = [];
 
-            if (!createInputValue.name)
+            if (!updateInputValue.name) {
                 newErrors = [...newErrors, "料理名は必須です"];
-            if (!createInputValue.comments)
+            }
+
+            if (!updateInputValue.comments) {
                 newErrors = [...newErrors, "コメントは必須です"];
-            if (!createInputValue.thumbnail)
+            }
+
+            if (!updateInputValue.thumbnail) {
                 newErrors = [...newErrors, "サムネイルは必須です"];
-            if (Number(createInputValue.people) <= 0) {
+            }
+
+            if (Number(updateInputValue.people) <= 0) {
                 newErrors = [...newErrors, "人数は1以上で指定してください"];
             }
 
-            const firstIngredientError = createInputValue.ingredients.find(
+            const firstIngredientError = updateInputValue.ingredients.find(
                 (ingredient) => !ingredient.name
             );
             if (firstIngredientError) {
                 newErrors = [...newErrors, "食材名は必須です"];
             }
 
-            const firstStepError = createInputValue.steps.find(
+            const firstStepError = updateInputValue.steps.find(
                 (step) => !step.description
             );
             if (firstStepError) {
@@ -336,17 +359,18 @@ export const useRecipeCreate = () => {
         if (!isValid) return;
 
         const formData = new FormData();
-        formData.append("name", createInputValue.name);
-        formData.append("comments", createInputValue.comments);
-        formData.append("thumbnail", createInputValue.thumbnail);
+
+        formData.append("name", updateInputValue.name);
+        formData.append("comments", updateInputValue.comments);
+        formData.append("thumbnail", updateInputValue.thumbnail);
         formData.append(
             "calories",
-            (createInputValue.calories ?? 0).toString()
+            (updateInputValue.calories ?? 0).toString()
         );
-        formData.append("people", (createInputValue.people ?? 0).toString());
+        formData.append("people", (updateInputValue.people ?? 0).toString());
         formData.append("is_favorite", isFavorite.toString());
 
-        createInputValue.ingredients.map((ingredient, index) => {
+        updateInputValue.ingredients.map((ingredient, index) => {
             formData.append(`ingredients[${index}][name]`, ingredient.name);
             formData.append(
                 `ingredients[${index}][calories]`,
@@ -370,7 +394,7 @@ export const useRecipeCreate = () => {
             );
         });
 
-        createInputValue.steps.map((step, index) => {
+        updateInputValue.steps.map((step, index) => {
             formData.append(
                 `steps[${index}][step_number]`,
                 step.step_number.toString()
@@ -381,8 +405,10 @@ export const useRecipeCreate = () => {
             }
         });
 
+        formData.append("_method", "PUT");
+
         try {
-            const res = await fetch("api/recipes", {
+            const res = await fetch(`/api/recipes/${id}`, {
                 method: "POST",
                 body: formData,
             });
@@ -396,33 +422,38 @@ export const useRecipeCreate = () => {
             const result = await res.json();
             setRecipes((prevRecipe) => [...prevRecipe, result]);
 
-            if (createInputValue.is_favorite === 1) {
+            if (updateInputValue.is_favorite === 1) {
                 setFavoriteRecipes((prevRecipe) => [...prevRecipe, result]);
             }
 
-            console.log("post success!!", result);
+            console.log("PUT success!!", result);
 
-            location.href = "/";
+            location.href = `/show/${id}`;
         } catch (error) {
-            console.error("post error!!", error);
+            console.error("PUT error!!", error);
         }
     };
 
+    useEffect(() => {
+        getRecipeToEdit();
+    }, []);
+
     return {
-        createInputValue,
+        updateInputValue,
         prevImage,
         errors,
-        addIngredient,
-        addSteps,
-        handleIngredientChange,
-        handleStepsChange,
-        handleFileChange,
-        stepsHandleFileChange,
-        handleDeleteBtn,
-        handleIngredientsDrag,
-        handleStepDrag,
-        favoriteToggleBtn,
-        CreateRecipeSubmit,
-        CreateHandleChange,
+        updateAddIngredient,
+        updateAddSteps,
+        updateCreateHandleChange,
+        updateHandleIngredientChange,
+        updateHandleStepsChange,
+        updateHandleFileChange,
+        updateStepsHandleFileChange,
+        updateHandleDeleteBtn,
+        updateHandleIngredientsDrag,
+        updateHandleStepDrag,
+        updateFavoriteToggleBtn,
+        getRecipeToEdit,
+        updateCreateRecipeSubmit,
     };
 };

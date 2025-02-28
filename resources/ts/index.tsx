@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { Sidebar } from "./component/Sidebar";
 import { Top } from "./page/Top";
+import { Sidebar } from "./component/Sidebar";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Header } from "./component/Header";
 import { Footer } from "./component/Footer";
