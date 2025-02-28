@@ -5,12 +5,13 @@ import { useMenu } from "../hooks/useMenu";
 import { SideMenuType } from "../type/sideMenu";
 import { MenuButton } from "./MenuButton";
 import { Navbar } from "./Navbar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { DeleteMenuButton } from "./DeleteMenuButton";
 import { sideLink } from "../constants/text";
 import { useRecipeCreate } from "../hooks/useRecipeCreate";
+import { useRecipeDelete } from "../hooks/useRecipeDelete";
 
 const headerLogo = {
     logo: "DIET-RECIPES",
@@ -19,6 +20,8 @@ const headerLogo = {
 export const Header = () => {
     const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu();
     const { createInputValue, favoriteToggleBtn } = useRecipeCreate();
+    const { deleteHandleSubmit } = useRecipeDelete();
+    const { id } = useParams();
     const location = useLocation();
     const isLocation =
         location.pathname === "/create" || location.pathname.includes("/edit/");
@@ -35,6 +38,10 @@ export const Header = () => {
                         color={buttonColors.red}
                         width="w-40"
                         type="button"
+                        deleteHandleSubmit={(e) => {
+                            id !== undefined &&
+                                deleteHandleSubmit(e, Number(id));
+                        }}
                     />
                 )}
                 <Button

@@ -1,16 +1,17 @@
-import { IconProp } from "@fortawesome/fontawesome-svg-core"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type Props = {
-    isIcon?: string | IconProp
-    alt?: string
-    text: string
-    color: string
-    width: string
-    type: "submit" | "reset" | "button"
-    formId?: string
-    favoriteToggleBtn?: () => void
-}
+    isIcon?: string | IconProp;
+    alt?: string;
+    text: string;
+    color: string;
+    width: string;
+    type: "submit" | "reset" | "button";
+    formId?: string;
+    favoriteToggleBtn?: () => void;
+    deleteHandleSubmit?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+};
 
 export const Button = ({
     isIcon,
@@ -21,6 +22,7 @@ export const Button = ({
     type,
     formId,
     favoriteToggleBtn,
+    deleteHandleSubmit,
 }: Props) => {
     return (
         <button
@@ -29,7 +31,7 @@ export const Button = ({
             }`}
             type={type}
             {...(formId && { form: formId })}
-            onClick={favoriteToggleBtn}
+            onClick={text === "削除" ? deleteHandleSubmit : favoriteToggleBtn}
         >
             {isIcon &&
                 (typeof isIcon === "string" ? (
@@ -39,5 +41,5 @@ export const Button = ({
                 ))}
             {text}
         </button>
-    )
-}
+    );
+};
