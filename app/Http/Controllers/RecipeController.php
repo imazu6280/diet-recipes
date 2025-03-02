@@ -317,7 +317,14 @@ class RecipeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $recipe = Recipe::find($id);
+
+        if($recipe){
+            $recipe->delete();
+            return response()->json(['message' => 'Recipe deleted successfully']);
+        } else {
+            return response()->json(['message' => 'Recipe not found'], 404);
+        }
     }
 
     public function favorites()

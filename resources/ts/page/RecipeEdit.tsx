@@ -7,6 +7,9 @@ import { DndContext } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 import { useRecipeUpdate } from "../hooks/useRecipeUpdate";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setId } from "../redux/idSlice";
+import { useEffect } from "react";
 
 export const RecipeEdit = () => {
     const {
@@ -28,6 +31,13 @@ export const RecipeEdit = () => {
     } = useRecipeUpdate();
 
     const { id } = useParams();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (id) {
+            dispatch(setId(Number(id)));
+        }
+    }, []);
 
     return (
         <form id="edit" action="" onSubmit={updateCreateRecipeSubmit}>
