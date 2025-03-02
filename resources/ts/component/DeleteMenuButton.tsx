@@ -7,6 +7,11 @@ type Props = {
     handleDeleteBtn?: (id: number, type: string) => void;
     addSteps?: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void;
     step_number?: number;
+    recipeDeleteId?: number | null;
+    deleteHandleSubmit?: (
+        e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>,
+        id?: number | null
+    ) => void;
 };
 
 export const DeleteMenuButton = ({
@@ -18,10 +23,10 @@ export const DeleteMenuButton = ({
     handleDeleteBtn,
     addSteps,
     step_number,
+    recipeDeleteId,
+    deleteHandleSubmit,
 }: Props) => {
-    const handleClick = (
-        e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>
-    ) => {
+    const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
         if (text === "作り方を追加" && addSteps) {
             addSteps(e);
             return;
@@ -35,8 +40,15 @@ export const DeleteMenuButton = ({
             return;
         }
 
+        if (text === "削除") {
+            if (deleteHandleSubmit) {
+                deleteHandleSubmit(e, recipeDeleteId);
+            }
+            return;
+        }
+
         if (handleDeleteBtn) {
-            const idOrStep = id || -1; // idがundefinedの場合は-1
+            const idOrStep = id || -1;
             handleDeleteBtn(idOrStep, type);
         }
     };

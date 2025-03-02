@@ -5,27 +5,26 @@ import { useMenu } from "../hooks/useMenu";
 import { SideMenuType } from "../type/sideMenu";
 import { MenuButton } from "./MenuButton";
 import { Navbar } from "./Navbar";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { DeleteMenuButton } from "./DeleteMenuButton";
-import { sideLink } from "../constants/text";
+import { headerLogo, sideLink } from "../constants/text";
 import { useRecipeCreate } from "../hooks/useRecipeCreate";
 import { useRecipeDelete } from "../hooks/useRecipeDelete";
-
-const headerLogo = {
-    logo: "DIET-RECIPES",
-};
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 export const Header = () => {
     const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu();
     const { createInputValue, favoriteToggleBtn } = useRecipeCreate();
     const { deleteHandleSubmit } = useRecipeDelete();
-    const { id } = useParams();
     const location = useLocation();
     const isLocation =
         location.pathname === "/create" || location.pathname.includes("/edit/");
     const isLocationEdit = location.pathname.includes("/edit/");
+
+    const recipeDeleteId = useSelector((state: RootState) => state.id.id);
 
     return isLocation ? (
         <header className="sticky top-0 z-30">
@@ -38,10 +37,8 @@ export const Header = () => {
                         color={buttonColors.red}
                         width="w-40"
                         type="button"
-                        deleteHandleSubmit={(e) => {
-                            id !== undefined &&
-                                deleteHandleSubmit(e, Number(id));
-                        }}
+                        recipeDeleteId={recipeDeleteId}
+                        deleteHandleSubmit={deleteHandleSubmit}
                     />
                 )}
                 <Button
@@ -82,15 +79,27 @@ export const Header = () => {
             <div className="px-4 py-3 bg-white z-10 hidden md:flex justify-between gap-x-6 items-center">
                 <h1 className="text-lg font-bold">{headerLogo.logo}</h1>
                 <div className="flex items-center gap-x-4">
-                    <Button
-                        isIcon=""
-                        alt="公開する"
-                        text="公開する"
-                        color={buttonColors.bgOrange}
-                        width="w-40"
-                        type="submit"
-                        formId="create"
-                    />
+                    {isLocationEdit ? (
+                        <Button
+                            isIcon=""
+                            alt="更新する"
+                            text="更新する"
+                            color={buttonColors.bgOrange}
+                            width="w-40"
+                            type="submit"
+                            formId="edit"
+                        />
+                    ) : (
+                        <Button
+                            isIcon=""
+                            alt="公開する"
+                            text="公開する"
+                            color={buttonColors.bgOrange}
+                            width="w-40"
+                            type="submit"
+                            formId="create"
+                        />
+                    )}
                     <div onClick={toggleDeleteOpen} className="relative">
                         <FontAwesomeIcon
                             icon={faEllipsis}
@@ -104,6 +113,8 @@ export const Header = () => {
                                     image="/images/trash.svg"
                                     index={0}
                                     type=""
+                                    recipeDeleteId={recipeDeleteId}
+                                    deleteHandleSubmit={deleteHandleSubmit}
                                 />
                             </ul>
                         )}

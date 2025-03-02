@@ -1,6 +1,5 @@
 import { RegisterCard } from "../component/RegisterCard";
 import { RegisterInput } from "../component/RegisterInput";
-import { placeHolderType } from "../type/placeholder";
 import { useRecipeCreate } from "../hooks/useRecipeCreate";
 import { Button } from "../component/Button";
 import { placeholderString, sideLink } from "../constants/text";

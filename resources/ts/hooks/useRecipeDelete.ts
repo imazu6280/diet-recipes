@@ -1,9 +1,7 @@
-import { useParams } from "react-router-dom";
-
 export const useRecipeDelete = () => {
     const deleteHandleSubmit = async (
-        e: React.MouseEvent<HTMLButtonElement>,
-        id: number
+        e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>,
+        id?: number | null
     ) => {
         e.preventDefault();
 
@@ -17,7 +15,7 @@ export const useRecipeDelete = () => {
                 });
                 const result = await res.json();
 
-                // location.href = "/";
+                location.href = "/";
 
                 console.log("DELETE success!!", result);
             } catch (error) {

@@ -9,8 +9,12 @@ type Props = {
     width: string;
     type: "submit" | "reset" | "button";
     formId?: string;
+    recipeDeleteId?: number | null;
     favoriteToggleBtn?: () => void;
-    deleteHandleSubmit?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    deleteHandleSubmit?: (
+        e: React.MouseEvent<HTMLButtonElement>,
+        id?: number | null
+    ) => void;
 };
 
 export const Button = ({
@@ -21,6 +25,7 @@ export const Button = ({
     width,
     type,
     formId,
+    recipeDeleteId,
     favoriteToggleBtn,
     deleteHandleSubmit,
 }: Props) => {
@@ -31,7 +36,11 @@ export const Button = ({
             }`}
             type={type}
             {...(formId && { form: formId })}
-            onClick={text === "削除" ? deleteHandleSubmit : favoriteToggleBtn}
+            onClick={
+                text === "削除"
+                    ? (e) => deleteHandleSubmit?.(e, recipeDeleteId)
+                    : favoriteToggleBtn
+            }
         >
             {isIcon &&
                 (typeof isIcon === "string" ? (

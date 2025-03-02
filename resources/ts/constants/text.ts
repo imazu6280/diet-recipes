@@ -1,6 +1,10 @@
 import { faList, faPlus, faStar } from "@fortawesome/free-solid-svg-icons";
-import { SideLinkType } from "../type/sideMenu";
+import { headerLogoType, SideLinkType } from "../type/sideMenu";
 import { placeHolderType } from "../type/placeholder";
+
+export const headerLogo: headerLogoType = {
+    logo: "DIET-RECIPES",
+};
 
 export const sideLink: SideLinkType = [
     { id: 0, label: "人気のレシピ", icon: faStar },
