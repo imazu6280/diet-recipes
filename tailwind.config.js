@@ -68,6 +68,9 @@ export default {
                 "sidebar-column": "clamp(120px, 20%, 270px) 1fr",
                 "show-column": "min(35%, 300px) 1fr",
                 "create-ingredient-column": "24px 2fr 1fr 24px",
+                "list-column": "160px 1fr",
+                "wrapper-column": "1fr minmax(auto, 30%)",
+                "search-column": "1fr minmax(auto, 30%)",
             },
             aspectRatio: {
                 "5/4": "5 / 4",
