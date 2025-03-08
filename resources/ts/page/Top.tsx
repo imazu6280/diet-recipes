@@ -1,10 +1,10 @@
-import { categoryType } from "../type/category"
-import { SearchInput } from "../component/SearchInput"
-import { Button } from "../component/Button"
-import { useTopGet } from "../hooks/useTopGet"
-import { buttonColors } from "../constants/buttonColors"
-import { Link } from "react-router-dom"
-import { useDetailGet } from "../hooks/useDetailGet"
+import { categoryType } from "../type/category";
+import { SearchInput } from "../component/SearchInput";
+import { Button } from "../component/Button";
+import { useTopGet } from "../hooks/useTopGet";
+import { buttonColors } from "../constants/buttonColors";
+import { Link } from "react-router-dom";
+import { useDetailGet } from "../hooks/useDetailGet";
 
 const category: categoryType = [
     { id: 0, category: "野菜", icon: "images/image02.png" },
@@ -51,11 +51,11 @@ const category: categoryType = [
         category: "おもてなし",
         icon: "images/image13.png",
     },
-]
+];
 
 export const Top = () => {
-    const { recipes, favoriteRecipes } = useTopGet()
-    const { GetRecipesDetailApi } = useDetailGet()
+    const { recipes, favoriteRecipes } = useTopGet();
+    const { GetRecipesDetailApi } = useDetailGet();
 
     return (
         <div className="w-inner mx-auto">
@@ -63,7 +63,13 @@ export const Top = () => {
                 <h1 className="text-3xl font-bold text-center">DIET RECIPES</h1>
                 <form action="">
                     <div className="flex justify-center gap-2 mx-auto">
-                        <SearchInput isStyle={false} id="search" type="text" top="top-1/4" />
+                        <SearchInput
+                            isStyle={false}
+                            id="search"
+                            type="text"
+                            top="top-1/4"
+                            width="w-80"
+                        />
                         <Button
                             isIcon=""
                             alt=""
@@ -77,7 +83,9 @@ export const Top = () => {
             </div>
             <div className="flex flex-col gap-y-6">
                 <div>
-                    <h2 className="pt-6 text-black font-semibold">よく使う減量レシピ</h2>
+                    <h2 className="pt-6 text-black font-semibold">
+                        よく使う減量レシピ
+                    </h2>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-4 sm:grid-cols-2 sm:gap-y-4">
                         {favoriteRecipes.map((item) => (
                             <Link
@@ -101,18 +109,25 @@ export const Top = () => {
                     </ul>
                 </div>
                 <div>
-                    <h2 className="t-6 text-lg text-black font-semibold">登録レシピ一覧</h2>
+                    <h2 className="t-6 text-lg text-black font-semibold">
+                        登録レシピ一覧
+                    </h2>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-4 tablet_md:grid-cols-3 sm:grid-cols-1 sm:gap-y-4">
                         {recipes.map((item) => (
                             <Link to={`show/${item.id}`} key={item.id}>
-                                <li key={item.id} className="bg-white shadow-black rounded-lg">
+                                <li
+                                    key={item.id}
+                                    className="bg-white shadow-black rounded-lg"
+                                >
                                     <div
                                         className="pt-20 pb-4 px-4 rounded-t-lg bg-top bg-cover bg-no-repeat"
                                         style={{
                                             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3)), url(${item.thumbnail})`,
                                         }}
                                     >
-                                        <p className="text-white font-bold">{item.name}</p>
+                                        <p className="text-white font-bold">
+                                            {item.name}
+                                        </p>
                                         <p className="pt-0.5 text-xs font-light text-white">
                                             {item.calories}カロリー
                                         </p>
@@ -149,7 +164,10 @@ export const Top = () => {
                                                     key={step.id}
                                                     className="aspect-square rounded-lg"
                                                 >
-                                                    <img src={step.thumbnail} alt="" />
+                                                    <img
+                                                        src={step.thumbnail}
+                                                        alt=""
+                                                    />
                                                 </li>
                                             ))}
                                         </ul>
@@ -160,7 +178,9 @@ export const Top = () => {
                     </ul>
                 </div>
                 <div>
-                    <h2 className="t-6 text-lg text-black font-semibold">カテゴリ</h2>
+                    <h2 className="t-6 text-lg text-black font-semibold">
+                        カテゴリ
+                    </h2>
                     <ul className="grid grid-cols-4 gap-4 mt-4 bg-white rounded-lg md:grid-cols-3 md:gap-0 md:p-3">
                         {category.map((item) => (
                             <li
@@ -179,5 +199,5 @@ export const Top = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

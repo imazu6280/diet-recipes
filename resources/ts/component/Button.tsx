@@ -15,6 +15,7 @@ type Props = {
         e: React.MouseEvent<HTMLButtonElement>,
         id?: number | null
     ) => void;
+    toddleSearchOpen?: () => void;
 };
 
 export const Button = ({
@@ -28,6 +29,7 @@ export const Button = ({
     recipeDeleteId,
     favoriteToggleBtn,
     deleteHandleSubmit,
+    toddleSearchOpen,
 }: Props) => {
     return (
         <button
@@ -36,11 +38,15 @@ export const Button = ({
             }`}
             type={type}
             {...(formId && { form: formId })}
-            onClick={
-                text === "削除"
-                    ? (e) => deleteHandleSubmit?.(e, recipeDeleteId)
-                    : favoriteToggleBtn
-            }
+            onClick={(e) => {
+                if (text === "削除") {
+                    deleteHandleSubmit?.(e, recipeDeleteId);
+                } else if (text === "絞り込み検索") {
+                    toddleSearchOpen?.();
+                } else {
+                    favoriteToggleBtn?.();
+                }
+            }}
         >
             {isIcon &&
                 (typeof isIcon === "string" ? (

@@ -1,153 +1,131 @@
 import { Button } from "../component/Button";
 import { SearchInput } from "../component/SearchInput";
 import { buttonColors } from "../constants/buttonColors";
+import { useMenu } from "../hooks/useMenu";
 
 export const RecipeList = () => {
+    const { open, toddleSearchOpen } = useMenu();
+
     return (
-        <div>
-            <div>
-                <ul className="flex">
-                    <li className="p-4 border-b-2 border-orange">新着</li>
-                    <li className="p-4">お気に入り</li>
-                </ul>
-                <h2>
-                    <strong>鶏肉</strong>レシピ<span>111</span>
-                </h2>
-                <div className="grid grid-cols-wrapper-column gap-x-6">
-                    <div className="flex flex-col gap-y-4">
-                        <p>お気に入りの「鶏肉」レシピ</p>
-                        <ul className="flex gap-x-2">
-                            <li className="px-16 py-10 rounded-lg bg-black">
-                                <img src="" alt="" />
-                            </li>
-                            <li className="px-16 py-10 rounded-lg bg-black">
-                                <img src="" alt="" />
-                            </li>
-                            <li className="px-16 py-10 rounded-lg bg-black">
-                                <img src="" alt="" />
-                            </li>
-                        </ul>
-                        <div className="grid grid-cols-list-column rounded-md shadow-black">
-                            <div>
-                                <img src="" alt="" />
-                            </div>
-                            <div className="flex flex-col gap-y-1 p-4">
-                                <h3 className="text-xl font-semibold">
-                                    鶏肉パリパリレシピ
-                                </h3>
-                                <p>
-                                    ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト
-                                </p>
+        <div className="max-w-wrapper mx-auto md:max-w-none">
+            <ul className="flex md:w-full md:grid md:grid-cols-2 md:bg-white md:text-center md:shadow-gray">
+                <li className="p-4 border-b-2 border-orange">新着</li>
+                <li className="p-4">お気に入り</li>
+            </ul>
+            <h2 className="pt-4 text-2xl md:hidden">
+                <strong className="pr-1">鶏肉</strong>レシピ
+                <span className="pl-1 text-xl text-gray">(111)</span>
+            </h2>
+            <div className="grid grid-cols-wrapper-column gap-x-6 pt-4 text-xl md:block md:w-inner md:mx-auto">
+                <div className="flex flex-col gap-y-4">
+                    <p>お気に入りの「鶏肉」レシピ</p>
+                    <ul className="flex gap-x-2">
+                        <li className="max-w-36 aspect-square rounded-lg">
+                            <img src="" alt="" />
+                        </li>
+                    </ul>
+                    <div className="justify-between hidden md:flex">
+                        <h2 className="pt-4 text-2xl">
+                            <strong className="pr-1">鶏肉</strong>レシピ
+                            <span className="pl-1 text-xl">(111)</span>
+                        </h2>
+                        <Button
+                            alt="絞り込み検索"
+                            text="絞り込み検索"
+                            color={buttonColors.gray}
+                            width="w-40"
+                            type="button"
+                            toddleSearchOpen={toddleSearchOpen}
+                        />
+                    </div>
 
-                                <div>
-                                    <img src="" alt="" />
-                                    <p>2人前</p>
-                                </div>
-                                <p className="pt-1">コメント</p>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-list-column rounded-md shadow-black">
-                            <div>
-                                <img src="" alt="" />
-                            </div>
-                            <div className="flex flex-col gap-y-1 p-4">
-                                <h3 className="text-xl font-semibold">
-                                    鶏肉パリパリレシピ
-                                </h3>
-                                <p>
-                                    ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト
-                                </p>
+                    <div className="grid grid-cols-list-column rounded-md shadow-black md:grid-cols-md-list-column md:bg-white">
+                        <div
+                            className="md:col-auto order-2 md:order-1 bg-cover bg-center bg-no-repeat"
+                            style={{
+                                backgroundImage: `url()`,
+                            }}
+                        ></div>
+                        <div className="flex flex-col gap-y-3 p-4 md:col-auto order-2 md:order-1">
+                            <h3 className="text-xl font-semibold">
+                                鶏肉パリパリレシピ
+                            </h3>
+                            <p className="text-sm">
+                                ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト
+                            </p>
 
-                                <div>
-                                    <img src="" alt="" />
-                                    <p>2人前</p>
-                                </div>
-                                <p className="pt-1">コメント</p>
+                            <div className="flex gap-x-1">
+                                <img src="/images/people.svg" alt="" />
+                                <p className="text-sm">2人前</p>
                             </div>
-                        </div>
-                        <div className="grid grid-cols-list-column rounded-md shadow-black">
-                            <div>
-                                <img src="" alt="" />
-                            </div>
-                            <div className="flex flex-col gap-y-1 p-4">
-                                <h3 className="text-xl font-semibold">
-                                    鶏肉パリパリレシピ
-                                </h3>
-                                <p>
-                                    ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト
-                                </p>
-
-                                <div>
-                                    <img src="" alt="" />
-                                    <p>2人前</p>
-                                </div>
-                                <p className="pt-1">コメント</p>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-list-column rounded-md shadow-black">
-                            <div>
-                                <img src="" alt="" />
-                            </div>
-                            <div className="flex flex-col gap-y-1 p-4">
-                                <h3 className="text-xl font-semibold">
-                                    鶏肉パリパリレシピ
-                                </h3>
-                                <p>
-                                    ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト
-                                </p>
-
-                                <div>
-                                    <img src="" alt="" />
-                                    <p>2人前</p>
-                                </div>
-                                <p className="pt-1">コメント</p>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-list-column rounded-md shadow-black">
-                            <div>
-                                <img src="" alt="" />
-                            </div>
-                            <div className="flex flex-col gap-y-1 p-4">
-                                <h3 className="text-xl font-semibold">
-                                    鶏肉パリパリレシピ
-                                </h3>
-                                <p>
-                                    ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト
-                                </p>
-
-                                <div>
-                                    <img src="" alt="" />
-                                    <p>2人前</p>
-                                </div>
-                                <p className="pt-1">コメント</p>
-                            </div>
+                            <p className="pt-1 text-sm">コメント</p>
                         </div>
                     </div>
-                    <div className="sticky top-0 h-full">
-                        <div className="flex justify-between">
-                            <h3>絞り込み機能</h3>
-                            <p>リセット</p>
-                        </div>
+                </div>
+                <div className="sticky top-20 flex flex-col gap-4 h-fit overflow-visible md:hidden">
+                    <div className="flex justify-between">
+                        <h3 className="text-lg font-semibold">絞り込み機能</h3>
+                        <p className="text-base text-gray">リセットする</p>
+                    </div>
 
-                        <form action="">
+                    <form action="" className="flex flex-col gap-y-4">
+                        <SearchInput
+                            isStyle={false}
+                            id="search"
+                            type="text"
+                            top="top-1/4"
+                            width="w-full"
+                        />
+                        <Button
+                            isIcon=""
+                            alt=""
+                            text="検索"
+                            color={buttonColors.bgOrange}
+                            width="w-20"
+                            type="button"
+                        />
+                    </form>
+                </div>
+            </div>
+            {open.searchOpen && (
+                <div
+                    className="flex justify-center items-center inset-0 fixed z-50 bg-gray-opacity"
+                    onClick={toddleSearchOpen}
+                >
+                    <div
+                        className="w-inner px-4 py-10 bg-beige z-60 rounded-md shadow-black"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <form
+                            action=""
+                            className="flex flex-col gap-y-6 w-inner mx-auto"
+                        >
+                            <div className="flex justify-between">
+                                <h3 className="text-lg font-semibold">
+                                    <span className="pr-1">鶏肉</span>の絞り込み
+                                </h3>
+                                <p className="text-base text-gray">
+                                    リセットする
+                                </p>
+                            </div>
                             <SearchInput
                                 isStyle={false}
                                 id="search"
                                 type="text"
                                 top="top-1/4"
+                                width="w-full"
                             />
                             <Button
-                                isIcon=""
-                                alt=""
-                                text="検索"
+                                alt="絞り込み検索"
+                                text="絞り込み検索"
                                 color={buttonColors.bgOrange}
-                                width=""
+                                width="w-40 mx-auto"
                                 type="button"
                             />
                         </form>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };
