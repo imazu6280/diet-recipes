@@ -20,9 +20,15 @@ export default {
                 md: { max: "768px" },
                 tb: { max: "960px" },
                 pc_sm: { min: "769px", max: "1200px" },
+                pc_lg: { min: "1201px" },
             },
             width: {
                 inner: "96%",
+                "header-search": "60%",
+            },
+            maxWidth: {
+                wrapper: "75%",
+                search: "28rem",
             },
             padding: {
                 "72px": "72px",
@@ -46,13 +52,18 @@ export default {
                 beige: "#F8F6F2",
                 white: "#FFFFFF",
                 black: "#606060",
+                "base-color": "#4a4a4a",
                 "gray-opacity": "rgba(74, 74, 74, 0.7)",
+            },
+            borderColor: {
+                gray: "#939290",
             },
             borderWidth: {
                 1: "1px",
             },
             boxShadow: {
                 black: "0 1px 5px #0000001a",
+                gray: "0 2px 2px -2px rgba(0, 0, 0, .3);",
                 modal: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
             },
             borderRadius: {
@@ -68,6 +79,14 @@ export default {
                 "sidebar-column": "clamp(120px, 20%, 270px) 1fr",
                 "show-column": "min(35%, 300px) 1fr",
                 "create-ingredient-column": "24px 2fr 1fr 24px",
+                "list-column": "160px 1fr",
+                "md-list-column": "1fr 160px",
+                "wrapper-column": "1fr minmax(auto, 30%)",
+                "search-column": "1fr minmax(auto, 30%)",
+            },
+            gridTemplateAreas: {
+                mobile: `"text" "image"`,
+                desktop: `"image text"`,
             },
             aspectRatio: {
                 "5/4": "5 / 4",
@@ -112,6 +131,10 @@ export default {
                     "border-right": "2rem solid transparent",
                     "border-bottom": "4rem solid #007bff",
                 },
+                ".grid-mobile": { "grid-template-areas": `"image" "content"` },
+                ".grid-desktop": { "grid-template-areas": `"image content"` },
+                ".grid-image": { "grid-area": "image" },
+                ".grid-content": { "grid-area": "content" },
             };
 
             addUtilities(newUtilities, ["responsive", "hover"]);

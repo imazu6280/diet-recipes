@@ -10,6 +10,7 @@ import { RecipeCreate } from "./page/RecipeCreate";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { RecipeEdit } from "./page/RecipeEdit";
+import { RecipeList } from "./page/RecipeList";
 
 const container = document.getElementById("app");
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
@@ -36,6 +37,10 @@ root.render(
                                 <Route
                                     path="/edit/:id"
                                     element={<RecipeEdit />}
+                                />
+                                <Route
+                                    path="/recipes"
+                                    element={<RecipeList />}
                                 />
                             </Routes>
                         </div>

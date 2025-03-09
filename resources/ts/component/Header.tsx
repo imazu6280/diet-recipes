@@ -23,11 +23,12 @@ export const Header = () => {
     const isLocation =
         location.pathname === "/create" || location.pathname.includes("/edit/");
     const isLocationEdit = location.pathname.includes("/edit/");
+    const isLocationRecipes = location.pathname.includes("/recipes/");
 
     const recipeDeleteId = useSelector((state: RootState) => state.id.id);
 
     return isLocation ? (
-        <header className="sticky top-0 z-30">
+        <header className="sticky top-0 z-30 md:shadow-gray">
             <div className="p-2 flex justify-end gap-x-4 bg-white z-10 md:hidden">
                 {isLocationEdit && (
                     <Button
@@ -123,8 +124,21 @@ export const Header = () => {
             </div>
         </header>
     ) : (
-        <header className="sticky top-0 z-50">
-            <div className="p-2 flex justify-end bg-white z-10 md:hidden">
+        <header className="sticky top-0 z-50 md:shadow-gray">
+            <div
+                className={`p-2 flex bg-white z-10 md:hidden ${
+                    !isLocationRecipes ? "justify-end" : "justify-between"
+                }`}
+            >
+                {isLocationRecipes && (
+                    <SearchInput
+                        isStyle={true}
+                        id="search"
+                        type="text"
+                        top="top-1/4"
+                        width="w-header-search"
+                    />
+                )}
                 <Button
                     isIcon="/images/header-write.svg"
                     alt="レシピを書く"
@@ -142,6 +156,7 @@ export const Header = () => {
                         id="search"
                         type="text"
                         top="top-0"
+                        width="w-full"
                     />
                 </form>
                 <Button
@@ -173,6 +188,7 @@ export const Header = () => {
                             id="search"
                             type="text"
                             top="top-0"
+                            width="w-full"
                         />
                     </form>
                     <MenuButton open={open} menuOpen={menuOpen} />
