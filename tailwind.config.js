@@ -20,6 +20,7 @@ export default {
                 md: { max: "768px" },
                 tb: { max: "960px" },
                 pc_sm: { min: "769px", max: "1200px" },
+                pc_lg: { min: "1201px" },
             },
             width: {
                 inner: "96%",
@@ -83,6 +84,10 @@ export default {
                 "wrapper-column": "1fr minmax(auto, 30%)",
                 "search-column": "1fr minmax(auto, 30%)",
             },
+            gridTemplateAreas: {
+                mobile: `"text" "image"`,
+                desktop: `"image text"`,
+            },
             aspectRatio: {
                 "5/4": "5 / 4",
             },
@@ -126,6 +131,10 @@ export default {
                     "border-right": "2rem solid transparent",
                     "border-bottom": "4rem solid #007bff",
                 },
+                ".grid-mobile": { "grid-template-areas": `"image" "content"` },
+                ".grid-desktop": { "grid-template-areas": `"image content"` },
+                ".grid-image": { "grid-area": "image" },
+                ".grid-content": { "grid-area": "content" },
             };
 
             addUtilities(newUtilities, ["responsive", "hover"]);

@@ -160,7 +160,7 @@ export const RecipeCreate = () => {
                             type="button"
                             onClick={(e) => addIngredient(e)}
                         >
-                            <img src="images/plus.svg" alt="プラス" />
+                            <img src="/images/plus.svg" alt="プラス" />
                             <span>材料</span>
                         </button>
                     </div>
@@ -197,7 +197,7 @@ export const RecipeCreate = () => {
                             type="button"
                             onClick={(e) => addSteps(e)}
                         >
-                            <img src="images/plus.svg" alt="プラス" />
+                            <img src="/images/plus.svg" alt="プラス" />
                             <span>作り方</span>
                         </button>
                     </div>

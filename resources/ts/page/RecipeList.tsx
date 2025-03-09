@@ -7,7 +7,7 @@ export const RecipeList = () => {
     const { open, toddleSearchOpen } = useMenu();
 
     return (
-        <div className="max-w-wrapper mx-auto md:max-w-none">
+        <div className="mx-auto pc_lg:w-inner pc_lg:max-w-wrapper ">
             <ul className="flex md:w-full md:grid md:grid-cols-2 md:bg-white md:text-center md:shadow-gray">
                 <li className="p-4 border-b-2 border-orange">新着</li>
                 <li className="p-4">お気に入り</li>
@@ -39,14 +39,14 @@ export const RecipeList = () => {
                         />
                     </div>
 
-                    <div className="grid grid-cols-list-column rounded-md shadow-black md:grid-cols-md-list-column md:bg-white">
+                    <div className="grid grid-cols-list-column grid-areas-desktop rounded-md shadow-black md:grid-cols-md-list-column md:grid-mobile md:bg-white">
                         <div
-                            className="md:col-auto order-2 md:order-1 bg-cover bg-center bg-no-repeat"
+                            className="order-2 md:order-1 bg-cover bg-center bg-no-repeat"
                             style={{
                                 backgroundImage: `url()`,
                             }}
                         ></div>
-                        <div className="flex flex-col gap-y-3 p-4 md:col-auto order-2 md:order-1">
+                        <div className="flex flex-col gap-y-3 p-4 grid-image">
                             <h3 className="text-xl font-semibold">
                                 鶏肉パリパリレシピ
                             </h3>
@@ -54,7 +54,7 @@ export const RecipeList = () => {
                                 ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト
                             </p>
 
-                            <div className="flex gap-x-1">
+                            <div className="flex gap-x-1 grid-content">
                                 <img src="/images/people.svg" alt="" />
                                 <p className="text-sm">2人前</p>
                             </div>
