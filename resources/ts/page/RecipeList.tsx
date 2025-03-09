@@ -1,10 +1,21 @@
+import { useEffect } from "react";
 import { Button } from "../component/Button";
 import { SearchInput } from "../component/SearchInput";
 import { buttonColors } from "../constants/buttonColors";
 import { useMenu } from "../hooks/useMenu";
+import { useSearch } from "../hooks/useSearch";
 
 export const RecipeList = () => {
     const { open, toddleSearchOpen } = useMenu();
+    const { searchList, searchGetRecipe } = useSearch();
+
+    // const searchParams = new URLSearchParams(location.search).get("search");
+
+    // useEffect(() => {
+    //     if (searchParams) {
+    //         searchGetRecipe(searchParams);
+    //     }
+    // }, [location.search]);
 
     return (
         <div className="mx-auto pc_lg:w-inner pc_lg:max-w-wrapper ">
@@ -38,29 +49,37 @@ export const RecipeList = () => {
                             toddleSearchOpen={toddleSearchOpen}
                         />
                     </div>
-
-                    <div className="grid grid-cols-list-column grid-areas-desktop rounded-md shadow-black md:grid-cols-md-list-column md:grid-mobile md:bg-white">
+                    {searchList.map((item) => (
                         <div
-                            className="order-2 md:order-1 bg-cover bg-center bg-no-repeat"
-                            style={{
-                                backgroundImage: `url()`,
-                            }}
-                        ></div>
-                        <div className="flex flex-col gap-y-3 p-4 grid-image">
-                            <h3 className="text-xl font-semibold">
-                                鶏肉パリパリレシピ
-                            </h3>
-                            <p className="text-sm">
-                                ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト・ダミーテキスト
-                            </p>
+                            key={item.id}
+                            className="grid grid-cols-list-column grid-areas-desktop rounded-md shadow-black md:grid-cols-md-list-column md:grid-mobile md:bg-white"
+                        >
+                            <div
+                                className="order-2 md:order-1 bg-cover bg-center bg-no-repeat"
+                                style={{
+                                    backgroundImage: `url()`,
+                                }}
+                            ></div>
+                            <div className="flex flex-col gap-y-3 p-4 grid-image">
+                                <h3 className="text-xl font-semibold">
+                                    {item.name}
+                                </h3>
+                                <ul className="text-sm">
+                                    {item.ingredients.map((ingredient) => (
+                                        <li key={ingredient.id}>
+                                            {ingredient.name}
+                                        </li>
+                                    ))}
+                                </ul>
 
-                            <div className="flex gap-x-1 grid-content">
-                                <img src="/images/people.svg" alt="" />
-                                <p className="text-sm">2人前</p>
+                                <div className="flex gap-x-1 grid-content">
+                                    <img src="/images/people.svg" alt="" />
+                                    <p className="text-sm">2人前</p>
+                                </div>
+                                <p className="pt-1 text-sm">コメント</p>
                             </div>
-                            <p className="pt-1 text-sm">コメント</p>
                         </div>
-                    </div>
+                    ))}
                 </div>
                 <div className="sticky top-20 flex flex-col gap-4 h-fit overflow-visible md:hidden">
                     <div className="flex justify-between">

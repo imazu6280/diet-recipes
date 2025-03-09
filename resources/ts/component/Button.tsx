@@ -16,6 +16,7 @@ type Props = {
         id?: number | null
     ) => void;
     toddleSearchOpen?: () => void;
+    handleSearchSubmit?: () => void;
 };
 
 export const Button = ({
@@ -30,6 +31,7 @@ export const Button = ({
     favoriteToggleBtn,
     deleteHandleSubmit,
     toddleSearchOpen,
+    handleSearchSubmit,
 }: Props) => {
     return (
         <button
@@ -43,6 +45,8 @@ export const Button = ({
                     deleteHandleSubmit?.(e, recipeDeleteId);
                 } else if (text === "絞り込み検索") {
                     toddleSearchOpen?.();
+                } else if (text === "検索") {
+                    handleSearchSubmit?.();
                 } else {
                     favoriteToggleBtn?.();
                 }

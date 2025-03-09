@@ -13,9 +13,17 @@ class RecipeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $recipes = Recipe::with('steps')->get();
+        $search = $request->query('search');
+
+        if($search){
+            $recipes = Recipe::with('steps')->where('name','like', '%' . $search . '%')->get();
+        } else {
+            $recipes = Recipe::with('steps')->get();
+        }
+
+
         return response()->json($recipes);
     }
 

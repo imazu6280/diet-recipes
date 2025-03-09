@@ -5,6 +5,7 @@ import { useTopGet } from "../hooks/useTopGet";
 import { buttonColors } from "../constants/buttonColors";
 import { Link } from "react-router-dom";
 import { useDetailGet } from "../hooks/useDetailGet";
+import { useSearch } from "../hooks/useSearch";
 
 const category: categoryType = [
     { id: 0, category: "野菜", icon: "images/image02.png" },
@@ -56,12 +57,13 @@ const category: categoryType = [
 export const Top = () => {
     const { recipes, favoriteRecipes } = useTopGet();
     const { GetRecipesDetailApi } = useDetailGet();
+    const { search, handleSearchChange, searchGetRecipe } = useSearch();
 
     return (
         <div className="w-inner mx-auto">
             <div className="flex flex-col gap-y-6 md:hidden">
                 <h1 className="text-3xl font-bold text-center">DIET RECIPES</h1>
-                <form action="">
+                <form action="" onSubmit={(e) => searchGetRecipe(e, search)}>
                     <div className="flex justify-center gap-2 mx-auto">
                         <SearchInput
                             isStyle={false}
@@ -69,6 +71,7 @@ export const Top = () => {
                             type="text"
                             top="top-1/4"
                             width="w-80"
+                            handleSearchChange={handleSearchChange}
                         />
                         <Button
                             isIcon=""
@@ -76,7 +79,7 @@ export const Top = () => {
                             text="検索"
                             color={buttonColors.bgOrange}
                             width=""
-                            type="button"
+                            type="submit"
                         />
                     </div>
                 </form>

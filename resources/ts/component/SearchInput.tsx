@@ -4,9 +4,17 @@ type Props = {
     type: string;
     top: string;
     width: string;
+    handleSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const SearchInput = ({ isStyle, id, type, top, width }: Props) => {
+export const SearchInput = ({
+    isStyle,
+    id,
+    type,
+    top,
+    width,
+    handleSearchChange,
+}: Props) => {
     return (
         <label htmlFor={id} className={`relative ${width}`}>
             <input
@@ -15,6 +23,7 @@ export const SearchInput = ({ isStyle, id, type, top, width }: Props) => {
                     isStyle ? "p-2 rounded-full" : "py-2 pr-2 rounded-lg"
                 } ${width}`}
                 placeholder="使いたい食材は？"
+                onChange={handleSearchChange}
             />
             <p className={`absolute left-2 ${top}`}>
                 <img src="/images/image01.png" alt="" />
