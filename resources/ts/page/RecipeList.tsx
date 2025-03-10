@@ -4,18 +4,11 @@ import { SearchInput } from "../component/SearchInput";
 import { buttonColors } from "../constants/buttonColors";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
+import { useSearchParams } from "react-router-dom";
 
 export const RecipeList = () => {
     const { open, toddleSearchOpen } = useMenu();
-    const { searchList, searchGetRecipe } = useSearch();
-
-    // const searchParams = new URLSearchParams(location.search).get("search");
-
-    // useEffect(() => {
-    //     if (searchParams) {
-    //         searchGetRecipe(searchParams);
-    //     }
-    // }, [location.search]);
+    const { searchList } = useSearch();
 
     return (
         <div className="mx-auto pc_lg:w-inner pc_lg:max-w-wrapper ">

@@ -57,13 +57,13 @@ const category: categoryType = [
 export const Top = () => {
     const { recipes, favoriteRecipes } = useTopGet();
     const { GetRecipesDetailApi } = useDetailGet();
-    const { search, handleSearchChange, searchGetRecipe } = useSearch();
+    const { handleSearchChange, handleSearchSubmit } = useSearch();
 
     return (
         <div className="w-inner mx-auto">
             <div className="flex flex-col gap-y-6 md:hidden">
                 <h1 className="text-3xl font-bold text-center">DIET RECIPES</h1>
-                <form action="" onSubmit={(e) => searchGetRecipe(e, search)}>
+                <form action="" onSubmit={handleSearchSubmit}>
                     <div className="flex justify-center gap-2 mx-auto">
                         <SearchInput
                             isStyle={false}

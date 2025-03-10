@@ -18,9 +18,9 @@ class RecipeController extends Controller
         $search = $request->query('search');
 
         if($search){
-            $recipes = Recipe::with('steps')->where('name','like', '%' . $search . '%')->get();
+            $recipes = Recipe::with('steps', 'ingredients')->where('name','like', '%' . $search . '%')->get();
         } else {
-            $recipes = Recipe::with('steps')->get();
+            $recipes = Recipe::with('steps', 'ingredients')->get();
         }
 
 
