@@ -131,7 +131,7 @@ export default {
                     "border-right": "2rem solid transparent",
                     "border-bottom": "4rem solid #007bff",
                 },
-                ".grid-mobile": { "grid-template-areas": `"image" "content"` },
+                ".grid-mobile": { "grid-template-areas": `"content" "image"` },
                 ".grid-desktop": { "grid-template-areas": `"image content"` },
                 ".grid-image": { "grid-area": "image" },
                 ".grid-content": { "grid-area": "content" },

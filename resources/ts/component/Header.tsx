@@ -14,11 +14,13 @@ import { useRecipeCreate } from "../hooks/useRecipeCreate";
 import { useRecipeDelete } from "../hooks/useRecipeDelete";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { useSearch } from "../hooks/useSearch";
 
 export const Header = () => {
     const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu();
     const { createInputValue, favoriteToggleBtn } = useRecipeCreate();
     const { deleteHandleSubmit } = useRecipeDelete();
+    const { handleSearchChange, handleSearchSubmit } = useSearch();
     const location = useLocation();
     const isLocation =
         location.pathname === "/create" || location.pathname.includes("/edit/");
@@ -130,33 +132,46 @@ export const Header = () => {
                     !isLocationRecipes ? "justify-end" : "justify-between"
                 }`}
             >
-                {isLocationRecipes && (
-                    <SearchInput
-                        isStyle={true}
-                        id="search"
-                        type="text"
-                        top="top-1/4"
-                        width="w-header-search"
+                <form
+                    id="recipes-header-search"
+                    action=""
+                    onSubmit={handleSearchSubmit}
+                >
+                    {isLocationRecipes && (
+                        <SearchInput
+                            isStyle={true}
+                            id="recipes-header-search"
+                            type="text"
+                            top="top-1/4"
+                            width="w-header-search"
+                            handleSearchChange={handleSearchChange}
+                        />
+                    )}
+                    <Button
+                        isIcon="/images/header-write.svg"
+                        alt="レシピを書く"
+                        text="レシピを書く"
+                        color={buttonColors.bgOrange}
+                        width=""
+                        type="submit"
+                        formId="recipes-header-search"
                     />
-                )}
-                <Button
-                    isIcon="/images/header-write.svg"
-                    alt="レシピを書く"
-                    text="レシピを書く"
-                    color={buttonColors.bgOrange}
-                    width=""
-                    type="button"
-                />
+                </form>
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden tablet_md:grid grid-cols-header-tb-column gap-x-6 items-center">
                 <h1 className="text-lg font-bold">{headerLogo.logo}</h1>
-                <form action="">
+                <form
+                    id="header-search"
+                    action=""
+                    onSubmit={handleSearchSubmit}
+                >
                     <SearchInput
                         isStyle={true}
-                        id="search"
+                        id="header-search"
                         type="text"
                         top="top-0"
                         width="w-full"
+                        handleSearchChange={handleSearchChange}
                     />
                 </form>
                 <Button
@@ -166,6 +181,7 @@ export const Header = () => {
                     color={buttonColors.bgOrange}
                     width=""
                     type="button"
+                    formId="header-search"
                 />
                 <MenuButton open={open} menuOpen={menuOpen} />
             </div>
@@ -182,13 +198,18 @@ export const Header = () => {
                     />
                 </div>
                 <div className="grid grid-cols-header-column gap-5">
-                    <form action="">
+                    <form
+                        id="no-click-search"
+                        action=""
+                        onSubmit={handleSearchSubmit}
+                    >
                         <SearchInput
                             isStyle={true}
-                            id="search"
+                            id="no-click-search"
                             type="text"
                             top="top-0"
                             width="w-full"
+                            handleSearchChange={handleSearchChange}
                         />
                     </form>
                     <MenuButton open={open} menuOpen={menuOpen} />

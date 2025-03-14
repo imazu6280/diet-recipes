@@ -4,27 +4,60 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 export const useSearch = () => {
     const [searchList, setSearchList] = useState<GetRecipesResponse>([]);
-    // const [search, setSearch] = useState<string>("");
     const [searchParams, setSearchParams] = useSearchParams();
-    const navigate = useNavigate();
+    const [isFavoriteTab, setIsFavoriteTab] = useState(false);
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("Search input changed:", e.target.value);
         setSearchParams((prev) => {
-            prev.set("search", e.target.value);
-            return prev;
+            const newParams = new URLSearchParams(prev);
+            newParams.set("search", e.target.value);
+            return newParams;
+        });
+    };
+
+    const handleResetChange = () => {
+        setSearchParams((prev) => {
+            const newParams = new URLSearchParams(prev);
+            newParams.set("search", "");
+            return newParams;
         });
     };
 
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        setIsFavoriteTab(false);
+        console.log({ isFavoriteTab });
+
         const query = searchParams.get("search") ?? "";
-        navigate(`/recipes?search=${encodeURIComponent(query)}`);
+        const targetUrl = `/recipes?search=${encodeURIComponent(query)}`;
+        location.href = targetUrl;
+    };
+
+    const handleFavoriteTab = async () => {
+        const query = searchParams.get("search") ?? "";
+
+        setIsFavoriteTab(true);
+
+        setSearchParams((prev) => {
+            const newParams = new URLSearchParams(prev);
+            newParams.set("favorite", "true");
+            return newParams;
+        });
+
+        const queryFavorite = searchParams.get("favorite") === "true";
+
+        const targetUrl = `/recipes?search=${encodeURIComponent(
+            query
+        )}&favorite=${encodeURIComponent(queryFavorite)}`;
+        location.href = targetUrl;
     };
 
     const searchGetRecipe = async () => {
         const query = searchParams.get("search") ?? "";
+
         console.log(query);
+
         try {
             const res = await fetch(
                 `/api/recipes?search=${encodeURIComponent(query)}`
@@ -32,21 +65,52 @@ export const useSearch = () => {
             const json = await res.json();
 
             setSearchList(json);
-            console.log("API response:", json); // ここでレスポンスを確認
+
+            console.log("API response:", json);
+        } catch (error) {
+            console.error("search GET error!!", error);
+        }
+    };
+
+    const searchFavoriteRecipe = async () => {
+        const query = searchParams.get("search") ?? "";
+        const queryFavorite = searchParams.get("favorite") === "true";
+        console.log("queryFavorite", encodeURIComponent(queryFavorite));
+
+        console.log("query", query);
+
+        try {
+            const res = await fetch(
+                `/api/recipes?search=${encodeURIComponent(
+                    query
+                )}&favorite=${encodeURIComponent(queryFavorite)}`
+            );
+            const json = await res.json();
+
+            setSearchList(json);
+
+            console.log("API response:", json);
         } catch (error) {
             console.error("search GET error!!", error);
         }
     };
 
     useEffect(() => {
-        searchGetRecipe();
-    }, [searchParams]);
+        if (isFavoriteTab) {
+            searchFavoriteRecipe();
+        } else {
+            searchGetRecipe();
+        }
+    }, []);
 
     return {
-        // search,
         searchList,
+        searchParams,
+        isFavoriteTab,
+        handleResetChange,
         handleSearchChange,
         handleSearchSubmit,
+        handleFavoriteTab,
         searchGetRecipe,
     };
 };

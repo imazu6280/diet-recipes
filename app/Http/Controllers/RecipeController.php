@@ -16,12 +16,19 @@ class RecipeController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search');
+        $favoriteOnly = $request->query(('favorite'));
+
+        $query = Recipe::with('steps','ingredients');
 
         if($search){
-            $recipes = Recipe::with('steps', 'ingredients')->where('name','like', '%' . $search . '%')->get();
-        } else {
-            $recipes = Recipe::with('steps', 'ingredients')->get();
+            $recipes = $query->where('name','like', '%' . $search . '%');
         }
+
+        if ($favoriteOnly === 'true') {
+            $recipes = $query->where('is_favorite', true);
+        }
+
+        $recipes = $query->get();
 
 
         return response()->json($recipes);

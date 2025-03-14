@@ -34,12 +34,12 @@ export const useMenu = () => {
             }));
         }
     };
-    const toddleSearchOpen = () => {
+    const toggleSearchOpen = () => {
         setOpen((prevState) => ({
             ...prevState,
             searchOpen: !prevState.searchOpen,
         }));
     };
 
-    return { open, menuOpen, toggleDeleteOpen, toddleSearchOpen };
+    return { open, menuOpen, toggleDeleteOpen, toggleSearchOpen };
 };

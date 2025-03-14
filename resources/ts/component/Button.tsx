@@ -15,7 +15,7 @@ type Props = {
         e: React.MouseEvent<HTMLButtonElement>,
         id?: number | null
     ) => void;
-    toddleSearchOpen?: () => void;
+    toggleSearchOpen?: () => void;
     handleSearchSubmit?: () => void;
 };
 
@@ -30,7 +30,7 @@ export const Button = ({
     recipeDeleteId,
     favoriteToggleBtn,
     deleteHandleSubmit,
-    toddleSearchOpen,
+    toggleSearchOpen,
     handleSearchSubmit,
 }: Props) => {
     return (
@@ -44,7 +44,7 @@ export const Button = ({
                 if (text === "削除") {
                     deleteHandleSubmit?.(e, recipeDeleteId);
                 } else if (text === "絞り込み検索") {
-                    toddleSearchOpen?.();
+                    toggleSearchOpen?.();
                 } else if (text === "検索") {
                     handleSearchSubmit?.();
                 } else {
