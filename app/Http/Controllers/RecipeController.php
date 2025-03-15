@@ -13,9 +13,24 @@ class RecipeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $recipes = Recipe::with('steps')->get();
+        $search = $request->query('search');
+        $favoriteOnly = $request->query(('favorite'));
+
+        $query = Recipe::with('steps','ingredients');
+
+        if($search){
+            $recipes = $query->where('name','like', '%' . $search . '%');
+        }
+
+        if ($favoriteOnly === 'true') {
+            $recipes = $query->where('is_favorite', true);
+        }
+
+        $recipes = $query->get();
+
+
         return response()->json($recipes);
     }
 

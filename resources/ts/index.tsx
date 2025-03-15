@@ -23,7 +23,7 @@ root.render(
                     <Sidebar />
                     <div className="bg-white rounded-lg md:py-0 md:bg-beige">
                         <Header />
-                        <div className="pl-4 pr-6 tb:px-0">
+                        <div className="pl-4 pr-6 md:px-0">
                             <Routes>
                                 <Route path="/" element={<Top />} />
                                 <Route
