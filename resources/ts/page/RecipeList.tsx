@@ -49,15 +49,16 @@ export const RecipeList = () => {
             <h2 className="pt-4 text-2xl md:hidden">
                 <strong className="pr-1">{newParams.get("search")}</strong>
                 レシピ
-                <span className="pl-1 text-xl text-gray">(111)</span>
+                <span className="pl-1 text-xl text-gray">
+                    ({searchList.length})
+                </span>
             </h2>
             <div className="grid grid-cols-wrapper-column gap-x-6 pt-4 text-xl md:block md:w-inner md:mx-auto">
                 <div className="flex flex-col gap-y-4">
                     {!isFavoriteTab && (
                         <div className="flex flex-col gap-y-4">
                             <p>
-                                お気に入りの
-                                <strong>{newParams.get("search")}</strong>レシピ
+                                お気に入りの「{newParams.get("search")}」レシピ
                             </p>
                             <ul className="flex gap-x-2">
                                 {searchFavoriteList.map((item) => (
