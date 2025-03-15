@@ -1,8 +1,10 @@
+import { useSearchParams } from "react-router-dom";
 import { Button } from "../component/Button";
 import { SearchInput } from "../component/SearchInput";
 import { buttonColors } from "../constants/buttonColors";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
+import { useEffect, useState } from "react";
 
 export const RecipeList = () => {
     const { open, toggleSearchOpen } = useMenu();
@@ -11,9 +13,16 @@ export const RecipeList = () => {
         isFavoriteTab,
         handleSearchChange,
         handleResetChange,
-        handleFavoriteTab,
         handleSearchSubmit,
+        searchGetRecipe,
     } = useSearch();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const newParams = new URLSearchParams(searchParams);
+
+    useEffect(() => {
+        searchGetRecipe();
+    }, [searchParams]);
 
     return (
         <div className="mx-auto pc_lg:w-inner pc_lg:max-w-wrapper ">
@@ -22,7 +31,10 @@ export const RecipeList = () => {
                     className={`p-4 ${
                         isFavoriteTab ? "" : "border-b-2 border-orange"
                     }`}
-                    onClick={handleSearchSubmit}
+                    onClick={() => {
+                        newParams.set("favorite", "false");
+                        setSearchParams(newParams);
+                    }}
                 >
                     新着
                 </li>
@@ -30,7 +42,10 @@ export const RecipeList = () => {
                     className={`p-4 ${
                         isFavoriteTab ? "border-b-2 border-orange" : ""
                     }`}
-                    onClick={handleFavoriteTab}
+                    onClick={() => {
+                        newParams.set("favorite", "true");
+                        setSearchParams(newParams);
+                    }}
                 >
                     お気に入り
                 </li>
@@ -45,16 +60,18 @@ export const RecipeList = () => {
                         <div>
                             <p>お気に入りの「鶏肉」レシピ</p>
                             <ul className="flex gap-x-2">
-                                <li className="max-w-36 aspect-square rounded-lg">
-                                    <img src="" alt="" />
-                                </li>
+                                {searchList.map((item) => (
+                                    <li className="max-w-36 aspect-square rounded-lg">
+                                        <img src={item.thumbnail} alt="" />
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     )}
 
                     <div className="justify-between hidden md:flex">
                         <h2 className="pt-4 text-2xl">
-                            {!isFavoriteTab && <span>お気に入りの</span>}
+                            {isFavoriteTab ? <span>お気に入りの</span> : ""}
                             <strong className="pr-1">鶏肉</strong>レシピ
                             <span className="pl-1 text-xl">
                                 ({searchList.length})

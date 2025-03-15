@@ -7,12 +7,11 @@ export const useSearch = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [isFavoriteTab, setIsFavoriteTab] = useState(false);
 
+    const query = searchParams.get("search") ?? "";
+    const queryFavorite = searchParams.get("favorite") === "true";
+
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchParams((prev) => {
-            const newParams = new URLSearchParams(prev);
-            newParams.set("search", e.target.value);
-            return newParams;
-        });
+        setSearchParams({ search: e.target.value });
     };
 
     const handleResetChange = () => {
@@ -29,79 +28,59 @@ export const useSearch = () => {
         setIsFavoriteTab(false);
         console.log({ isFavoriteTab });
 
-        const query = searchParams.get("search") ?? "";
         const targetUrl = `/recipes?search=${encodeURIComponent(query)}`;
         location.href = targetUrl;
     };
 
-    const handleFavoriteTab = async () => {
-        const query = searchParams.get("search") ?? "";
+    // const handleFavoriteTab = () => {
+    //     const query = searchParams.get("search") ?? "";
 
-        setIsFavoriteTab(true);
+    //     setIsFavoriteTab(true);
 
-        setSearchParams((prev) => {
-            const newParams = new URLSearchParams(prev);
-            newParams.set("favorite", "true");
-            return newParams;
-        });
+    //     setSearchParams({ favorite: "true" });
 
-        const queryFavorite = searchParams.get("favorite") === "true";
+    //     const queryFavorite = searchParams.get("favorite") === "true";
 
-        const targetUrl = `/recipes?search=${encodeURIComponent(
-            query
-        )}&favorite=${encodeURIComponent(queryFavorite)}`;
-        location.href = targetUrl;
-    };
+    //     const targetUrl = `/recipes?search=${encodeURIComponent(
+    //         query
+    //     )}&favorite=${encodeURIComponent(queryFavorite)}`;
+    //     location.href = targetUrl;
+    // };
 
     const searchGetRecipe = async () => {
-        const query = searchParams.get("search") ?? "";
-
-        console.log(query);
+        // const query = searchParams.get("search") ?? "";
+        // const queryFavorite = searchParams.get("favorite") === "true";
+        console.log("queryFavorite2", queryFavorite);
 
         try {
-            const res = await fetch(
-                `/api/recipes?search=${encodeURIComponent(query)}`
-            );
-            const json = await res.json();
+            if (queryFavorite) {
+                const res = await fetch(
+                    `/api/recipes?search=${encodeURIComponent(
+                        query
+                    )}&favorite=${encodeURIComponent(queryFavorite)}`
+                );
+                const json = await res.json();
 
-            setSearchList(json);
+                setSearchList(json);
 
-            console.log("API response:", json);
+                setIsFavoriteTab(true);
+
+                console.log("API response:", json);
+            } else {
+                const res = await fetch(
+                    `/api/recipes?search=${encodeURIComponent(query)}`
+                );
+                const json = await res.json();
+                setSearchList(json);
+
+                setIsFavoriteTab(false);
+
+                console.log("API response:", json);
+            }
         } catch (error) {
             console.error("search GET error!!", error);
         }
     };
-
-    const searchFavoriteRecipe = async () => {
-        const query = searchParams.get("search") ?? "";
-        const queryFavorite = searchParams.get("favorite") === "true";
-        console.log("queryFavorite", encodeURIComponent(queryFavorite));
-
-        console.log("query", query);
-
-        try {
-            const res = await fetch(
-                `/api/recipes?search=${encodeURIComponent(
-                    query
-                )}&favorite=${encodeURIComponent(queryFavorite)}`
-            );
-            const json = await res.json();
-
-            setSearchList(json);
-
-            console.log("API response:", json);
-        } catch (error) {
-            console.error("search GET error!!", error);
-        }
-    };
-
-    useEffect(() => {
-        if (isFavoriteTab) {
-            searchFavoriteRecipe();
-        } else {
-            searchGetRecipe();
-        }
-    }, []);
 
     return {
         searchList,
@@ -110,7 +89,8 @@ export const useSearch = () => {
         handleResetChange,
         handleSearchChange,
         handleSearchSubmit,
-        handleFavoriteTab,
+        setIsFavoriteTab,
+        // handleFavoriteTab,
         searchGetRecipe,
     };
 };
