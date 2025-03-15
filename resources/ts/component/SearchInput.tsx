@@ -4,6 +4,7 @@ type Props = {
     type: string;
     top: string;
     width: string;
+    value: string;
     handleSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -13,6 +14,7 @@ export const SearchInput = ({
     type,
     top,
     width,
+    value,
     handleSearchChange,
 }: Props) => {
     return (
@@ -25,6 +27,7 @@ export const SearchInput = ({
                 } ${width}`}
                 placeholder="使いたい食材は？"
                 onChange={handleSearchChange}
+                value={value}
             />
             <p className={`absolute left-2 ${top}`}>
                 <img src="/images/image01.png" alt="" />

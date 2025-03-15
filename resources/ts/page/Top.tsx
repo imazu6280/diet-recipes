@@ -57,7 +57,7 @@ const category: categoryType = [
 export const Top = () => {
     const { recipes, favoriteRecipes } = useTopGet();
     const { GetRecipesDetailApi } = useDetailGet();
-    const { handleSearchChange, handleSearchSubmit } = useSearch();
+    const { inputValue, handleSearchChange, handleSearchSubmit } = useSearch();
 
     return (
         <div className="w-inner mx-auto">
@@ -71,6 +71,7 @@ export const Top = () => {
                             type="text"
                             top="top-1/4"
                             width="w-80"
+                            value={inputValue}
                             handleSearchChange={handleSearchChange}
                         />
                         <Button

@@ -4,32 +4,28 @@ import { SearchInput } from "../component/SearchInput";
 import { buttonColors } from "../constants/buttonColors";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
-import { useEffect, useState } from "react";
 
 export const RecipeList = () => {
     const { open, toggleSearchOpen } = useMenu();
     const {
         searchList,
+        searchFavoriteList,
         isFavoriteTab,
+        inputValue,
         handleSearchChange,
         handleResetChange,
         handleSearchSubmit,
-        searchGetRecipe,
     } = useSearch();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const newParams = new URLSearchParams(searchParams);
 
-    useEffect(() => {
-        searchGetRecipe();
-    }, [searchParams]);
-
     return (
-        <div className="mx-auto pc_lg:w-inner pc_lg:max-w-wrapper ">
+        <div className="mx-auto pc_lg:w-inner pc_lg:max-w-wrapper">
             <ul className="flex md:w-full md:grid md:grid-cols-2 md:bg-white md:text-center md:shadow-gray">
                 <li
                     className={`p-4 ${
-                        isFavoriteTab ? "" : "border-b-2 border-orange"
+                        !isFavoriteTab && "font-bold border-b-2 border-orange"
                     }`}
                     onClick={() => {
                         newParams.set("favorite", "false");
@@ -40,7 +36,7 @@ export const RecipeList = () => {
                 </li>
                 <li
                     className={`p-4 ${
-                        isFavoriteTab ? "border-b-2 border-orange" : ""
+                        isFavoriteTab && "font-bold border-b-2 border-orange"
                     }`}
                     onClick={() => {
                         newParams.set("favorite", "true");
@@ -51,19 +47,27 @@ export const RecipeList = () => {
                 </li>
             </ul>
             <h2 className="pt-4 text-2xl md:hidden">
-                <strong className="pr-1">鶏肉</strong>レシピ
+                <strong className="pr-1">{newParams.get("search")}</strong>
+                レシピ
                 <span className="pl-1 text-xl text-gray">(111)</span>
             </h2>
             <div className="grid grid-cols-wrapper-column gap-x-6 pt-4 text-xl md:block md:w-inner md:mx-auto">
                 <div className="flex flex-col gap-y-4">
                     {!isFavoriteTab && (
-                        <div>
-                            <p>お気に入りの「鶏肉」レシピ</p>
+                        <div className="flex flex-col gap-y-4">
+                            <p>
+                                お気に入りの
+                                <strong>{newParams.get("search")}</strong>レシピ
+                            </p>
                             <ul className="flex gap-x-2">
-                                {searchList.map((item) => (
-                                    <li className="max-w-36 aspect-square rounded-lg">
-                                        <img src={item.thumbnail} alt="" />
-                                    </li>
+                                {searchFavoriteList.map((item) => (
+                                    <li
+                                        key={item.id}
+                                        className="px-20 py-14 aspect-square bg-cover bg-center rounded-lg"
+                                        style={{
+                                            backgroundImage: `url(${item.thumbnail})`,
+                                        }}
+                                    ></li>
                                 ))}
                             </ul>
                         </div>
@@ -71,8 +75,10 @@ export const RecipeList = () => {
 
                     <div className="justify-between hidden md:flex">
                         <h2 className="pt-4 text-2xl">
-                            {isFavoriteTab ? <span>お気に入りの</span> : ""}
-                            <strong className="pr-1">鶏肉</strong>レシピ
+                            <strong className="pr-1">
+                                {newParams.get("search")}
+                            </strong>
+                            レシピ
                             <span className="pl-1 text-xl">
                                 ({searchList.length})
                             </span>
@@ -94,10 +100,10 @@ export const RecipeList = () => {
                             <div
                                 className="grid-image bg-cover bg-center bg-no-repeat"
                                 style={{
-                                    backgroundImage: `url()`,
+                                    backgroundImage: `url(${item.thumbnail})`,
                                 }}
                             ></div>
-                            <div className="flex flex-col gap-y-3 p-4 grid-content">
+                            <div className="grid-content flex flex-col gap-y-3 p-4">
                                 <h3 className="text-xl font-semibold">
                                     {item.name}
                                 </h3>
@@ -121,18 +127,19 @@ export const RecipeList = () => {
                 <div className="sticky top-20 flex flex-col gap-4 h-fit overflow-visible md:hidden">
                     <div className="flex justify-between">
                         <h3 className="text-lg font-semibold">絞り込み機能</h3>
-                        <p
+                        <button
                             onClick={handleResetChange}
                             className="text-base text-gray"
                         >
                             リセットする
-                        </p>
+                        </button>
                     </div>
 
                     <form
                         id="filter-search"
                         action=""
                         className="flex flex-col gap-y-4"
+                        onSubmit={handleSearchSubmit}
                     >
                         <SearchInput
                             isStyle={false}
@@ -140,6 +147,7 @@ export const RecipeList = () => {
                             type="text"
                             top="top-1/4"
                             width="w-full"
+                            value={inputValue}
                             handleSearchChange={handleSearchChange}
                         />
                         <Button
@@ -171,7 +179,10 @@ export const RecipeList = () => {
                         >
                             <div className="flex justify-between">
                                 <h3 className="text-lg font-semibold">
-                                    <span className="pr-1">鶏肉</span>の絞り込み
+                                    <span className="pr-1">
+                                        {newParams.get("search")}
+                                    </span>
+                                    の絞り込み
                                 </h3>
                                 <p
                                     onClick={handleResetChange}
@@ -186,6 +197,7 @@ export const RecipeList = () => {
                                 type="text"
                                 top="top-1/4"
                                 width="w-full"
+                                value={inputValue}
                                 handleSearchChange={handleSearchChange}
                             />
                             <Button
