@@ -1,9 +1,14 @@
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "../component/Button";
 import { SearchInput } from "../component/SearchInput";
 import { buttonColors } from "../constants/buttonColors";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import { useRef } from "react";
 
 export const RecipeList = () => {
     const { open, toggleSearchOpen } = useMenu();
@@ -16,6 +21,7 @@ export const RecipeList = () => {
         handleResetChange,
         handleSearchSubmit,
     } = useSearch();
+    const swiperRef = useRef(null);
     const [searchParams, setSearchParams] = useSearchParams();
 
     const newParams = new URLSearchParams(searchParams);
@@ -60,17 +66,48 @@ export const RecipeList = () => {
                             <p>
                                 お気に入りの「{newParams.get("search")}」レシピ
                             </p>
-                            <ul className="flex gap-x-2">
-                                {searchFavoriteList.map((item) => (
-                                    <li
-                                        key={item.id}
-                                        className="px-20 py-14 aspect-square bg-cover bg-center rounded-lg"
-                                        style={{
-                                            backgroundImage: `url(${item.thumbnail})`,
-                                        }}
-                                    ></li>
-                                ))}
-                            </ul>
+                            <div className="relative w-full">
+                                <Swiper
+                                    ref={swiperRef}
+                                    modules={[Navigation]}
+                                    navigation={{
+                                        nextEl: ".button-next",
+                                        prevEl: ".button-prev",
+                                    }}
+                                    pagination={{ clickable: true }}
+                                    spaceBetween={5}
+                                    slidesPerView="auto"
+                                    slidesPerGroup={1}
+                                >
+                                    {searchFavoriteList.map((item) => (
+                                        <SwiperSlide
+                                            key={item.id}
+                                            style={{
+                                                backgroundImage: `url(${item.thumbnail})`,
+                                                backgroundSize: "cover",
+                                                backgroundPosition: "center",
+                                                maxWidth: "160px",
+                                                height: "120px",
+                                            }}
+                                        >
+                                            <Link
+                                                to={`/show/${item.id}`}
+                                                style={{
+                                                    display: "block",
+                                                    width: "100%",
+                                                    height: "100%",
+                                                }}
+                                            />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                                <div className="button-prev absolute top-1/2 -translate-y-1/2 -left-3 md:-left-1 bg-black opacity-75 text-white w-7 h-7 rounded-full flex items-center justify-center z-40 hover:bg-black hover:opacity-90 after:text-lg after:text-white after:font-bold">
+                                    <img src="/images/prev.svg" alt="" />
+                                </div>
+                                <div className="button-next absolute top-1/2 -translate-y-1/2 -right-3 md:-right-1 bg-black opacity-75 text-white w-7 h-7 rounded-full flex items-center justify-center z-40 hover:bg-black hover:opacity-90 after:text-lg after:text-white after:font-bold">
+                                    <img src="/images/next.svg" alt="" />
+                                </div>
+                            </div>
                         </div>
                     )}
 
@@ -94,35 +131,34 @@ export const RecipeList = () => {
                         />
                     </div>
                     {searchList.map((item) => (
-                        <div
-                            key={item.id}
-                            className="grid grid-cols-list-column grid-desktop rounded-md shadow-black md:grid-cols-md-list-column md:grid-mobile md:bg-white"
-                        >
-                            <div
-                                className="grid-image bg-cover bg-center bg-no-repeat"
-                                style={{
-                                    backgroundImage: `url(${item.thumbnail})`,
-                                }}
-                            ></div>
-                            <div className="grid-content flex flex-col gap-y-3 p-4">
-                                <h3 className="text-xl font-semibold">
-                                    {item.name}
-                                </h3>
-                                <ul className="text-sm">
-                                    {item.ingredients.map((ingredient) => (
-                                        <li key={ingredient.id}>
-                                            {ingredient.name}
-                                        </li>
-                                    ))}
-                                </ul>
+                        <Link to={`/show/${item.id}`} key={item.id}>
+                            <div className="grid grid-cols-list-column grid-desktop rounded-md shadow-black md:grid-cols-md-list-column md:grid-mobile md:bg-white">
+                                <div
+                                    className="grid-image bg-cover bg-center bg-no-repeat"
+                                    style={{
+                                        backgroundImage: `url(${item.thumbnail})`,
+                                    }}
+                                ></div>
+                                <div className="grid-content flex flex-col gap-y-3 p-4">
+                                    <h3 className="text-xl font-semibold">
+                                        {item.name}
+                                    </h3>
+                                    <ul className="text-sm">
+                                        {item.ingredients.map((ingredient) => (
+                                            <li key={ingredient.id}>
+                                                {ingredient.name}
+                                            </li>
+                                        ))}
+                                    </ul>
 
-                                <div className="flex gap-x-1">
-                                    <img src="/images/people.svg" alt="" />
-                                    <p className="text-sm">2人前</p>
+                                    <div className="flex gap-x-1">
+                                        <img src="/images/people.svg" alt="" />
+                                        <p className="text-sm">2人前</p>
+                                    </div>
+                                    <p className="pt-1 text-sm">コメント</p>
                                 </div>
-                                <p className="pt-1 text-sm">コメント</p>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
                 <div className="sticky top-20 flex flex-col gap-4 h-fit overflow-visible md:hidden">
