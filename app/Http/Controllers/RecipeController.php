@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
@@ -10,9 +11,6 @@ use Illuminate\Support\Facades\Log;
 
 class RecipeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $search = $request->query('search');
@@ -35,6 +33,26 @@ class RecipeController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function category(string $id)
+    {
+        $categoryRecipes = Recipe::with('steps','ingredients')->where('category_id' , $id)
+        ->orderBy('recipes.created_at', 'desc')
+        ->limit(12)
+        ->get();
+
+        return response()->json($categoryRecipes);
+    }
+
+    public function categories()
+    {
+        $categories = Category::all();
+
+        return response()->json($categories);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -48,7 +66,9 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         try {
+            Log::info('🌟 [START] レシピ登録処理開始', ['request_data' => $request->all()]);
             $validatedData = $request->validate([
+                'category_id' => 'required|exists:categories,id',
                 'name' => 'required|string|max:255',
                 'comments' => 'nullable|string',
                 'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
@@ -59,12 +79,14 @@ class RecipeController extends Controller
                 'steps' => 'required|array',
                 // 'steps.*.thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             ]);
+            Log::info('✅ バリデーション成功', ['validated_data' => $validatedData]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return response()->json(['errors' => $e->errors()], 422);
         }
 
+        Log::info('Category ID:', ['category_id' => $validatedData['category_id']]);
 
         // S3にアップロード
         $thumbnail = $request->file('thumbnail');
@@ -72,10 +94,11 @@ class RecipeController extends Controller
 
         // アップロードした画像のURLを取得
         $url = Storage::disk('s3')->url($path);
-
+        Log::info('📸 サムネイル画像をS3にアップロード', ['path' => $path, 'url' => $url]);
 
         // レシピの保存
         $recipe = Recipe::create([
+            'category_id' => (int)$validatedData['category_id'],
             'name' => $validatedData['name'],
             'comments' => $validatedData['comments'],
             'thumbnail' => $url,
@@ -83,7 +106,7 @@ class RecipeController extends Controller
             'people' => $validatedData['people'],
             'is_favorite' => $validatedData['is_favorite'],
         ]);
-
+        Log::info('🍽 レシピを保存', ['recipe_id' => $recipe->id]);
         // ingredientsのリレーションを保存
         foreach ($validatedData['ingredients'] as $ingredientData) {
 
@@ -98,6 +121,12 @@ class RecipeController extends Controller
                 'protein' => $ingredientData['protein'],
                 'calories' => $ingredientData['calories'],
                 'quantity' => $ingredientData['quantity'],
+            ]);
+
+            Log::info('🥦 材料を保存', [
+                'ingredient_id' => $ingredient->id,
+                'recipe_id' => $recipe->id,
+                'ingredient_data' => $ingredientData,
             ]);
         }
 
@@ -192,6 +221,7 @@ class RecipeController extends Controller
 
         $recipeUpdates = [
             'id' => $recipe->id,
+            'category_id' => $recipe->category_id,
             'name' => $recipe->name,
             'comments' => $recipe->comments,
             'thumbnail' => $recipe->thumbnail,
@@ -217,6 +247,7 @@ class RecipeController extends Controller
             Log::info('Update Request Data: ', $request->all());
             // バリデーション
             $validatedData = $request->validate([
+                'category_id' => 'required|string',
                 'name' => 'required|string|max:255',
                 'comments' => 'nullable|string',
                 'calories' => 'required|integer',
@@ -224,7 +255,6 @@ class RecipeController extends Controller
                 'is_favorite' => 'required|boolean',
                 'ingredients' => 'required|array',
                 'steps' => 'required|array',
-                // 'steps.*.thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             ]);
 
             if ($request->hasFile('thumbnail')) {
@@ -269,6 +299,7 @@ class RecipeController extends Controller
 
         // レシピの更新
         $recipe->update([
+            'category_id' => $validatedData['category_id'],
             'name' => $validatedData['name'],
             'comments' => $validatedData['comments'],
             'calories' => $validatedData['calories'],

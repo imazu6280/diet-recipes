@@ -42,6 +42,10 @@ root.render(
                                     path="/recipes"
                                     element={<RecipeList />}
                                 />
+                                <Route
+                                    path="/recipes/category/:id"
+                                    element={<RecipeList />}
+                                />
                             </Routes>
                         </div>
                         <Footer />

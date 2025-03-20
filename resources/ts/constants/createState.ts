@@ -1,5 +1,6 @@
 export const createState = {
     id: 0,
+    category_id: "",
     name: "",
     comments: "",
     thumbnail: "",
@@ -27,4 +28,4 @@ export const createState = {
             thumbnail: "",
         },
     ],
-}
+};

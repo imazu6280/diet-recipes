@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { recipeSchema } from "../type/recipes";
 import { createState } from "../constants/createState";
-import { useTopGet } from "./useTopGet";
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +14,6 @@ export const useRecipeUpdate = () => {
     const isFavorite = useSelector(
         (state: RootState) => state.favorite.is_favorite
     );
-    const { setRecipes, setFavoriteRecipes } = useTopGet();
     const [updateInputValue, setUpdateInputValue] =
         useState<Omit<recipeSchema, "created_at" | "updated_at">>(createState);
     const [prevImage, setPrevImage] = useState<{
@@ -65,7 +63,9 @@ export const useRecipeUpdate = () => {
     };
 
     const updateCreateHandleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: React.ChangeEvent<
+            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >
     ) => {
         const { name, value } = e.target;
 
@@ -360,6 +360,7 @@ export const useRecipeUpdate = () => {
 
         const formData = new FormData();
 
+        formData.append("category_id", updateInputValue.category_id);
         formData.append("name", updateInputValue.name);
         formData.append("comments", updateInputValue.comments);
         formData.append("thumbnail", updateInputValue.thumbnail);
@@ -420,11 +421,6 @@ export const useRecipeUpdate = () => {
             }
 
             const result = await res.json();
-            setRecipes((prevRecipe) => [...prevRecipe, result]);
-
-            if (updateInputValue.is_favorite === 1) {
-                setFavoriteRecipes((prevRecipe) => [...prevRecipe, result]);
-            }
 
             console.log("PUT success!!", result);
 
