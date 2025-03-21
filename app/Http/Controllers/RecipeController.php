@@ -28,7 +28,6 @@ class RecipeController extends Controller
 
         $recipes = $query->get();
 
-
         return response()->json($recipes);
     }
 
@@ -37,9 +36,6 @@ class RecipeController extends Controller
      */
     public function category(Request $request, string $id)
     {
-        Log::info("category メソッドが呼ばれました", ['category_id' => $id]);
-        Log::info("request メソッドが呼ばれました", ['request' => $request]);
-
         $categoryRecipes = Recipe::with('steps', 'ingredients')
             ->where('category_id', $id)
             ->orderBy('recipes.created_at', 'desc')
@@ -47,17 +43,11 @@ class RecipeController extends Controller
 
         $favoriteOnly = $request->query('favorite');
 
-        Log::info("リクエストの favorite パラメータ:", ['favorite' => $favoriteOnly]);
-
         if ($favoriteOnly === 'true') {
             $categoryRecipes->where('is_favorite', true);
-            Log::info("リクエストの favorite パラメータ:", ['favorite' => $categoryRecipes]);
         }
 
-
         $recipe = $categoryRecipes->get();
-
-        Log::info("取得したレシピデータ", ['recipes' => $recipe]);
 
         return response()->json($recipe);
     }

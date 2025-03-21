@@ -7,8 +7,8 @@ export const useSearch = () => {
     const [searchFavoriteList, setSearchFavoriteList] =
         useState<GetRecipesResponse>([]);
     const [inputValue, setInputValue] = useState("");
-    const [searchParams, setSearchParams] = useSearchParams();
     const [isFavoriteTab, setIsFavoriteTab] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
     const queryFavorite = searchParams.get("favorite") === "true";
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +39,6 @@ export const useSearch = () => {
                 const json = await res.json();
 
                 setSearchList(json);
-
                 setIsFavoriteTab(true);
 
                 console.log("API response:", json);
@@ -56,10 +55,9 @@ export const useSearch = () => {
                 ]);
                 const listJson = await resList.json();
                 const favoriteListJson = await resFavoriteList.json();
+
                 setSearchList(listJson);
-
                 setSearchFavoriteList(favoriteListJson);
-
                 setIsFavoriteTab(false);
 
                 console.log("API response:", [listJson, favoriteListJson]);
@@ -70,9 +68,9 @@ export const useSearch = () => {
     };
 
     useEffect(() => {
-        if ([...searchParams].length > 0) {
-            searchGetRecipe();
-        }
+        // if (location.pathname.includes("search")) {
+        searchGetRecipe();
+        // }
     }, [searchParams]);
 
     return {
