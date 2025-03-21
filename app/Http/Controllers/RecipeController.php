@@ -35,14 +35,31 @@ class RecipeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function category(string $id)
+    public function category(Request $request, string $id)
     {
-        $categoryRecipes = Recipe::with('steps','ingredients')->where('category_id' , $id)
-        ->orderBy('recipes.created_at', 'desc')
-        ->limit(12)
-        ->get();
+        Log::info("category メソッドが呼ばれました", ['category_id' => $id]);
+        Log::info("request メソッドが呼ばれました", ['request' => $request]);
 
-        return response()->json($categoryRecipes);
+        $categoryRecipes = Recipe::with('steps', 'ingredients')
+            ->where('category_id', $id)
+            ->orderBy('recipes.created_at', 'desc')
+            ->limit(12);
+
+        $favoriteOnly = $request->query('favorite');
+
+        Log::info("リクエストの favorite パラメータ:", ['favorite' => $favoriteOnly]);
+
+        if ($favoriteOnly === 'true') {
+            $categoryRecipes->where('is_favorite', true);
+            Log::info("リクエストの favorite パラメータ:", ['favorite' => $categoryRecipes]);
+        }
+
+
+        $recipe = $categoryRecipes->get();
+
+        Log::info("取得したレシピデータ", ['recipes' => $recipe]);
+
+        return response()->json($recipe);
     }
 
     public function categories()
@@ -66,7 +83,6 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         try {
-            Log::info('🌟 [START] レシピ登録処理開始', ['request_data' => $request->all()]);
             $validatedData = $request->validate([
                 'category_id' => 'required|exists:categories,id',
                 'name' => 'required|string|max:255',
@@ -79,14 +95,11 @@ class RecipeController extends Controller
                 'steps' => 'required|array',
                 // 'steps.*.thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             ]);
-            Log::info('✅ バリデーション成功', ['validated_data' => $validatedData]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return response()->json(['errors' => $e->errors()], 422);
         }
-
-        Log::info('Category ID:', ['category_id' => $validatedData['category_id']]);
 
         // S3にアップロード
         $thumbnail = $request->file('thumbnail');
@@ -106,7 +119,7 @@ class RecipeController extends Controller
             'people' => $validatedData['people'],
             'is_favorite' => $validatedData['is_favorite'],
         ]);
-        Log::info('🍽 レシピを保存', ['recipe_id' => $recipe->id]);
+
         // ingredientsのリレーションを保存
         foreach ($validatedData['ingredients'] as $ingredientData) {
 
@@ -123,11 +136,6 @@ class RecipeController extends Controller
                 'quantity' => $ingredientData['quantity'],
             ]);
 
-            Log::info('🥦 材料を保存', [
-                'ingredient_id' => $ingredient->id,
-                'recipe_id' => $recipe->id,
-                'ingredient_data' => $ingredientData,
-            ]);
         }
 
 

@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Button } from "../component/Button";
 import { SearchInput } from "../component/SearchInput";
 import { buttonColors } from "../constants/buttonColors";
@@ -9,6 +9,7 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useRef } from "react";
+import { useCategory } from "../hooks/useCategory";
 
 export const RecipeList = () => {
     const { open, toggleSearchOpen } = useMenu();
@@ -21,8 +22,12 @@ export const RecipeList = () => {
         handleResetChange,
         handleSearchSubmit,
     } = useSearch();
+    const { categoryInputValue } = useCategory();
     const swiperRef = useRef(null);
     const [searchParams, setSearchParams] = useSearchParams();
+    const location = useLocation();
+    const isCategory = location.pathname.includes("/recipes/category");
+    const displayList = isCategory ? categoryInputValue : searchList;
 
     const newParams = new URLSearchParams(searchParams);
 
@@ -56,7 +61,7 @@ export const RecipeList = () => {
                 <strong className="pr-1">{newParams.get("search")}</strong>
                 レシピ
                 <span className="pl-1 text-xl text-gray">
-                    ({searchList.length})
+                    ({displayList?.length})
                 </span>
             </h2>
             <div className="grid grid-cols-wrapper-column gap-x-6 pt-4 text-xl md:block md:w-inner md:mx-auto">
@@ -118,7 +123,7 @@ export const RecipeList = () => {
                             </strong>
                             レシピ
                             <span className="pl-1 text-xl">
-                                ({searchList.length})
+                                ({displayList?.length})
                             </span>
                         </h2>
                         <Button
@@ -130,7 +135,7 @@ export const RecipeList = () => {
                             toggleSearchOpen={toggleSearchOpen}
                         />
                     </div>
-                    {searchList.map((item) => (
+                    {displayList?.map((item) => (
                         <Link to={`/show/${item.id}`} key={item.id}>
                             <div className="grid grid-cols-list-column grid-desktop rounded-md shadow-black md:grid-cols-md-list-column md:grid-mobile md:bg-white">
                                 <div

@@ -9,7 +9,6 @@ export const useSearch = () => {
     const [inputValue, setInputValue] = useState("");
     const [searchParams, setSearchParams] = useSearchParams();
     const [isFavoriteTab, setIsFavoriteTab] = useState(false);
-
     const queryFavorite = searchParams.get("favorite") === "true";
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +70,9 @@ export const useSearch = () => {
     };
 
     useEffect(() => {
-        searchGetRecipe();
+        if ([...searchParams].length > 0) {
+            searchGetRecipe();
+        }
     }, [searchParams]);
 
     return {
