@@ -19,7 +19,7 @@ class RecipeSeeder extends Seeder
         for ($i = 1; $i <= 10; $i++) {
             DB::table('recipes')->insert([
                 'category_id' => rand(1, 5), // 1〜5のランダムなカテゴリーID
-                'name' => "Recipe {$i}",
+                'name' => "鶏肉{$i}",
                 'comments' => "This is a comment for Recipe {$i}.",
                 'thumbnail' => "recipe{$i}_thumbnail.jpg", // 仮のサムネイル画像
                 'calories' => rand(100, 800), // 100〜800のランダムなカロリー

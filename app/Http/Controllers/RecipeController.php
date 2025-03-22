@@ -14,7 +14,7 @@ class RecipeController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search');
-        $favoriteOnly = $request->query(('favorite'));
+        // $favoriteOnly = $request->query(('favorite'));
 
         $query = Recipe::with('steps','ingredients');
 
@@ -22,9 +22,9 @@ class RecipeController extends Controller
             $recipes = $query->where('name','like', '%' . $search . '%');
         }
 
-        if ($favoriteOnly === 'true') {
-            $recipes = $query->where('is_favorite', true);
-        }
+        // if ($favoriteOnly === 'true') {
+        //     $recipes = $query->where('is_favorite', true);
+        // }
 
         $recipes = $query->get();
 
@@ -34,18 +34,18 @@ class RecipeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function category(Request $request, string $id)
+    public function category(string $id)
     {
         $categoryRecipes = Recipe::with('steps', 'ingredients')
             ->where('category_id', $id)
-            ->orderBy('recipes.created_at', 'desc')
-            ->limit(12);
+            ->orderBy('recipes.created_at', 'desc');
+            // ->limit(12);
 
-        $favoriteOnly = $request->query('favorite');
+        // $favoriteOnly = $request->query('favorite');
 
-        if ($favoriteOnly === 'true') {
-            $categoryRecipes->where('is_favorite', true);
-        }
+        // if ($favoriteOnly === 'true') {
+        //     $categoryRecipes->where('is_favorite', true);
+        // }
 
         $recipe = $categoryRecipes->get();
 
@@ -371,12 +371,38 @@ class RecipeController extends Controller
         }
     }
 
-    public function favorites()
+    public function favorites(Request $request)
     {
-        $favoriteRecipes = Recipe::with('steps')
+        $favoriteRecipes = Recipe::with('steps', 'ingredients')
         ->where('is_favorite', 1)
-        ->get();
+        ->orderBy('created_at','desc');
 
-        return response()->json($favoriteRecipes);
+        $search = $request->query('search');
+
+        if($search){
+            $favoriteRecipes->where('name','like', '%' . $search . '%');
+        }
+
+        $recipe = $favoriteRecipes->get();
+
+        return response()->json($recipe);
+    }
+
+    public function categoryFavorites(Request $request, string $id)
+    {
+        $categoryFavorites = Recipe::with('steps', 'ingredients')
+        ->where('category_id',$id)
+        ->where('is_favorite', 1)
+        ->orderBy('created_at','desc');
+
+        $search = $request->query('search');
+
+        if($search){
+            $categoryFavorites->where('name','like', '%' . $search . '%');
+        }
+
+        $recipe = $categoryFavorites->get();
+
+        return response()->json($recipe);
     }
 }

@@ -15,7 +15,10 @@ export const Top = () => {
         <div className="w-inner mx-auto">
             <div className="flex flex-col gap-y-6 md:hidden">
                 <h1 className="text-3xl font-bold text-center">DIET RECIPES</h1>
-                <form action="" onSubmit={handleSearchSubmit}>
+                <form
+                    action=""
+                    onSubmit={(e) => handleSearchSubmit(e, inputValue)}
+                >
                     <div className="flex justify-center gap-2 mx-auto">
                         <SearchInput
                             isStyle={false}

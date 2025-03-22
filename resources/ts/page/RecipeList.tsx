@@ -1,4 +1,9 @@
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import {
+    Link,
+    useLocation,
+    useNavigate,
+    useSearchParams,
+} from "react-router-dom";
 import { Button } from "../component/Button";
 import { SearchInput } from "../component/SearchInput";
 import { buttonColors } from "../constants/buttonColors";
@@ -10,26 +15,33 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useRef } from "react";
 import { useCategory } from "../hooks/useCategory";
+import { useFavoriteTab } from "../hooks/useFavoriteTab";
 
 export const RecipeList = () => {
     const { open, toggleSearchOpen } = useMenu();
     const {
         searchList,
         searchFavoriteList,
-        isFavoriteTab,
         inputValue,
         handleSearchChange,
         handleResetChange,
         handleSearchSubmit,
+        searchGetRecipe,
+        searchFavoritesGetRecipe,
     } = useSearch();
+    const { categoryGetRecipe, categoryFavoritesGetRecipe } = useCategory();
+    const { isFavoriteTab, setIsFavoriteTab, handleFavoriteTab } =
+        useFavoriteTab();
     const { categoryInputValue } = useCategory();
     const swiperRef = useRef(null);
     const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
-    const isCategory = location.pathname.includes("/recipes/category");
+    const navigate = useNavigate();
+    const searchQuery = searchParams.get("search");
+    const isCategory = location.pathname.includes("/category");
     const displayList = isCategory ? categoryInputValue : searchList;
 
-    const newParams = new URLSearchParams(searchParams);
+    // const newParams = new URLSearchParams(searchParams);
 
     return (
         <div className="mx-auto pc_lg:w-inner pc_lg:max-w-wrapper">
@@ -39,8 +51,8 @@ export const RecipeList = () => {
                         !isFavoriteTab && "font-bold border-b-2 border-orange"
                     }`}
                     onClick={() => {
-                        newParams.set("favorite", "false");
-                        setSearchParams(newParams);
+                        handleFavoriteTab();
+                        isCategory ? categoryGetRecipe() : searchGetRecipe();
                     }}
                 >
                     新着
@@ -50,15 +62,17 @@ export const RecipeList = () => {
                         isFavoriteTab && "font-bold border-b-2 border-orange"
                     }`}
                     onClick={() => {
-                        newParams.set("favorite", "true");
-                        setSearchParams(newParams);
+                        handleFavoriteTab();
+                        isCategory
+                            ? categoryFavoritesGetRecipe()
+                            : searchFavoritesGetRecipe();
                     }}
                 >
                     お気に入り
                 </li>
             </ul>
             <h2 className="pt-4 text-2xl md:hidden">
-                <strong className="pr-1">{newParams.get("search")}</strong>
+                <strong className="pr-1">{searchQuery}</strong>
                 レシピ
                 <span className="pl-1 text-xl text-gray">
                     ({displayList?.length})
@@ -68,9 +82,7 @@ export const RecipeList = () => {
                 <div className="flex flex-col gap-y-4">
                     {!isFavoriteTab && (
                         <div className="flex flex-col gap-y-4">
-                            <p>
-                                お気に入りの「{newParams.get("search")}」レシピ
-                            </p>
+                            <p>お気に入りの「{searchQuery}」レシピ</p>
                             <div className="relative w-full">
                                 <Swiper
                                     ref={swiperRef}
@@ -118,9 +130,7 @@ export const RecipeList = () => {
 
                     <div className="justify-between hidden md:flex">
                         <h2 className="pt-4 text-2xl">
-                            <strong className="pr-1">
-                                {newParams.get("search")}
-                            </strong>
+                            <strong className="pr-1">{searchQuery}</strong>
                             レシピ
                             <span className="pl-1 text-xl">
                                 ({displayList?.length})
@@ -181,7 +191,7 @@ export const RecipeList = () => {
                         id="filter-search"
                         action=""
                         className="flex flex-col gap-y-4"
-                        onSubmit={handleSearchSubmit}
+                        onSubmit={(e) => handleSearchSubmit(e, inputValue)}
                     >
                         <SearchInput
                             isStyle={false}
@@ -216,14 +226,12 @@ export const RecipeList = () => {
                         <form
                             action=""
                             id="sort"
-                            onSubmit={handleSearchSubmit}
+                            onSubmit={(e) => handleSearchSubmit(e, inputValue)}
                             className="flex flex-col gap-y-6 w-inner mx-auto"
                         >
                             <div className="flex justify-between">
                                 <h3 className="text-lg font-semibold">
-                                    <span className="pr-1">
-                                        {newParams.get("search")}
-                                    </span>
+                                    <span className="pr-1">{searchQuery}</span>
                                     の絞り込み
                                 </h3>
                                 <p
