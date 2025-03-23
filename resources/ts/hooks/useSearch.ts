@@ -80,9 +80,7 @@ export const useSearch = () => {
     };
 
     useEffect(() => {
-        // if (location.pathname.includes("search")) {
         searchGetRecipe();
-        // }
     }, []);
 
     return {

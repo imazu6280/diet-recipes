@@ -13,9 +13,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useCategory } from "../hooks/useCategory";
 import { useFavoriteTab } from "../hooks/useFavoriteTab";
+import { GetRecipesResponse } from "../type/recipes";
 
 export const RecipeList = () => {
     const { open, toggleSearchOpen } = useMenu();
@@ -32,14 +33,16 @@ export const RecipeList = () => {
     const { categoryGetRecipe, categoryFavoritesGetRecipe } = useCategory();
     const { isFavoriteTab, setIsFavoriteTab, handleFavoriteTab } =
         useFavoriteTab();
-    const { categoryInputValue } = useCategory();
+    const { categoryInputValue, categoryFavoritesValue } = useCategory();
     const swiperRef = useRef(null);
     const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
     const navigate = useNavigate();
     const searchQuery = searchParams.get("search");
     const isCategory = location.pathname.includes("/category");
-    const displayList = isCategory ? categoryInputValue : searchList;
+    const [displayList, setDisplayList] = useState<GetRecipesResponse>([]);
+    // const displayList = isCategory ? categoryInputValue : searchList;
+    const swiperList = isCategory ? categoryFavoritesValue : searchFavoriteList;
 
     // const newParams = new URLSearchParams(searchParams);
 
@@ -52,6 +55,10 @@ export const RecipeList = () => {
                     }`}
                     onClick={() => {
                         handleFavoriteTab();
+                        const newList = isCategory
+                            ? categoryInputValue
+                            : searchList;
+                        setDisplayList(newList);
                         isCategory ? categoryGetRecipe() : searchGetRecipe();
                     }}
                 >
@@ -63,6 +70,10 @@ export const RecipeList = () => {
                     }`}
                     onClick={() => {
                         handleFavoriteTab();
+                        const newList = isCategory
+                            ? categoryFavoritesValue
+                            : searchFavoriteList;
+                        setDisplayList(newList);
                         isCategory
                             ? categoryFavoritesGetRecipe()
                             : searchFavoritesGetRecipe();
@@ -96,7 +107,7 @@ export const RecipeList = () => {
                                     slidesPerView="auto"
                                     slidesPerGroup={1}
                                 >
-                                    {searchFavoriteList.map((item) => (
+                                    {swiperList?.map((item) => (
                                         <SwiperSlide
                                             key={item.id}
                                             style={{
@@ -158,10 +169,10 @@ export const RecipeList = () => {
                                     <h3 className="text-xl font-semibold">
                                         {item.name}
                                     </h3>
-                                    <ul className="text-sm">
+                                    <ul className="flex gap-x-1 text-sm">
                                         {item.ingredients.map((ingredient) => (
                                             <li key={ingredient.id}>
-                                                {ingredient.name}
+                                                ・{ingredient.name}
                                             </li>
                                         ))}
                                     </ul>
