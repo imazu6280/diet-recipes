@@ -30,6 +30,7 @@ export type GetIngredientResponse = Omit<
 
 export type recipeSchema = {
     id: number;
+    category_id: string;
     name: string;
     comments: string;
     steps: GetStepsResponse;

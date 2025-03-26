@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
@@ -10,13 +11,10 @@ use Illuminate\Support\Facades\Log;
 
 class RecipeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $search = $request->query('search');
-        $favoriteOnly = $request->query(('favorite'));
+        // $favoriteOnly = $request->query(('favorite'));
 
         $query = Recipe::with('steps','ingredients');
 
@@ -24,14 +22,41 @@ class RecipeController extends Controller
             $recipes = $query->where('name','like', '%' . $search . '%');
         }
 
-        if ($favoriteOnly === 'true') {
-            $recipes = $query->where('is_favorite', true);
-        }
+        // if ($favoriteOnly === 'true') {
+        //     $recipes = $query->where('is_favorite', true);
+        // }
 
         $recipes = $query->get();
 
-
         return response()->json($recipes);
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function category(string $id)
+    {
+        $categoryRecipes = Recipe::with('steps', 'ingredients')
+            ->where('category_id', $id)
+            ->orderBy('recipes.created_at', 'desc');
+            // ->limit(12);
+
+        // $favoriteOnly = $request->query('favorite');
+
+        // if ($favoriteOnly === 'true') {
+        //     $categoryRecipes->where('is_favorite', true);
+        // }
+
+        $recipe = $categoryRecipes->get();
+
+        return response()->json($recipe);
+    }
+
+    public function categories()
+    {
+        $categories = Category::all();
+
+        return response()->json($categories);
     }
 
     /**
@@ -49,6 +74,7 @@ class RecipeController extends Controller
     {
         try {
             $validatedData = $request->validate([
+                'category_id' => 'required|exists:categories,id',
                 'name' => 'required|string|max:255',
                 'comments' => 'nullable|string',
                 'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
@@ -65,17 +91,17 @@ class RecipeController extends Controller
             return response()->json(['errors' => $e->errors()], 422);
         }
 
-
         // S3にアップロード
         $thumbnail = $request->file('thumbnail');
         $path = $thumbnail->store('recipe-thumbnails', 's3');
 
         // アップロードした画像のURLを取得
         $url = Storage::disk('s3')->url($path);
-
+        Log::info('📸 サムネイル画像をS3にアップロード', ['path' => $path, 'url' => $url]);
 
         // レシピの保存
         $recipe = Recipe::create([
+            'category_id' => (int)$validatedData['category_id'],
             'name' => $validatedData['name'],
             'comments' => $validatedData['comments'],
             'thumbnail' => $url,
@@ -99,6 +125,7 @@ class RecipeController extends Controller
                 'calories' => $ingredientData['calories'],
                 'quantity' => $ingredientData['quantity'],
             ]);
+
         }
 
 
@@ -192,6 +219,7 @@ class RecipeController extends Controller
 
         $recipeUpdates = [
             'id' => $recipe->id,
+            'category_id' => $recipe->category_id,
             'name' => $recipe->name,
             'comments' => $recipe->comments,
             'thumbnail' => $recipe->thumbnail,
@@ -217,6 +245,7 @@ class RecipeController extends Controller
             Log::info('Update Request Data: ', $request->all());
             // バリデーション
             $validatedData = $request->validate([
+                'category_id' => 'required|string',
                 'name' => 'required|string|max:255',
                 'comments' => 'nullable|string',
                 'calories' => 'required|integer',
@@ -224,7 +253,6 @@ class RecipeController extends Controller
                 'is_favorite' => 'required|boolean',
                 'ingredients' => 'required|array',
                 'steps' => 'required|array',
-                // 'steps.*.thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             ]);
 
             if ($request->hasFile('thumbnail')) {
@@ -269,6 +297,7 @@ class RecipeController extends Controller
 
         // レシピの更新
         $recipe->update([
+            'category_id' => $validatedData['category_id'],
             'name' => $validatedData['name'],
             'comments' => $validatedData['comments'],
             'calories' => $validatedData['calories'],
@@ -342,12 +371,38 @@ class RecipeController extends Controller
         }
     }
 
-    public function favorites()
+    public function favorites(Request $request)
     {
-        $favoriteRecipes = Recipe::with('steps')
+        $favoriteRecipes = Recipe::with('steps', 'ingredients')
         ->where('is_favorite', 1)
-        ->get();
+        ->orderBy('created_at','desc');
 
-        return response()->json($favoriteRecipes);
+        $search = $request->query('search');
+
+        if($search){
+            $favoriteRecipes->where('name','like', '%' . $search . '%');
+        }
+
+        $recipe = $favoriteRecipes->get();
+
+        return response()->json($recipe);
+    }
+
+    public function categoryFavorites(Request $request, string $id)
+    {
+        $categoryFavorites = Recipe::with('steps', 'ingredients')
+        ->where('category_id',$id)
+        ->where('is_favorite', 1)
+        ->orderBy('created_at','desc');
+
+        $search = $request->query('search');
+
+        if($search){
+            $categoryFavorites->where('name','like', '%' . $search . '%');
+        }
+
+        $recipe = $categoryFavorites->get();
+
+        return response()->json($recipe);
     }
 }

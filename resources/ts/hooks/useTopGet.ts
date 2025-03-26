@@ -1,24 +1,37 @@
 import { useEffect, useState } from "react";
 import { GetRecipesResponse } from "../type/recipes";
+import { GetCategoryResponse } from "../type/category";
+
+type DataState = {
+    recipes: GetRecipesResponse;
+    favoriteRecipes: GetRecipesResponse;
+    categories: GetCategoryResponse;
+};
 
 export const useTopGet = () => {
-    const [recipes, setRecipes] = useState<GetRecipesResponse>([]);
-    const [favoriteRecipes, setFavoriteRecipes] = useState<GetRecipesResponse>(
-        []
-    );
+    const [recipeData, setRecipeData] = useState<DataState>({
+        recipes: [],
+        favoriteRecipes: [],
+        categories: [],
+    });
 
     const GetRecipesAllApi = async () => {
         try {
-            const [recipesRes, favoritesRes] = await Promise.all([
+            const res = await Promise.all([
                 fetch("/api/recipes"),
                 fetch("/api/recipes/favorites"),
+                fetch("/api/recipes/categories"),
             ]);
 
-            const recipesData = await recipesRes.json();
-            const favoritesData = await favoritesRes.json();
+            const [recipesRes, favoritesRes, categoriesRes] = await Promise.all(
+                res.map((res) => res.json())
+            );
 
-            setRecipes(recipesData);
-            setFavoriteRecipes(favoritesData);
+            setRecipeData({
+                recipes: recipesRes,
+                favoriteRecipes: favoritesRes,
+                categories: categoriesRes,
+            });
         } catch (error) {
             console.error("recipe get error", error);
         }
@@ -28,5 +41,5 @@ export const useTopGet = () => {
         GetRecipesAllApi();
     }, []);
 
-    return { favoriteRecipes, recipes, setRecipes, setFavoriteRecipes };
+    return { recipeData };
 };

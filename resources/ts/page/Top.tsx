@@ -1,69 +1,25 @@
-import { categoryType } from "../type/category";
 import { SearchInput } from "../component/SearchInput";
 import { Button } from "../component/Button";
 import { useTopGet } from "../hooks/useTopGet";
 import { buttonColors } from "../constants/buttonColors";
 import { Link } from "react-router-dom";
 import { useDetailGet } from "../hooks/useDetailGet";
-import { useSearch } from "../hooks/useSearch";
-
-const category: categoryType = [
-    { id: 0, category: "野菜", icon: "images/image02.png" },
-    { id: 1, category: "お肉", icon: "images/image03.png" },
-    { id: 2, category: "魚介", icon: "images/image04.png" },
-    {
-        id: 3,
-        category: "たまご",
-        icon: "images/image05.png",
-    },
-    {
-        id: 4,
-        category: "サラダ",
-        icon: "images/image06.png",
-    },
-    {
-        id: 5,
-        category: "スープ",
-        icon: "images/image07.png",
-    },
-    {
-        id: 6,
-        category: "ごはんもの",
-        icon: "images/image08.png",
-    },
-    { id: 7, category: "麺", icon: "images/image09.png" },
-    {
-        id: 8,
-        category: "お弁当",
-        icon: "images/image10.png",
-    },
-    {
-        id: 9,
-        category: "パン",
-        icon: "images/image11.png",
-    },
-    {
-        id: 10,
-        category: "お菓子",
-        icon: "images/image12.png",
-    },
-    {
-        id: 11,
-        category: "おもてなし",
-        icon: "images/image13.png",
-    },
-];
+import { useRecipeList } from "../hooks/useRecipeList";
 
 export const Top = () => {
-    const { recipes, favoriteRecipes } = useTopGet();
+    const { recipeData } = useTopGet();
     const { GetRecipesDetailApi } = useDetailGet();
-    const { inputValue, handleSearchChange, handleSearchSubmit } = useSearch();
+    const { inputValue, handleSearchChange, handleSearchSubmit } =
+        useRecipeList();
 
     return (
         <div className="w-inner mx-auto">
             <div className="flex flex-col gap-y-6 md:hidden">
                 <h1 className="text-3xl font-bold text-center">DIET RECIPES</h1>
-                <form action="" onSubmit={handleSearchSubmit}>
+                <form
+                    action=""
+                    onSubmit={(e) => handleSearchSubmit(e, inputValue)}
+                >
                     <div className="flex justify-center gap-2 mx-auto">
                         <SearchInput
                             isStyle={false}
@@ -91,7 +47,7 @@ export const Top = () => {
                         よく使う減量レシピ
                     </h2>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-4 sm:grid-cols-2 sm:gap-y-4">
-                        {favoriteRecipes.map((item) => (
+                        {recipeData.favoriteRecipes.map((item) => (
                             <Link
                                 to={`show/${item.id}`}
                                 key={item.id}
@@ -117,7 +73,7 @@ export const Top = () => {
                         登録レシピ一覧
                     </h2>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-4 tablet_md:grid-cols-3 sm:grid-cols-1 sm:gap-y-4">
-                        {recipes.map((item) => (
+                        {recipeData.recipes.map((item) => (
                             <Link to={`show/${item.id}`} key={item.id}>
                                 <li
                                     key={item.id}
@@ -186,18 +142,21 @@ export const Top = () => {
                         カテゴリ
                     </h2>
                     <ul className="grid grid-cols-4 gap-4 mt-4 bg-white rounded-lg md:grid-cols-3 md:gap-0 md:p-3">
-                        {category.map((item) => (
-                            <li
+                        {recipeData.categories.map((item) => (
+                            <Link
+                                to={`recipes/category/${item.id}`}
                                 key={item.id}
-                                className="py-4 pl-4 pr-1 bg-white shadow-black rounded-lg md:p-0 md:text-sm md:shadow-none  md:border-b md:border-gray md:rounded-none"
+                                state={{ name: item.name }}
                             >
-                                <p className="flex gap-x-2 items-center p-2 tb:px-0 tb:text-sm">
-                                    <span className="w-6 mr-1.5">
-                                        <img src={item.icon} alt="" />
-                                    </span>
-                                    {item.category}
-                                </p>
-                            </li>
+                                <li className="py-4 pl-4 pr-1 bg-white shadow-black rounded-lg md:p-0 md:text-sm md:shadow-none  md:border-b md:border-gray md:rounded-none">
+                                    <p className="flex gap-x-2 items-center p-2 tb:px-0 tb:text-sm">
+                                        <span className="w-6 mr-1.5">
+                                            <img src={item.icon} alt="" />
+                                        </span>
+                                        {item.name}
+                                    </p>
+                                </li>
+                            </Link>
                         ))}
                     </ul>
                 </div>

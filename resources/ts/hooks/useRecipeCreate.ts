@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { PostRecipesResponse } from "../type/recipes";
 import { createState } from "../constants/createState";
-import { useTopGet } from "./useTopGet";
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +12,6 @@ export const useRecipeCreate = () => {
     const isFavorite = useSelector(
         (state: RootState) => state.favorite.is_favorite
     );
-    const { setRecipes, setFavoriteRecipes } = useTopGet();
     const [createInputValue, setCreateInputValue] =
         useState<PostRecipesResponse>(createState);
     const [prevImage, setPrevImage] = useState<{
@@ -63,9 +61,13 @@ export const useRecipeCreate = () => {
     };
 
     const CreateHandleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: React.ChangeEvent<
+            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >
     ) => {
         const { name, value } = e.target;
+
+        console.log("category_id", value);
 
         setCreateInputValue((prevState) => ({
             ...prevState,
@@ -336,6 +338,7 @@ export const useRecipeCreate = () => {
         if (!isValid) return;
 
         const formData = new FormData();
+        formData.append("category_id", createInputValue.category_id);
         formData.append("name", createInputValue.name);
         formData.append("comments", createInputValue.comments);
         formData.append("thumbnail", createInputValue.thumbnail);
@@ -392,15 +395,6 @@ export const useRecipeCreate = () => {
                 console.error("API Error:", errorText);
                 return;
             }
-
-            const result = await res.json();
-            setRecipes((prevRecipe) => [...prevRecipe, result]);
-
-            if (createInputValue.is_favorite === 1) {
-                setFavoriteRecipes((prevRecipe) => [...prevRecipe, result]);
-            }
-
-            console.log("post success!!", result);
 
             location.href = "/";
         } catch (error) {

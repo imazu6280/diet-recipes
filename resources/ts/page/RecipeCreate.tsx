@@ -6,8 +6,12 @@ import { placeholderString, sideLink } from "../constants/text";
 import { buttonColors } from "../constants/buttonColors";
 import { DndContext } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { useTopGet } from "../hooks/useTopGet";
 
 export const RecipeCreate = () => {
+    const { recipeData } = useTopGet();
     const {
         createInputValue,
         prevImage,
@@ -64,7 +68,7 @@ export const RecipeCreate = () => {
                     <div className="flex flex-col justify-between md:gap-y-4">
                         <div className="flex flex-col gap-y-10 md:gap-y-4 md:px-2 md:py-4 md:bg-white">
                             <div className="flex flex-col gap-y-4">
-                                <label htmlFor="name">
+                                <label>
                                     <input
                                         id="name"
                                         name="name"
@@ -75,7 +79,7 @@ export const RecipeCreate = () => {
                                         className="w-full px-2 py-4 text-34px font-bold bg-beige rounded-md tablet_md:text-xl sm:text-lg"
                                     />
                                 </label>
-                                <label htmlFor="comments">
+                                <label>
                                     <textarea
                                         name="comments"
                                         id="comments"
@@ -85,7 +89,7 @@ export const RecipeCreate = () => {
                                         className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
-                                <div className="flex justify-between gap-y-4 md:flex-col">
+                                <div className="flex flex-col gap-y-4">
                                     <Button
                                         isIcon={sideLink[0].icon}
                                         alt="お気に入り登録"
@@ -99,6 +103,30 @@ export const RecipeCreate = () => {
                                         type="button"
                                         favoriteToggleBtn={favoriteToggleBtn}
                                     />
+                                    <label className="relative">
+                                        <select
+                                            name="category_id"
+                                            id="category_id"
+                                            value={createInputValue.category_id}
+                                            onChange={CreateHandleChange}
+                                            className="w-40 h-full px-4 py-2 text-gray border-1 border-gray text-center rounded-lg appearance-none"
+                                        >
+                                            {recipeData.categories.map(
+                                                (item) => (
+                                                    <option
+                                                        key={item.id}
+                                                        value={item.id}
+                                                    >
+                                                        {item.name}
+                                                    </option>
+                                                )
+                                            )}
+                                        </select>
+                                        <FontAwesomeIcon
+                                            icon={faChevronDown}
+                                            className="absolute right-3 bottom-3.5 text-xs text-gray"
+                                        />
+                                    </label>
                                     {errors.length > 0 && (
                                         <ul className="flex flex-col gap-y-1">
                                             {errors.map((message, index) => (
@@ -120,7 +148,7 @@ export const RecipeCreate = () => {
                     <div className="flex flex-col gap-y-4 md:bg-white md:px-2 md:py-4">
                         <h3 className="text-2xl font-bold">材料</h3>
                         <div className="flex justify-between items-center gap-x-2">
-                            <label htmlFor="people">何人分</label>
+                            <label>何人分</label>
                             <input
                                 id="people"
                                 type="number"
