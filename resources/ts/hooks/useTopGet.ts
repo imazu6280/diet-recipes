@@ -9,13 +9,7 @@ type DataState = {
 };
 
 export const useTopGet = () => {
-    // const [recipes, setRecipes] = useState<GetRecipesResponse>([]);
-    // const [favoriteRecipes, setFavoriteRecipes] = useState<GetRecipesResponse>(
-    //     []
-    // );
-    // const [categories, setCategories] = useState([]);
-
-    const [data, setData] = useState<DataState>({
+    const [recipeData, setRecipeData] = useState<DataState>({
         recipes: [],
         favoriteRecipes: [],
         categories: [],
@@ -33,9 +27,7 @@ export const useTopGet = () => {
                 res.map((res) => res.json())
             );
 
-            console.log("GET", [recipesRes, favoritesRes, categoriesRes]);
-
-            setData({
+            setRecipeData({
                 recipes: recipesRes,
                 favoriteRecipes: favoritesRes,
                 categories: categoriesRes,
@@ -49,5 +41,5 @@ export const useTopGet = () => {
         GetRecipesAllApi();
     }, []);
 
-    return { data };
+    return { recipeData };
 };

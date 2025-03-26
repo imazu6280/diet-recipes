@@ -12,24 +12,28 @@ import { DeleteMenuButton } from "./DeleteMenuButton";
 import { headerLogo, sideLink } from "../constants/text";
 import { useRecipeCreate } from "../hooks/useRecipeCreate";
 import { useRecipeDelete } from "../hooks/useRecipeDelete";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { useSearch } from "../hooks/useSearch";
+import { useRecipeList } from "../hooks/useRecipeList";
+import { setFavoriteTab } from "../redux/favoriteTabSlice";
 
 export const Header = () => {
     const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu();
     const { createInputValue, favoriteToggleBtn } = useRecipeCreate();
     const { deleteHandleSubmit } = useRecipeDelete();
-    const { inputValue, handleSearchChange, handleSearchSubmit } = useSearch();
+    const { inputValue, handleSearchChange, handleSearchSubmit } =
+        useRecipeList();
+
+    const recipeDeleteId = useSelector((state: RootState) => state.id.id);
+    const dispatch = useDispatch();
+
     const location = useLocation();
     const isLocation =
         location.pathname === "/create" || location.pathname.includes("/edit/");
     const isLocationEdit = location.pathname.includes("/edit/");
     const isLocationRecipes =
-        location.pathname.includes("/recipes/") ||
+        location.pathname.includes("/recipes") ||
         location.pathname.includes("/recipes/category/");
-
-    const recipeDeleteId = useSelector((state: RootState) => state.id.id);
 
     return isLocation ? (
         <header className="sticky top-0 z-30 md:shadow-gray">
@@ -132,7 +136,10 @@ export const Header = () => {
             <form
                 id="recipes-header-search"
                 action=""
-                onSubmit={handleSearchSubmit}
+                onSubmit={(e) => {
+                    handleSearchSubmit(e, inputValue);
+                    dispatch(setFavoriteTab(false));
+                }}
                 className={`p-2 flex bg-white z-10 md:hidden ${
                     !isLocationRecipes ? "justify-end" : "justify-between"
                 }`}
@@ -163,7 +170,10 @@ export const Header = () => {
                 <form
                     id="header-search"
                     action=""
-                    onSubmit={handleSearchSubmit}
+                    onSubmit={(e) => {
+                        handleSearchSubmit(e, inputValue);
+                        dispatch(setFavoriteTab(false));
+                    }}
                 >
                     <SearchInput
                         isStyle={true}
@@ -202,7 +212,10 @@ export const Header = () => {
                     <form
                         id="no-click-search"
                         action=""
-                        onSubmit={handleSearchSubmit}
+                        onSubmit={(e) => {
+                            handleSearchSubmit(e, inputValue);
+                            dispatch(setFavoriteTab(false));
+                        }}
                     >
                         <SearchInput
                             isStyle={true}

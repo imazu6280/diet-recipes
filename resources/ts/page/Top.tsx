@@ -4,12 +4,13 @@ import { useTopGet } from "../hooks/useTopGet";
 import { buttonColors } from "../constants/buttonColors";
 import { Link } from "react-router-dom";
 import { useDetailGet } from "../hooks/useDetailGet";
-import { useSearch } from "../hooks/useSearch";
+import { useRecipeList } from "../hooks/useRecipeList";
 
 export const Top = () => {
-    const { data } = useTopGet();
+    const { recipeData } = useTopGet();
     const { GetRecipesDetailApi } = useDetailGet();
-    const { inputValue, handleSearchChange, handleSearchSubmit } = useSearch();
+    const { inputValue, handleSearchChange, handleSearchSubmit } =
+        useRecipeList();
 
     return (
         <div className="w-inner mx-auto">
@@ -46,7 +47,7 @@ export const Top = () => {
                         よく使う減量レシピ
                     </h2>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-4 sm:grid-cols-2 sm:gap-y-4">
-                        {data.favoriteRecipes.map((item) => (
+                        {recipeData.favoriteRecipes.map((item) => (
                             <Link
                                 to={`show/${item.id}`}
                                 key={item.id}
@@ -72,7 +73,7 @@ export const Top = () => {
                         登録レシピ一覧
                     </h2>
                     <ul className="grid grid-cols-4 gap-x-4 gap-y-2 mt-4 tablet_md:grid-cols-3 sm:grid-cols-1 sm:gap-y-4">
-                        {data.recipes.map((item) => (
+                        {recipeData.recipes.map((item) => (
                             <Link to={`show/${item.id}`} key={item.id}>
                                 <li
                                     key={item.id}
@@ -141,10 +142,11 @@ export const Top = () => {
                         カテゴリ
                     </h2>
                     <ul className="grid grid-cols-4 gap-4 mt-4 bg-white rounded-lg md:grid-cols-3 md:gap-0 md:p-3">
-                        {data.categories.map((item) => (
+                        {recipeData.categories.map((item) => (
                             <Link
                                 to={`recipes/category/${item.id}`}
                                 key={item.id}
+                                state={{ name: item.name }}
                             >
                                 <li className="py-4 pl-4 pr-1 bg-white shadow-black rounded-lg md:p-0 md:text-sm md:shadow-none  md:border-b md:border-gray md:rounded-none">
                                     <p className="flex gap-x-2 items-center p-2 tb:px-0 tb:text-sm">

@@ -15,22 +15,18 @@ export const useFavoriteTab = () => {
     const navigate = useNavigate();
 
     const handleFavoriteTab = () => {
-        if (isFavoriteTab) {
+        if (!isFavoriteTab) {
             if (location.pathname.includes("category")) {
-                navigate(
-                    `/recipes/category/${id}/favorites?${params.toString()}`
-                );
+                navigate(`/recipes/category/${id}/favorites`);
             } else {
                 navigate(`/recipes/favorites?${params.toString()}`);
             }
-            setIsFavoriteTab(true);
         } else {
             if (location.pathname.includes("category")) {
-                navigate(`/recipes/category/${id}?${params.toString()}`);
+                navigate(`/recipes/category/${id}`);
             } else {
                 navigate(`/recipes?${params.toString()}`);
             }
-            setIsFavoriteTab(false);
         }
     };
 

@@ -11,7 +11,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useTopGet } from "../hooks/useTopGet";
 
 export const RecipeCreate = () => {
-    const { data } = useTopGet();
+    const { recipeData } = useTopGet();
     const {
         createInputValue,
         prevImage,
@@ -111,14 +111,16 @@ export const RecipeCreate = () => {
                                             onChange={CreateHandleChange}
                                             className="w-40 h-full px-4 py-2 text-gray border-1 border-gray text-center rounded-lg appearance-none"
                                         >
-                                            {data.categories.map((item) => (
-                                                <option
-                                                    key={item.id}
-                                                    value={item.id}
-                                                >
-                                                    {item.name}
-                                                </option>
-                                            ))}
+                                            {recipeData.categories.map(
+                                                (item) => (
+                                                    <option
+                                                        key={item.id}
+                                                        value={item.id}
+                                                    >
+                                                        {item.name}
+                                                    </option>
+                                                )
+                                            )}
                                         </select>
                                         <FontAwesomeIcon
                                             icon={faChevronDown}

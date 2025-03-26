@@ -34,6 +34,7 @@ export const useMenu = () => {
             }));
         }
     };
+
     const toggleSearchOpen = () => {
         setOpen((prevState) => ({
             ...prevState,

@@ -1,50 +1,43 @@
-import {
-    Link,
-    useLocation,
-    useNavigate,
-    useSearchParams,
-} from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Button } from "../component/Button";
 import { SearchInput } from "../component/SearchInput";
 import { buttonColors } from "../constants/buttonColors";
 import { useMenu } from "../hooks/useMenu";
-import { useSearch } from "../hooks/useSearch";
+import { useRecipeList } from "../hooks/useRecipeList";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { useRef, useState } from "react";
-import { useCategory } from "../hooks/useCategory";
+import { useRef } from "react";
 import { useFavoriteTab } from "../hooks/useFavoriteTab";
-import { GetRecipesResponse } from "../type/recipes";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { setFavoriteTab } from "../redux/favoriteTabSlice";
 
 export const RecipeList = () => {
     const { open, toggleSearchOpen } = useMenu();
     const {
-        searchList,
-        searchFavoriteList,
+        recipeList,
+        recipeFavoriteList,
         inputValue,
         handleSearchChange,
         handleResetChange,
         handleSearchSubmit,
-        searchGetRecipe,
-        searchFavoritesGetRecipe,
-    } = useSearch();
-    const { categoryGetRecipe, categoryFavoritesGetRecipe } = useCategory();
-    const { isFavoriteTab, setIsFavoriteTab, handleFavoriteTab } =
-        useFavoriteTab();
-    const { categoryInputValue, categoryFavoritesValue } = useCategory();
+    } = useRecipeList();
+    const { handleFavoriteTab } = useFavoriteTab();
     const swiperRef = useRef(null);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const location = useLocation();
-    const navigate = useNavigate();
-    const searchQuery = searchParams.get("search");
-    const isCategory = location.pathname.includes("/category");
-    const [displayList, setDisplayList] = useState<GetRecipesResponse>([]);
-    // const displayList = isCategory ? categoryInputValue : searchList;
-    const swiperList = isCategory ? categoryFavoritesValue : searchFavoriteList;
 
-    // const newParams = new URLSearchParams(searchParams);
+    const [searchParams] = useSearchParams();
+    const searchQuery = searchParams.get("search");
+
+    const isFavoriteTab = useSelector(
+        (state: RootState) => state.favoriteTab.isFavoriteTab
+    );
+    const dispatch = useDispatch();
+
+    const location = useLocation();
+    const categoryName = location.state?.name;
+    const isCategory = location.pathname.includes("/category");
 
     return (
         <div className="mx-auto pc_lg:w-inner pc_lg:max-w-wrapper">
@@ -54,12 +47,10 @@ export const RecipeList = () => {
                         !isFavoriteTab && "font-bold border-b-2 border-orange"
                     }`}
                     onClick={() => {
-                        handleFavoriteTab();
-                        const newList = isCategory
-                            ? categoryInputValue
-                            : searchList;
-                        setDisplayList(newList);
-                        isCategory ? categoryGetRecipe() : searchGetRecipe();
+                        if (isFavoriteTab) {
+                            handleFavoriteTab();
+                            dispatch(setFavoriteTab(false));
+                        }
                     }}
                 >
                     新着
@@ -69,31 +60,37 @@ export const RecipeList = () => {
                         isFavoriteTab && "font-bold border-b-2 border-orange"
                     }`}
                     onClick={() => {
-                        handleFavoriteTab();
-                        const newList = isCategory
-                            ? categoryFavoritesValue
-                            : searchFavoriteList;
-                        setDisplayList(newList);
-                        isCategory
-                            ? categoryFavoritesGetRecipe()
-                            : searchFavoritesGetRecipe();
+                        if (!isFavoriteTab) {
+                            handleFavoriteTab();
+                            dispatch(setFavoriteTab(true));
+                        }
                     }}
                 >
                     お気に入り
                 </li>
             </ul>
             <h2 className="pt-4 text-2xl md:hidden">
-                <strong className="pr-1">{searchQuery}</strong>
+                <strong className="pr-1">{}</strong>
                 レシピ
-                <span className="pl-1 text-xl text-gray">
-                    ({displayList?.length})
-                </span>
+                {isFavoriteTab ? (
+                    <span className="pl-1 text-xl text-gray">
+                        ({recipeFavoriteList.length})
+                    </span>
+                ) : (
+                    <span className="pl-1 text-xl text-gray">
+                        ({recipeList.length})
+                    </span>
+                )}
             </h2>
             <div className="grid grid-cols-wrapper-column gap-x-6 pt-4 text-xl md:block md:w-inner md:mx-auto">
                 <div className="flex flex-col gap-y-4">
                     {!isFavoriteTab && (
                         <div className="flex flex-col gap-y-4">
-                            <p>お気に入りの「{searchQuery}」レシピ</p>
+                            <p>
+                                お気に入りの「
+                                {isCategory ? categoryName : searchQuery}
+                                」レシピ
+                            </p>
                             <div className="relative w-full">
                                 <Swiper
                                     ref={swiperRef}
@@ -107,7 +104,7 @@ export const RecipeList = () => {
                                     slidesPerView="auto"
                                     slidesPerGroup={1}
                                 >
-                                    {swiperList?.map((item) => (
+                                    {recipeFavoriteList.map((item) => (
                                         <SwiperSlide
                                             key={item.id}
                                             style={{
@@ -141,10 +138,12 @@ export const RecipeList = () => {
 
                     <div className="justify-between hidden md:flex">
                         <h2 className="pt-4 text-2xl">
-                            <strong className="pr-1">{searchQuery}</strong>
+                            <strong className="pr-1">
+                                {isCategory ? categoryName : searchQuery}
+                            </strong>
                             レシピ
                             <span className="pl-1 text-xl">
-                                ({displayList?.length})
+                                ({recipeList.length})
                             </span>
                         </h2>
                         <Button
@@ -156,36 +155,81 @@ export const RecipeList = () => {
                             toggleSearchOpen={toggleSearchOpen}
                         />
                     </div>
-                    {displayList?.map((item) => (
-                        <Link to={`/show/${item.id}`} key={item.id}>
-                            <div className="grid grid-cols-list-column grid-desktop rounded-md shadow-black md:grid-cols-md-list-column md:grid-mobile md:bg-white">
-                                <div
-                                    className="grid-image bg-cover bg-center bg-no-repeat"
-                                    style={{
-                                        backgroundImage: `url(${item.thumbnail})`,
-                                    }}
-                                ></div>
-                                <div className="grid-content flex flex-col gap-y-3 p-4">
-                                    <h3 className="text-xl font-semibold">
-                                        {item.name}
-                                    </h3>
-                                    <ul className="flex gap-x-1 text-sm">
-                                        {item.ingredients.map((ingredient) => (
-                                            <li key={ingredient.id}>
-                                                ・{ingredient.name}
-                                            </li>
-                                        ))}
-                                    </ul>
+                    {isFavoriteTab
+                        ? recipeFavoriteList.map((item) => (
+                              <Link to={`/show/${item.id}`} key={item.id}>
+                                  <div className="grid grid-cols-list-column grid-desktop rounded-md shadow-black md:grid-cols-md-list-column md:grid-mobile md:bg-white">
+                                      <div
+                                          className="grid-image bg-cover bg-center bg-no-repeat"
+                                          style={{
+                                              backgroundImage: `url(${item.thumbnail})`,
+                                          }}
+                                      ></div>
+                                      <div className="grid-content flex flex-col gap-y-3 p-4">
+                                          <h3 className="text-xl font-semibold">
+                                              {item.name}
+                                          </h3>
+                                          <ul className="flex gap-x-1 text-sm">
+                                              {item.ingredients.map(
+                                                  (ingredient) => (
+                                                      <li key={ingredient.id}>
+                                                          ・{ingredient.name}
+                                                      </li>
+                                                  )
+                                              )}
+                                          </ul>
 
-                                    <div className="flex gap-x-1">
-                                        <img src="/images/people.svg" alt="" />
-                                        <p className="text-sm">2人前</p>
-                                    </div>
-                                    <p className="pt-1 text-sm">コメント</p>
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
+                                          <div className="flex gap-x-1">
+                                              <img
+                                                  src="/images/people.svg"
+                                                  alt=""
+                                              />
+                                              <p className="text-sm">2人前</p>
+                                          </div>
+                                          <p className="pt-1 text-sm">
+                                              コメント
+                                          </p>
+                                      </div>
+                                  </div>
+                              </Link>
+                          ))
+                        : recipeList.map((item) => (
+                              <Link to={`/show/${item.id}`} key={item.id}>
+                                  <div className="grid grid-cols-list-column grid-desktop rounded-md shadow-black md:grid-cols-md-list-column md:grid-mobile md:bg-white">
+                                      <div
+                                          className="grid-image bg-cover bg-center bg-no-repeat"
+                                          style={{
+                                              backgroundImage: `url(${item.thumbnail})`,
+                                          }}
+                                      ></div>
+                                      <div className="grid-content flex flex-col gap-y-3 p-4">
+                                          <h3 className="text-xl font-semibold">
+                                              {item.name}
+                                          </h3>
+                                          <ul className="flex gap-x-1 text-sm">
+                                              {item.ingredients.map(
+                                                  (ingredient) => (
+                                                      <li key={ingredient.id}>
+                                                          ・{ingredient.name}
+                                                      </li>
+                                                  )
+                                              )}
+                                          </ul>
+
+                                          <div className="flex gap-x-1">
+                                              <img
+                                                  src="/images/people.svg"
+                                                  alt=""
+                                              />
+                                              <p className="text-sm">2人前</p>
+                                          </div>
+                                          <p className="pt-1 text-sm">
+                                              コメント
+                                          </p>
+                                      </div>
+                                  </div>
+                              </Link>
+                          ))}
                 </div>
                 <div className="sticky top-20 flex flex-col gap-4 h-fit overflow-visible md:hidden">
                     <div className="flex justify-between">
@@ -237,12 +281,16 @@ export const RecipeList = () => {
                         <form
                             action=""
                             id="sort"
-                            onSubmit={(e) => handleSearchSubmit(e, inputValue)}
+                            onSubmit={(e) => {
+                                dispatch(setFavoriteTab(false));
+                                handleSearchSubmit(e, inputValue);
+                                toggleSearchOpen();
+                            }}
                             className="flex flex-col gap-y-6 w-inner mx-auto"
                         >
                             <div className="flex justify-between">
                                 <h3 className="text-lg font-semibold">
-                                    <span className="pr-1">{searchQuery}</span>
+                                    <span className="pr-1">{}</span>
                                     の絞り込み
                                 </h3>
                                 <p

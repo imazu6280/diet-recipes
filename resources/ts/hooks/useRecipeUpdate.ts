@@ -12,7 +12,7 @@ export const useRecipeUpdate = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const isFavorite = useSelector(
-        (state: RootState) => state.favorite.is_favorite
+        (state: RootState) => state?.favorite.is_favorite
     );
     const [updateInputValue, setUpdateInputValue] =
         useState<Omit<recipeSchema, "created_at" | "updated_at">>(createState);
