@@ -70,7 +70,9 @@ export const RecipeList = () => {
                 </li>
             </ul>
             <h2 className="pt-4 text-2xl md:hidden">
-                <strong className="pr-1">{}</strong>
+                <strong className="pr-1">
+                    {isCategory ? categoryName : searchQuery}
+                </strong>
                 レシピ
                 {isFavoriteTab ? (
                     <span className="pl-1 text-xl text-gray">
