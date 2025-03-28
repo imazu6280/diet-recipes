@@ -5,6 +5,7 @@ export const useMenu = () => {
         sideOpen: false,
         deleteOpen: false,
         searchOpen: false,
+        sidebarOpen: false,
     });
 
     const menuOpen = (
@@ -42,5 +43,18 @@ export const useMenu = () => {
         }));
     };
 
-    return { open, menuOpen, toggleDeleteOpen, toggleSearchOpen };
+    const toggleSidebar = () => {
+        setOpen((prevState) => ({
+            ...prevState,
+            sidebarOpen: !prevState.sidebarOpen,
+        }));
+    };
+
+    return {
+        open,
+        menuOpen,
+        toggleDeleteOpen,
+        toggleSearchOpen,
+        toggleSidebar,
+    };
 };

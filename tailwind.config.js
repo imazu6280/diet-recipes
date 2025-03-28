@@ -77,6 +77,7 @@ export default {
                 "header-column": "1fr 40px",
                 "header-tb-column": "140px 1fr 160px 24px",
                 "sidebar-column": "clamp(120px, 20%, 270px) 1fr",
+                "sidebar-small-column": "65px 1fr",
                 "show-column": "min(35%, 300px) 1fr",
                 "create-ingredient-column": "24px 2fr 1fr 24px",
                 "list-column": "160px 1fr",
