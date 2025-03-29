@@ -15,7 +15,9 @@ export const Top = () => {
     return (
         <div className="w-inner mx-auto">
             <div className="flex flex-col gap-y-6 md:hidden">
-                <h1 className="text-3xl font-bold text-center">DIET RECIPES</h1>
+                <h1 className="w-2/5 mx-auto">
+                    <img src="/images/logo03.png" alt="" />
+                </h1>
                 <form
                     action=""
                     onSubmit={(e) => handleSearchSubmit(e, inputValue)}

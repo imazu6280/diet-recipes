@@ -7,9 +7,9 @@ export const headerLogo: headerLogoType = {
 };
 
 export const sideLink: SideLinkType = [
-    { id: 0, label: "人気のレシピ", icon: faStar },
-    { id: 1, label: "レシピ一覧", icon: faList },
-    { id: 2, label: "レシピ登録", icon: faPlus },
+    { id: 0, label: "人気のレシピ", icon: faStar, link: "/recipes/favorites" },
+    { id: 1, label: "レシピ一覧", icon: faList, link: "/recipes" },
+    { id: 2, label: "レシピ登録", icon: faPlus, link: "/create" },
 ];
 
 const placeHolderText: placeHolderType = {
