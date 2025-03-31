@@ -57,3 +57,10 @@ export type PostRecipesResponse = Omit<
         thumbnail: string | File;
     })[];
 };
+
+export type recipePfc = {
+    name: string;
+    pfc: number;
+};
+
+export type recipePfcResponse = recipePfc[];

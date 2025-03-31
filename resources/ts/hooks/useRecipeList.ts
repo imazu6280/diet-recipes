@@ -18,6 +18,7 @@ export const useRecipeList = () => {
     const { id } = useParams();
     const searchQuery = searchParams.get("search") || "";
     const isCategory = locations.pathname.includes("/category");
+    const isRecipes = locations.pathname === "/recipes";
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
@@ -36,25 +37,27 @@ export const useRecipeList = () => {
 
     const getRecipeList = async () => {
         try {
+            let recipeUrl = "";
+            let favoriteUrl = "";
+
+            if (isRecipes) {
+                recipeUrl = "/api/recipes";
+                favoriteUrl = "/api/recipes/favorites";
+            } else if (isCategory) {
+                recipeUrl = `/api/recipes/category/${id}`;
+                favoriteUrl = `/api/recipes/category/${id}/favorites`;
+            } else {
+                recipeUrl = `/api/recipes?search=${encodeURIComponent(
+                    searchQuery
+                )}`;
+                favoriteUrl = `/api/recipes/favorites?search=${encodeURIComponent(
+                    searchQuery
+                )}`;
+            }
+
             const [resList, resFavoriteList] = await Promise.all([
-                fetch(
-                    `${
-                        isCategory
-                            ? `/api/recipes/category/${id}`
-                            : `/api/recipes?search=${encodeURIComponent(
-                                  searchQuery
-                              )}`
-                    }`
-                ),
-                fetch(
-                    `${
-                        isCategory
-                            ? `/api/recipes/category/${id}/favorites`
-                            : `/api/recipes/favorites?search=${encodeURIComponent(
-                                  searchQuery
-                              )}`
-                    }`
-                ),
+                fetch(recipeUrl),
+                fetch(favoriteUrl),
             ]);
             const listJson = await resList.json();
             const favoriteListJson = await resFavoriteList.json();
@@ -67,7 +70,7 @@ export const useRecipeList = () => {
     };
 
     useEffect(() => {
-        if (searchQuery || isCategory) {
+        if (searchQuery || isCategory || isRecipes) {
             getRecipeList();
         }
     }, [searchQuery]);

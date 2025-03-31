@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { sideLink } from "../constants/text";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -17,25 +18,27 @@ export const Navbar = ({ open }: Props) => {
             }`}
         >
             <h1 className="flex justify-between items-center text-sideClamp font-bold">
-                DIET RECIPES
+                <img src="/images/logo03.png" alt="" className="w-48" />
                 <span className="tb:w-3">
                     <img src={"/images/side-arrow.png"} alt="" />
                 </span>
             </h1>
             <ul className="h-full flex flex-col gap-y-7">
                 {sideLink.map((item) => (
-                    <li
-                        key={item.id}
-                        className={`mr-1 tb:text-sm ${
-                            item.id === 0 && "text-orange"
-                        }`}
-                    >
-                        <FontAwesomeIcon
-                            icon={item.icon}
-                            style={{ marginRight: "10px" }}
-                        />
-                        {item.label}
-                    </li>
+                    <Link to={item.link} key={item.id}>
+                        <li
+                            key={item.id}
+                            className={`mr-1 tb:text-sm ${
+                                item.id === 0 && "text-orange"
+                            }`}
+                        >
+                            <FontAwesomeIcon
+                                icon={item.icon}
+                                style={{ marginRight: "10px" }}
+                            />
+                            {item.label}
+                        </li>
+                    </Link>
                 ))}
             </ul>
         </nav>

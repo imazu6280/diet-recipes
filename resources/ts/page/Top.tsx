@@ -15,7 +15,7 @@ export const Top = () => {
     return (
         <div className="w-inner mx-auto">
             <div className="flex flex-col gap-y-6 md:hidden">
-                <h1 className="w-2/5 mx-auto">
+                <h1 className="w-80 mx-auto">
                     <img src="/images/logo03.png" alt="" />
                 </h1>
                 <form
@@ -150,7 +150,7 @@ export const Top = () => {
                                 key={item.id}
                                 state={{ name: item.name }}
                             >
-                                <li className="py-4 pl-4 pr-1 bg-white shadow-black rounded-lg md:p-0 md:text-sm md:shadow-none  md:border-b md:border-gray md:rounded-none">
+                                <li className="py-4 pl-4 pr-1 bg-white shadow-black rounded-lg hover:bg-beige md:p-0 md:text-sm md:shadow-none md:border-b md:border-gray md:rounded-none">
                                     <p className="flex gap-x-2 items-center p-2 tb:px-0 tb:text-sm">
                                         <span className="w-6 mr-1.5">
                                             <img src={item.icon} alt="" />

@@ -47,11 +47,13 @@ export default {
             colors: {
                 red: "rgba(254,70,58,1)",
                 orange: "#FF9933",
+                hover_orange: "#E6852E",
                 gray: "#939290",
                 white_gray: "rgb(236 235 233)",
                 beige: "#F8F6F2",
                 white: "#FFFFFF",
                 black: "#606060",
+                super_black: "#000",
                 "base-color": "#4a4a4a",
                 "gray-opacity": "rgba(74, 74, 74, 0.7)",
             },

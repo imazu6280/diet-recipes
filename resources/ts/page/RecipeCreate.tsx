@@ -7,7 +7,7 @@ import { buttonColors } from "../constants/buttonColors";
 import { DndContext } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faStar } from "@fortawesome/free-solid-svg-icons";
 import { useTopGet } from "../hooks/useTopGet";
 
 export const RecipeCreate = () => {
@@ -89,9 +89,9 @@ export const RecipeCreate = () => {
                                         className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
-                                <div className="flex flex-col gap-y-4">
+                                <div className="flex flex-col gap-y-4 md:flex-row md:justify-between">
                                     <Button
-                                        isIcon={sideLink[0].icon}
+                                        isIcon={faStar}
                                         alt="お気に入り登録"
                                         text="お気に入り"
                                         color={`${
@@ -124,7 +124,7 @@ export const RecipeCreate = () => {
                                         </select>
                                         <FontAwesomeIcon
                                             icon={faChevronDown}
-                                            className="absolute right-3 bottom-3.5 text-xs text-gray"
+                                            className="select-with-icon absolute left-36 bottom-3.5 text-xs text-gray md:right-3"
                                         />
                                     </label>
                                     {errors.length > 0 && (

@@ -59,7 +59,7 @@ export const RegisterCard = ({
                     <span className="block w-6 h-6 text-center text-white bg-black rounded-full">
                         {item.step_number}
                     </span>
-                    <div {...listeners} {...attributes}>
+                    <div className="cursor-move" {...listeners} {...attributes}>
                         <img src="/images/bars.svg" alt="" />
                     </div>
                 </div>
@@ -86,8 +86,9 @@ export const RegisterCard = ({
             <div className="flex flex-col gap-y-2 w-full">
                 <label
                     htmlFor={`thumbnail-${index}`}
-                    className={`flex flex-col justify-center items-center aspect-5/4 rounded-lg
-         ${stepImage[index] ? "" : "bg-beige"}`}
+                    className={`flex flex-col justify-center items-center aspect-5/4 rounded-lg ${
+                        stepImage[index] ? "" : "bg-beige"
+                    }`}
                 >
                     <input
                         type="file"

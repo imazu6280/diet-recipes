@@ -1,9 +1,5 @@
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
-export type headerLogoType = {
-    logo: string;
-};
-
 export type SideLinkType = {
     id: number;
     label: string;
