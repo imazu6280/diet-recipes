@@ -9,7 +9,7 @@ type Props = {
 
 export const Sidebar = ({ open, toggleSidebar }: Props) => {
     const location = useLocation();
-    const isTop = location.pathname === "/";
+    const isLink = location.pathname;
 
     return (
         <nav className="sticky top-0 h-screen flex flex-col gap-y-7 pt-5 bg-white rounded-lg md:hidden">
@@ -43,7 +43,7 @@ export const Sidebar = ({ open, toggleSidebar }: Props) => {
                     <Link to={item.link} key={item.id}>
                         <li
                             className={`hover:text-super_black tb:text-sm ${
-                                item.id === 0 && isTop && "text-orange"
+                                item.link === isLink && "text-orange"
                             } ${open && "text-center"}`}
                         >
                             <FontAwesomeIcon
