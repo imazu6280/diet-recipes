@@ -47,11 +47,13 @@ export default {
             colors: {
                 red: "rgba(254,70,58,1)",
                 orange: "#FF9933",
+                hover_orange: "#E6852E",
                 gray: "#939290",
                 white_gray: "rgb(236 235 233)",
                 beige: "#F8F6F2",
                 white: "#FFFFFF",
                 black: "#606060",
+                super_black: "#000",
                 "base-color": "#4a4a4a",
                 "gray-opacity": "rgba(74, 74, 74, 0.7)",
             },
@@ -76,7 +78,8 @@ export default {
             gridTemplateColumns: {
                 "header-column": "1fr 40px",
                 "header-tb-column": "140px 1fr 160px 24px",
-                "sidebar-column": "clamp(120px, 20%, 270px) 1fr",
+                "sidebar-column": "260px 1fr",
+                "sidebar-small-column": "70px 1fr",
                 "show-column": "min(35%, 300px) 1fr",
                 "create-ingredient-column": "24px 2fr 1fr 24px",
                 "list-column": "160px 1fr",

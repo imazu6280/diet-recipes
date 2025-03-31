@@ -7,15 +7,15 @@ import { MenuButton } from "./MenuButton";
 import { Navbar } from "./Navbar";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faStar } from "@fortawesome/free-solid-svg-icons";
 import { DeleteMenuButton } from "./DeleteMenuButton";
-import { headerLogo, sideLink } from "../constants/text";
 import { useRecipeCreate } from "../hooks/useRecipeCreate";
 import { useRecipeDelete } from "../hooks/useRecipeDelete";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useRecipeList } from "../hooks/useRecipeList";
 import { setFavoriteTab } from "../redux/favoriteTabSlice";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
     const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu();
@@ -51,7 +51,7 @@ export const Header = () => {
                     />
                 )}
                 <Button
-                    isIcon={sideLink[0].icon}
+                    isIcon={faStar}
                     alt="お気に入り"
                     text="お気に入り"
                     color={`${
@@ -86,7 +86,13 @@ export const Header = () => {
                 )}
             </div>
             <div className="px-4 py-3 bg-white z-10 hidden md:flex justify-between gap-x-6 items-center">
-                <h1 className="text-lg font-bold">{headerLogo.logo}</h1>
+                <Link to="/">
+                    <h1
+                        className={`${isLocation ? "w-full max-w-40" : "w-48"}`}
+                    >
+                        <img src="/images/logo03.png" alt="" />
+                    </h1>
+                </Link>
                 <div className="flex items-center gap-x-4">
                     {isLocationEdit ? (
                         <Button
@@ -155,18 +161,24 @@ export const Header = () => {
                         handleSearchChange={handleSearchChange}
                     />
                 )}
-                <Button
-                    isIcon="/images/header-write.svg"
-                    alt="レシピを書く"
-                    text="レシピを書く"
-                    color={buttonColors.bgOrange}
-                    width=""
-                    type="submit"
-                    formId="recipes-header-search"
-                />
+                <Link to="/create">
+                    <Button
+                        isIcon="/images/header-write.svg"
+                        alt="レシピを書く"
+                        text="レシピを書く"
+                        color={buttonColors.bgOrange}
+                        width=""
+                        type="submit"
+                        formId="recipes-header-search"
+                    />
+                </Link>
             </form>
             <div className="px-4 py-3 bg-white z-10 hidden tablet_md:grid grid-cols-header-tb-column gap-x-6 items-center">
-                <h1 className="text-lg font-bold">{headerLogo.logo}</h1>
+                <Link to="/">
+                    <h1>
+                        <img src="/images/logo03.png" alt="" />
+                    </h1>
+                </Link>
                 <form
                     id="header-search"
                     action=""
@@ -185,20 +197,7 @@ export const Header = () => {
                         handleSearchChange={handleSearchChange}
                     />
                 </form>
-                <Button
-                    isIcon="/images/header-write.svg"
-                    alt="レシピを書く"
-                    text="レシピを書く"
-                    color={buttonColors.bgOrange}
-                    width=""
-                    type="button"
-                    formId="header-search"
-                />
-                <MenuButton open={open} menuOpen={menuOpen} />
-            </div>
-            <div className="px-4 py-3 bg-white z-10 hidden sm:flex flex-col gap-y-4">
-                <div className="flex justify-between items-center">
-                    <h1 className="text-xl font-bold">{headerLogo.logo}</h1>
+                <Link to="/create">
                     <Button
                         isIcon="/images/header-write.svg"
                         alt="レシピを書く"
@@ -206,7 +205,28 @@ export const Header = () => {
                         color={buttonColors.bgOrange}
                         width=""
                         type="button"
+                        formId="header-search"
                     />
+                </Link>
+                <MenuButton open={open} menuOpen={menuOpen} />
+            </div>
+            <div className="px-4 py-3 bg-white z-10 hidden sm:flex flex-col gap-y-4">
+                <div className="flex justify-between items-center">
+                    <Link to="/">
+                        <h1 className="w-44">
+                            <img src="/images/logo03.png" alt="" />
+                        </h1>
+                    </Link>
+                    <Link to="/create">
+                        <Button
+                            isIcon="/images/header-write.svg"
+                            alt="レシピを書く"
+                            text="レシピを書く"
+                            color={buttonColors.bgOrange}
+                            width=""
+                            type="button"
+                        />
+                    </Link>
                 </div>
                 <div className="grid grid-cols-header-column gap-5">
                     <form

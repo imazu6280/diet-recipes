@@ -35,7 +35,7 @@ export const RegisterInput = ({
     return (
         <div ref={setNodeRef} style={style} className="flex flex-col gap-y-2">
             <div className="grid grid-cols-create-ingredient-column gap-x-2 items-center">
-                <p {...listeners} {...attributes}>
+                <p className="cursor-move" {...listeners} {...attributes}>
                     <img src="/images/bars.svg" alt="" />
                 </p>
                 <label>

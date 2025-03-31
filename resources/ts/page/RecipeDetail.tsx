@@ -8,11 +8,10 @@ import { Link, useParams } from "react-router-dom";
 import { useRecipeUpdate } from "../hooks/useRecipeUpdate";
 
 export const RecipeDetail = () => {
-    const { recipesDetail } = useDetailGet();
+    const { recipesDetail, recipePfc } = useDetailGet();
     const { getRecipeToEdit } = useRecipeUpdate();
     const recipesStep = recipesDetail?.steps;
     const recipeIngredient = recipesDetail?.ingredients;
-
     const { id } = useParams();
 
     return (
@@ -36,6 +35,14 @@ export const RecipeDetail = () => {
                                 </span>
                                 カロリー
                             </p>
+                            <ul className="flex gap-x-3">
+                                {recipePfc.map((item, index) => (
+                                    <li key={index}>
+                                        {item.name}：<strong>{item.pfc}</strong>
+                                        g
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                         <p className="break-words md:p-2 md:text-md md:bg-white_gray md:rounded-lg whitespace-normal">
                             {recipesDetail?.comments}

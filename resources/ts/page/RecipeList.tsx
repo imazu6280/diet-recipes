@@ -38,6 +38,7 @@ export const RecipeList = () => {
     const location = useLocation();
     const categoryName = location.state?.name;
     const isCategory = location.pathname.includes("/category");
+    const isList = location.pathname === "/recipes";
 
     return (
         <div className="mx-auto pc_lg:w-inner pc_lg:max-w-wrapper">
@@ -71,7 +72,11 @@ export const RecipeList = () => {
             </ul>
             <h2 className="pt-4 text-2xl md:hidden">
                 <strong className="pr-1">
-                    {isCategory ? categoryName : searchQuery}
+                    {isList
+                        ? "全ての"
+                        : isCategory
+                        ? categoryName
+                        : searchQuery}
                 </strong>
                 レシピ
                 {isFavoriteTab ? (
@@ -90,7 +95,11 @@ export const RecipeList = () => {
                         <div className="flex flex-col gap-y-4">
                             <p>
                                 お気に入りの「
-                                {isCategory ? categoryName : searchQuery}
+                                {isList
+                                    ? "全ての"
+                                    : isCategory
+                                    ? categoryName
+                                    : searchQuery}
                                 」レシピ
                             </p>
                             <div className="relative w-full">
