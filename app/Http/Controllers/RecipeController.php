@@ -282,18 +282,18 @@ class RecipeController extends Controller
         $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 's3');
         // S3のURLを取得
         $thumbnailUrl = Storage::disk('s3')->url($thumbnailPath);
-    } elseif ($request->filled('thumbnail')) {
-        // 既存のURLが送信されている場合
-        $thumbnailUrl = $request->input('thumbnail'); // URLそのまま使用
-    } else {
-        // 画像もURLも送信されていない場合
-        $thumbnailUrl = ""; // 必要に応じてデフォルト値
-    }
+        } elseif ($request->filled('thumbnail')) {
+            // 既存のURLが送信されている場合
+            $thumbnailUrl = $request->input('thumbnail'); // URLそのまま使用
+        } else {
+            // 画像もURLも送信されていない場合
+            $thumbnailUrl = ""; // 必要に応じてデフォルト値
+        }
 
-    // データベースの更新処理（例）
-    $recipe = Recipe::find($id);
-    $recipe->thumbnail = $thumbnailUrl;
-    $recipe->save();
+        // データベースの更新処理（例）
+        $recipe = Recipe::find($id);
+        $recipe->thumbnail = $thumbnailUrl;
+        $recipe->save();
 
         // レシピの更新
         $recipe->update([
