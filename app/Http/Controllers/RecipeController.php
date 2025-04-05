@@ -93,7 +93,9 @@ class RecipeController extends Controller
 
         // S3にアップロード
         $thumbnail = $request->file('thumbnail');
-        $path = $thumbnail->store('recipe-thumbnails', 's3' , 'public');
+        $path = $thumbnail->store('recipe-thumbnails', 's3');
+
+        Storage::disk('s3')->setVisibility($path, 'public');
 
         // アップロードした画像のURLを取得
         $url = Storage::disk('s3')->url($path);
@@ -133,6 +135,8 @@ class RecipeController extends Controller
         foreach ($validatedData['steps'] as $stepData) {
 
             $stepPath = $stepData['thumbnail']->store('step-thumbnails' , 's3' , 'public');
+
+            Storage::disk('s3')->setVisibility($stepPath, 'public');
 
             $stepData['thumbnail'] = Storage::disk('s3')->url($stepPath);
 
