@@ -148,7 +148,6 @@ export const Top = () => {
                             <Link
                                 to={`recipes/category/${item.id}`}
                                 key={item.id}
-                                state={{ name: item.name }}
                             >
                                 <li className="py-4 pl-4 pr-1 bg-white shadow-black rounded-lg hover:bg-beige md:p-0 md:text-sm md:shadow-none md:border-b md:border-gray md:rounded-none">
                                     <p className="flex gap-x-2 items-center p-2 tb:px-0 tb:text-sm">

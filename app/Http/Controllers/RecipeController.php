@@ -39,13 +39,6 @@ class RecipeController extends Controller
         $categoryRecipes = Recipe::with('steps', 'ingredients')
             ->where('category_id', $id)
             ->orderBy('recipes.created_at', 'desc');
-            // ->limit(12);
-
-        // $favoriteOnly = $request->query('favorite');
-
-        // if ($favoriteOnly === 'true') {
-        //     $categoryRecipes->where('is_favorite', true);
-        // }
 
         $recipe = $categoryRecipes->get();
 
@@ -55,6 +48,13 @@ class RecipeController extends Controller
     public function categories()
     {
         $categories = Category::all();
+
+        return response()->json($categories);
+    }
+
+    public function categoryName(string $id)
+    {
+        $categories = Category::find($id);
 
         return response()->json($categories);
     }

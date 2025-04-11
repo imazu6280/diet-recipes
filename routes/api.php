@@ -10,6 +10,7 @@ Route::get('/recipes', [RecipeController::class, 'index']);
 Route::post('/recipes', [RecipeController::class, 'store']);
 Route::get('/recipes/favorites', [RecipeController::class, 'favorites']);
 Route::get('/recipes/categories', [RecipeController::class, 'categories']);
+Route::get('/recipes/categories/{id}', [RecipeController::class, 'categoryName']);
 Route::get('/recipes/category/{id}', [RecipeController::class, 'category']);
 Route::get('/recipes/category/{id}/favorites', [RecipeController::class, 'categoryFavorites']);
 Route::get('/recipes/{id}', [RecipeController::class, 'show']);
