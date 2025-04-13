@@ -337,10 +337,10 @@ class RecipeController extends Controller
         }
 
         // ステップの更新
-        foreach ($validatedData['steps'] as $stepData) {
+        foreach ($validatedData['steps'] as $index => $stepData) {
             // ステップサムネイルのアップロード（新しい画像があれば更新）
-            if ($request->hasFile('steps.' . $stepData['step_number'] . '.thumbnail')) {
-                $file = $request->file('steps.' . $stepData['step_number'] . '.thumbnail');
+            if ($request->hasFile("steps.{$index}.thumbnail")) {
+                $file = $request->file("steps.{$index}.thumbnail");
                 $stepPath = $file->store('step-thumbnails', 's3');
                 $stepData['thumbnail'] = Storage::disk('s3')->url($stepPath);
             } elseif (isset($stepData['thumbnail']) && is_string($stepData['thumbnail'])) {

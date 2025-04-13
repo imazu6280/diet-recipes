@@ -315,6 +315,10 @@ export const useRecipeCreate = () => {
                 newErrors = [...newErrors, "人数は1以上で指定してください"];
             }
 
+            if (Number(createInputValue.category_id) <= 0) {
+                newErrors = [...newErrors, "カテゴリーを選択してください"];
+            }
+
             const firstIngredientError = createInputValue.ingredients.find(
                 (ingredient) => !ingredient.name
             );
