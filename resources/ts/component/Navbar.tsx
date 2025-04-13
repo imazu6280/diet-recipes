@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { sideLink } from "../constants/text";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 type Props = {
     open: {
@@ -9,6 +11,14 @@ type Props = {
 };
 
 export const Navbar = ({ open }: Props) => {
+    const location = useLocation();
+    const isFavoriteTab = useSelector(
+        (state: RootState) => state.favoriteTab.isFavoriteTab
+    );
+
+    console.log("Current pathname:", location.pathname); // デバッグ用
+    console.log("Current pathname:", location.pathname); // デバッグ用
+
     return (
         <nav
             className={`fixed ease-linear duration-200 ${
@@ -29,14 +39,22 @@ export const Navbar = ({ open }: Props) => {
                         <li
                             key={item.id}
                             className={`mr-1 tb:text-sm ${
-                                item.id === 0 && "text-orange"
+                                (item.link === location.pathname &&
+                                    "text-orange") ||
+                                (item.isOrange === location.pathname &&
+                                    "text-orange")
                             }`}
                         >
-                            <FontAwesomeIcon
-                                icon={item.icon}
-                                style={{ marginRight: "10px" }}
-                            />
-                            {item.label}
+                            <span
+                                className={`${isFavoriteTab && "text-orange"}`}
+                            >
+                                <FontAwesomeIcon
+                                    icon={item.icon}
+                                    style={{ marginRight: "10px" }}
+                                />
+
+                                {item.label}
+                            </span>
                         </li>
                     </Link>
                 ))}

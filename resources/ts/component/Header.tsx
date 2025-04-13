@@ -168,7 +168,7 @@ export const Header = () => {
                         text="レシピを書く"
                         color={buttonColors.bgOrange}
                         width=""
-                        type="submit"
+                        type="button"
                         formId="recipes-header-search"
                     />
                 </Link>

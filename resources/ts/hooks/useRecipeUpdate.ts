@@ -6,7 +6,7 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../redux/favoriteToggleSlice";
 import { RootState } from "../redux/store";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const useRecipeUpdate = () => {
     const { id } = useParams();
@@ -24,6 +24,7 @@ export const useRecipeUpdate = () => {
         stepImage: [],
     });
     const [errors, setErrors] = useState<string[]>([]);
+    const navigate = useNavigate();
 
     const updateAddIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -328,9 +329,9 @@ export const useRecipeUpdate = () => {
                 newErrors = [...newErrors, "コメントは必須です"];
             }
 
-            if (!updateInputValue.thumbnail) {
-                newErrors = [...newErrors, "サムネイルは必須です"];
-            }
+            // if (!updateInputValue.thumbnail) {
+            //     newErrors = [...newErrors, "サムネイルは必須です"];
+            // }
 
             if (Number(updateInputValue.people) <= 0) {
                 newErrors = [...newErrors, "人数は1以上で指定してください"];
@@ -424,7 +425,7 @@ export const useRecipeUpdate = () => {
 
             console.log("PUT success!!", result);
 
-            location.href = `/show/${id}`;
+            navigate(`/show/${id}`);
         } catch (error) {
             console.error("PUT error!!", error);
         }

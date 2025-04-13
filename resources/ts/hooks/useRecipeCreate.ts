@@ -307,10 +307,10 @@ export const useRecipeCreate = () => {
 
             if (!createInputValue.name)
                 newErrors = [...newErrors, "料理名は必須です"];
+
             if (!createInputValue.comments)
                 newErrors = [...newErrors, "コメントは必須です"];
-            if (!createInputValue.thumbnail)
-                newErrors = [...newErrors, "サムネイルは必須です"];
+
             if (Number(createInputValue.people) <= 0) {
                 newErrors = [...newErrors, "人数は1以上で指定してください"];
             }

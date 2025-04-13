@@ -8,7 +8,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { setFavoriteTab } from "../redux/favoriteTabSlice";
@@ -34,6 +34,10 @@ export const RecipeList = () => {
         (state: RootState) => state.favoriteTab.isFavoriteTab
     );
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setFavoriteTab(false));
+    }, []);
 
     return (
         <div className="mx-auto pc_lg:w-inner pc_lg:max-w-wrapper">
