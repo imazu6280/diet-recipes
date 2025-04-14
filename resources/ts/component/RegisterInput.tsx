@@ -47,6 +47,7 @@ export const RegisterInput = ({
                         value={item.name}
                         onChange={(e) => handleIngredientChange(e, index)}
                         className="w-full p-2 break-words bg-beige rounded-md"
+                        min={0}
                     />
                 </label>
                 <label>
@@ -58,6 +59,7 @@ export const RegisterInput = ({
                         value={item.pivot.quantity ?? ""}
                         onChange={(e) => handleIngredientChange(e, index)}
                         className="w-full p-2 break-words bg-beige rounded-md"
+                        min={0}
                     />
                 </label>
                 <div onClick={toggleDeleteOpen} className="relative">
@@ -72,7 +74,6 @@ export const RegisterInput = ({
                                 type="ingredients"
                                 handleDeleteBtn={handleDeleteBtn}
                             />
-                            {/* <li onClick={() => handleDeleteBtn(item.id, "ingredients")}>削除</li> */}
                         </ul>
                     )}
                 </div>
@@ -87,6 +88,7 @@ export const RegisterInput = ({
                         value={item.pivot.protein ?? ""}
                         onChange={(e) => handleIngredientChange(e, index)}
                         className="w-full p-2 break-words bg-beige rounded-md"
+                        min={0}
                     />
                 </label>
                 <label>
@@ -98,6 +100,7 @@ export const RegisterInput = ({
                         value={item.pivot.fat ?? ""}
                         onChange={(e) => handleIngredientChange(e, index)}
                         className="w-full p-2 break-words bg-beige rounded-md"
+                        min={0}
                     />
                 </label>
                 <label>
@@ -109,6 +112,7 @@ export const RegisterInput = ({
                         value={item.pivot.carbs ?? ""}
                         onChange={(e) => handleIngredientChange(e, index)}
                         className="w-full p-2 break-words bg-beige rounded-md"
+                        min={0}
                     />
                 </label>
             </div>

@@ -120,11 +120,18 @@ export const Top = () => {
                                             </svg>
                                             詳細画像
                                         </p>
-                                        <ul className="grid grid-cols-6 gap-x-2">
-                                            {item.steps.map((step) => (
+                                        <ul className="grid grid-cols-4 gap-x-2 sm:grid-cols-6">
+                                            {item.steps.map((step, index) => (
                                                 <li
                                                     key={step.id}
-                                                    className="aspect-square rounded-lg"
+                                                    className={`aspect-square rounded-lg  ${
+                                                        index >= 6 &&
+                                                        "block sm:hidden"
+                                                    } 
+                                                    ${
+                                                        index >= 4 &&
+                                                        "hidden sm:block"
+                                                    }`}
                                                 >
                                                     <img
                                                         src={step.thumbnail}

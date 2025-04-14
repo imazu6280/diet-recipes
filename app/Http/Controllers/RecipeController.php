@@ -145,7 +145,7 @@ class RecipeController extends Controller
 
                 $thumbnailUrl = Storage::disk('s3')->url($stepPath);
             } else {
-                $thumbnailUrl = asset('images/no-image.jpg');
+                $thumbnailUrl = asset('images/no-image02.jpg');
             }
 
             // ステップを作成
@@ -348,7 +348,7 @@ class RecipeController extends Controller
                 $stepData['thumbnail'] = $stepData['thumbnail']; // URLそのまま使用
             } else {
                 // 画像もURLも送信されていない場合
-                $stepData['thumbnail'] = asset('images/no-image.jpg'); // 必要に応じてデフォルト値
+                $stepData['thumbnail'] = asset('images/no-image02.jpg'); // 必要に応じてデフォルト値
             }
 
             // ステップの作成または更新
