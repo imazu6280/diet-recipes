@@ -37,7 +37,7 @@ export const Navbar = ({ open }: Props) => {
                     <Link to={item.link} key={item.id}>
                         <li
                             key={item.id}
-                            className={`mr-1 tb:text-sm ${
+                            className={`mr-1 tb:text-sm hover:text-super_black ${
                                 (item.link === isLink && "text-orange") ||
                                 (isRecipe && item.id === 1 && "text-orange")
                             }`}
