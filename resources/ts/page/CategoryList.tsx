@@ -1,4 +1,4 @@
-import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../component/Button";
 import { SearchInput } from "../component/SearchInput";
 import { buttonColors } from "../constants/buttonColors";
@@ -8,36 +8,31 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { setFavoriteTab } from "../redux/favoriteTabSlice";
 
-export const RecipeList = () => {
+export const CategoryList = () => {
     const { open, toggleSearchOpen } = useMenu();
     const {
-        recipeList,
-        recipeFavoriteList,
+        categoryData,
         inputValue,
         handleSearchChange,
         handleResetChange,
         handleSearchSubmit,
-        getRecipeList,
+        getCategoryList,
     } = useRecipeList();
     const swiperRef = useRef(null);
-    const navigate = useNavigate();
 
-    const [searchParams] = useSearchParams();
-    const searchQuery = searchParams.get("search");
+    const navigate = useNavigate();
+    const { id } = useParams();
 
     const isFavoriteTab = useSelector(
         (state: RootState) => state.favoriteTab.isFavoriteTab
     );
-    const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(setFavoriteTab(false));
-    }, []);
+    const dispatch = useDispatch();
 
     return (
         <div className="mx-auto pc_lg:w-inner pc_lg:max-w-wrapper">
@@ -49,10 +44,8 @@ export const RecipeList = () => {
                     onClick={() => {
                         if (isFavoriteTab) {
                             dispatch(setFavoriteTab(false));
-                            getRecipeList();
-                            searchQuery
-                                ? navigate(`/recipes?search=${searchQuery}`)
-                                : navigate("/recipes");
+                            getCategoryList();
+                            navigate(`/recipes/category/${id}`);
                         }
                     }}
                 >
@@ -65,12 +58,8 @@ export const RecipeList = () => {
                     onClick={() => {
                         if (!isFavoriteTab) {
                             dispatch(setFavoriteTab(true));
-                            getRecipeList();
-                            searchQuery
-                                ? navigate(
-                                      `/recipes/favorites?search=${searchQuery}`
-                                  )
-                                : navigate("/recipes/favorites");
+                            getCategoryList();
+                            navigate(`/recipes/category/${id}/favorites`);
                         }
                     }}
                 >
@@ -79,16 +68,16 @@ export const RecipeList = () => {
             </ul>
             <h2 className="pt-4 text-2xl md:hidden">
                 <strong className="pr-1">
-                    {searchQuery ? searchQuery : "全ての"}
+                    {categoryData.categoryName.name}
                 </strong>
                 レシピ
                 {isFavoriteTab ? (
                     <span className="pl-1 text-xl text-gray">
-                        ({recipeFavoriteList.length})
+                        ({categoryData.categoryFavoriteList.length})
                     </span>
                 ) : (
                     <span className="pl-1 text-xl text-gray">
-                        ({recipeList.length})
+                        ({categoryData.categoryList.length})
                     </span>
                 )}
             </h2>
@@ -98,7 +87,7 @@ export const RecipeList = () => {
                         <div className="flex flex-col gap-y-4">
                             <p>
                                 お気に入りの「
-                                {searchQuery ? searchQuery : "全ての"}
+                                {categoryData.categoryName.name}
                                 」レシピ
                             </p>
                             <div className="relative w-full">
@@ -114,27 +103,30 @@ export const RecipeList = () => {
                                     slidesPerView="auto"
                                     slidesPerGroup={1}
                                 >
-                                    {recipeFavoriteList.map((item) => (
-                                        <SwiperSlide
-                                            key={item.id}
-                                            style={{
-                                                backgroundImage: `url(${item.thumbnail})`,
-                                                backgroundSize: "cover",
-                                                backgroundPosition: "center",
-                                                maxWidth: "160px",
-                                                height: "120px",
-                                            }}
-                                        >
-                                            <Link
-                                                to={`/show/${item.id}`}
+                                    {categoryData.categoryFavoriteList.map(
+                                        (item) => (
+                                            <SwiperSlide
+                                                key={item.id}
                                                 style={{
-                                                    display: "block",
-                                                    width: "100%",
-                                                    height: "100%",
+                                                    backgroundImage: `url(${item.thumbnail})`,
+                                                    backgroundSize: "cover",
+                                                    backgroundPosition:
+                                                        "center",
+                                                    maxWidth: "160px",
+                                                    height: "120px",
                                                 }}
-                                            />
-                                        </SwiperSlide>
-                                    ))}
+                                            >
+                                                <Link
+                                                    to={`/show/${item.id}`}
+                                                    style={{
+                                                        display: "block",
+                                                        width: "100%",
+                                                        height: "100%",
+                                                    }}
+                                                />
+                                            </SwiperSlide>
+                                        )
+                                    )}
                                 </Swiper>
                                 <div className="button-prev absolute top-1/2 -translate-y-1/2 -left-3 md:-left-1 bg-black opacity-75 text-white w-7 h-7 rounded-full flex items-center justify-center z-40 hover:bg-black hover:opacity-90 after:text-lg after:text-white after:font-bold">
                                     <img src="/images/prev.svg" alt="" />
@@ -149,11 +141,11 @@ export const RecipeList = () => {
                     <div className="justify-between hidden md:flex">
                         <h2 className="pt-4 text-2xl">
                             <strong className="pr-1">
-                                {searchQuery ? searchQuery : "全ての"}
+                                {categoryData.categoryName.name}
                             </strong>
                             レシピ
                             <span className="pl-1 text-xl">
-                                ({recipeList.length})
+                                ({categoryData.categoryList.length})
                             </span>
                         </h2>
                         <Button
@@ -166,7 +158,7 @@ export const RecipeList = () => {
                         />
                     </div>
                     {isFavoriteTab
-                        ? recipeFavoriteList.map((item) => (
+                        ? categoryData.categoryFavoriteList.map((item) => (
                               <Link to={`/show/${item.id}`} key={item.id}>
                                   <div className="grid grid-cols-list-column grid-desktop rounded-md shadow-black md:grid-cols-md-list-column md:grid-mobile md:bg-white">
                                       <div
@@ -203,7 +195,7 @@ export const RecipeList = () => {
                                   </div>
                               </Link>
                           ))
-                        : recipeList.map((item) => (
+                        : categoryData.categoryList.map((item) => (
                               <Link to={`/show/${item.id}`} key={item.id}>
                                   <div className="grid grid-cols-list-column grid-desktop rounded-md shadow-black md:grid-cols-md-list-column md:grid-mobile md:bg-white">
                                       <div
@@ -301,7 +293,7 @@ export const RecipeList = () => {
                             <div className="flex justify-between">
                                 <h3 className="text-lg font-semibold">
                                     <span className="pr-1">
-                                        {searchQuery ? searchQuery : "全ての"}
+                                        {categoryData.categoryName.name}
                                     </span>
                                     の絞り込み
                                 </h3>

@@ -5,6 +5,7 @@ export type SideLinkType = {
     label: string;
     icon: IconDefinition;
     link: string;
+    isOrange: string;
 }[];
 
 export type SideMenuType = {

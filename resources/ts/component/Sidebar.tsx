@@ -1,6 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { sideLink } from "../constants/text";
 import { Link, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setFavoriteTab } from "../redux/favoriteTabSlice";
 
 type Props = {
     open: boolean;
@@ -9,7 +11,9 @@ type Props = {
 
 export const Sidebar = ({ open, toggleSidebar }: Props) => {
     const location = useLocation();
+    const dispatch = useDispatch();
     const isLink = location.pathname;
+    const isRecipe = location.pathname.includes("/recipes");
 
     return (
         <nav className="sticky top-0 h-screen flex flex-col gap-y-7 pt-5 bg-white rounded-lg md:hidden">
@@ -40,10 +44,17 @@ export const Sidebar = ({ open, toggleSidebar }: Props) => {
                 }`}
             >
                 {sideLink.map((item) => (
-                    <Link to={item.link} key={item.id}>
+                    <Link
+                        to={item.link}
+                        key={item.id}
+                        onClick={() =>
+                            item.id === 1 && dispatch(setFavoriteTab(false))
+                        }
+                    >
                         <li
                             className={`hover:text-super_black tb:text-sm ${
-                                item.link === isLink && "text-orange"
+                                (item.link === isLink && "text-orange") ||
+                                (isRecipe && item.id === 1 && "text-orange")
                             } ${open && "text-center"}`}
                         >
                             <FontAwesomeIcon

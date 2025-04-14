@@ -39,13 +39,6 @@ class RecipeController extends Controller
         $categoryRecipes = Recipe::with('steps', 'ingredients')
             ->where('category_id', $id)
             ->orderBy('recipes.created_at', 'desc');
-            // ->limit(12);
-
-        // $favoriteOnly = $request->query('favorite');
-
-        // if ($favoriteOnly === 'true') {
-        //     $categoryRecipes->where('is_favorite', true);
-        // }
 
         $recipe = $categoryRecipes->get();
 
@@ -55,6 +48,13 @@ class RecipeController extends Controller
     public function categories()
     {
         $categories = Category::all();
+
+        return response()->json($categories);
+    }
+
+    public function categoryName(string $id)
+    {
+        $categories = Category::find($id);
 
         return response()->json($categories);
     }
@@ -77,7 +77,7 @@ class RecipeController extends Controller
                 'category_id' => 'required|exists:categories,id',
                 'name' => 'required|string|max:255',
                 'comments' => 'nullable|string',
-                'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
+                'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
                 'calories' => 'required|integer',
                 'people' => 'required|integer',
                 'is_favorite' => 'required|boolean',
@@ -93,11 +93,17 @@ class RecipeController extends Controller
 
         // S3にアップロード
         $thumbnail = $request->file('thumbnail');
-        $path = $thumbnail->store('recipe-thumbnails', 's3' , 'public');
+        if($thumbnail){
+            $path = $thumbnail->store('recipe-thumbnails', 's3');
 
-        // アップロードした画像のURLを取得
-        $url = Storage::disk('s3')->url($path);
-        Log::info('📸 サムネイル画像をS3にアップロード', ['path' => $path, 'url' => $url]);
+            Storage::disk('s3')->setVisibility($path, 'public');
+
+            // アップロードした画像のURLを取得
+            $url = Storage::disk('s3')->url($path);
+            Log::info('📸 サムネイル画像をS3にアップロード', ['path' => $path, 'url' => $url]);
+        } else {
+            $url = asset('images/no-image.jpg');
+        }
 
         // レシピの保存
         $recipe = Recipe::create([
@@ -132,15 +138,21 @@ class RecipeController extends Controller
         // ステップの保存
         foreach ($validatedData['steps'] as $stepData) {
 
-            $stepPath = $stepData['thumbnail']->store('step-thumbnails' , 's3' , 'public');
+            if(!empty($stepData['thumbnail'])){
+                $stepPath = $stepData['thumbnail']->store('step-thumbnails' , 's3' , 'public');
 
-            $stepData['thumbnail'] = Storage::disk('s3')->url($stepPath);
+                Storage::disk('s3')->setVisibility($stepPath, 'public');
+
+                $thumbnailUrl = Storage::disk('s3')->url($stepPath);
+            } else {
+                $thumbnailUrl = asset('images/no-image02.jpg');
+            }
 
             // ステップを作成
             $step = $recipe->steps()->create([
                 'step_number' => $stepData['step_number'],
                 'description' => $stepData['description'],
-                'thumbnail' => $stepData['thumbnail'],
+                'thumbnail' => $thumbnailUrl,
             ]);
 
         }
@@ -287,7 +299,7 @@ class RecipeController extends Controller
             $thumbnailUrl = $request->input('thumbnail'); // URLそのまま使用
         } else {
             // 画像もURLも送信されていない場合
-            $thumbnailUrl = ""; // 必要に応じてデフォルト値
+            $thumbnailUrl = asset('images/no-image.jpg'); // 必要に応じてデフォルト値
         }
 
         // データベースの更新処理（例）
@@ -325,10 +337,10 @@ class RecipeController extends Controller
         }
 
         // ステップの更新
-        foreach ($validatedData['steps'] as $stepData) {
+        foreach ($validatedData['steps'] as $index => $stepData) {
             // ステップサムネイルのアップロード（新しい画像があれば更新）
-            if ($request->hasFile('steps.' . $stepData['step_number'] . '.thumbnail')) {
-                $file = $request->file('steps.' . $stepData['step_number'] . '.thumbnail');
+            if ($request->hasFile("steps.{$index}.thumbnail")) {
+                $file = $request->file("steps.{$index}.thumbnail");
                 $stepPath = $file->store('step-thumbnails', 's3');
                 $stepData['thumbnail'] = Storage::disk('s3')->url($stepPath);
             } elseif (isset($stepData['thumbnail']) && is_string($stepData['thumbnail'])) {
@@ -336,7 +348,7 @@ class RecipeController extends Controller
                 $stepData['thumbnail'] = $stepData['thumbnail']; // URLそのまま使用
             } else {
                 // 画像もURLも送信されていない場合
-                $stepData['thumbnail'] = ""; // 必要に応じてデフォルト値
+                $stepData['thumbnail'] = asset('images/no-image02.jpg'); // 必要に応じてデフォルト値
             }
 
             // ステップの作成または更新

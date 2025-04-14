@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { sideLink } from "../constants/text";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 type Props = {
     open: {
@@ -9,6 +11,13 @@ type Props = {
 };
 
 export const Navbar = ({ open }: Props) => {
+    const location = useLocation();
+    const isFavoriteTab = useSelector(
+        (state: RootState) => state.favoriteTab.isFavoriteTab
+    );
+    const isLink = location.pathname;
+    const isRecipe = location.pathname.includes("/recipes");
+
     return (
         <nav
             className={`fixed ease-linear duration-200 ${
@@ -28,8 +37,9 @@ export const Navbar = ({ open }: Props) => {
                     <Link to={item.link} key={item.id}>
                         <li
                             key={item.id}
-                            className={`mr-1 tb:text-sm ${
-                                item.id === 0 && "text-orange"
+                            className={`mr-1 tb:text-sm hover:text-super_black ${
+                                (item.link === isLink && "text-orange") ||
+                                (isRecipe && item.id === 1 && "text-orange")
                             }`}
                         >
                             <FontAwesomeIcon

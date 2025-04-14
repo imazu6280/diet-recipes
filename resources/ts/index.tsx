@@ -12,6 +12,7 @@ import { store } from "./redux/store";
 import { RecipeEdit } from "./page/RecipeEdit";
 import { RecipeList } from "./page/RecipeList";
 import { useMenu } from "./hooks/useMenu";
+import { CategoryList } from "./page/CategoryList";
 
 const container = document.getElementById("app");
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
@@ -61,11 +62,11 @@ const Main = () => {
                                     />
                                     <Route
                                         path="/recipes/category/:id"
-                                        element={<RecipeList />}
+                                        element={<CategoryList />}
                                     />
                                     <Route
                                         path="/recipes/category/:id/favorites"
-                                        element={<RecipeList />}
+                                        element={<CategoryList />}
                                     />
                                 </Routes>
                             </div>
