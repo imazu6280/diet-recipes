@@ -300,7 +300,9 @@ export const RecipeList = () => {
                         >
                             <div className="flex justify-between">
                                 <h3 className="text-lg font-semibold">
-                                    <span className="pr-1">{}</span>
+                                    <span className="pr-1">
+                                        {searchQuery ? searchQuery : "全ての"}
+                                    </span>
                                     の絞り込み
                                 </h3>
                                 <p

@@ -15,9 +15,8 @@ export const Navbar = ({ open }: Props) => {
     const isFavoriteTab = useSelector(
         (state: RootState) => state.favoriteTab.isFavoriteTab
     );
-
-    console.log("Current pathname:", location.pathname); // デバッグ用
-    console.log("Current pathname:", location.pathname); // デバッグ用
+    const isLink = location.pathname;
+    const isRecipe = location.pathname.includes("/recipes");
 
     return (
         <nav
@@ -39,22 +38,15 @@ export const Navbar = ({ open }: Props) => {
                         <li
                             key={item.id}
                             className={`mr-1 tb:text-sm ${
-                                (item.link === location.pathname &&
-                                    "text-orange") ||
-                                (item.isOrange === location.pathname &&
-                                    "text-orange")
+                                (item.link === isLink && "text-orange") ||
+                                (isRecipe && item.id === 1 && "text-orange")
                             }`}
                         >
-                            <span
-                                className={`${isFavoriteTab && "text-orange"}`}
-                            >
-                                <FontAwesomeIcon
-                                    icon={item.icon}
-                                    style={{ marginRight: "10px" }}
-                                />
-
-                                {item.label}
-                            </span>
+                            <FontAwesomeIcon
+                                icon={item.icon}
+                                style={{ marginRight: "10px" }}
+                            />
+                            {item.label}
                         </li>
                     </Link>
                 ))}

@@ -228,7 +228,7 @@ export const Header = () => {
                         />
                     </Link>
                 </div>
-                <div className="grid grid-cols-header-column gap-5">
+                <div className="grid grid-cols-header-column gap-5 items-center">
                     <form
                         id="no-click-search"
                         action=""
