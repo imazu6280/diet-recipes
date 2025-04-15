@@ -8,17 +8,12 @@ export const useMenu = () => {
         sidebarOpen: false,
     });
 
-    const menuOpen = (
-        e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
-    ) => {
-        if (e.target === e.currentTarget) {
-            setOpen((prevState) => ({ ...prevState, sideOpen: false }));
-        } else {
-            setOpen((prevState) => ({
-                ...prevState,
-                sideOpen: !prevState.sideOpen,
-            }));
-        }
+    const menuOpen = () => {
+        setOpen((prevState) => ({ ...prevState, sideOpen: true }));
+    };
+
+    const menuClose = () => {
+        setOpen((prevState) => ({ ...prevState, sideOpen: false }));
     };
 
     const toggleDeleteOpen = (
@@ -53,6 +48,7 @@ export const useMenu = () => {
     return {
         open,
         menuOpen,
+        menuClose,
         toggleDeleteOpen,
         toggleSearchOpen,
         toggleSidebar,
