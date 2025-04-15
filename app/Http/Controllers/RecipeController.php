@@ -336,6 +336,12 @@ class RecipeController extends Controller
             ]);
         }
 
+        // バリデーション済みのステップ番号を取得
+    $incomingStepNumbers = collect($validatedData['steps'])->pluck('step_number')->toArray();
+
+    // 不要なステップを削除（今回送られてこなかったステップ）
+    $recipe->steps()->whereNotIn('step_number', $incomingStepNumbers)->delete();
+
         // ステップの更新
         foreach ($validatedData['steps'] as $index => $stepData) {
             // ステップサムネイルのアップロード（新しい画像があれば更新）
