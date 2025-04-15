@@ -14,7 +14,8 @@ export type SideMenuType = {
         deleteOpen: boolean;
         sidebarOpen: boolean;
     };
-    menuOpen: (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => void;
+    menuOpen: () => void;
+    menuClose: () => void;
     toggleDeleteOpen: (
         e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
     ) => void;

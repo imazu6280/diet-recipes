@@ -18,7 +18,8 @@ import { setFavoriteTab } from "../redux/favoriteTabSlice";
 import { Link } from "react-router-dom";
 
 export const Header = () => {
-    const { open, menuOpen, toggleDeleteOpen }: SideMenuType = useMenu();
+    const { open, menuOpen, menuClose, toggleDeleteOpen }: SideMenuType =
+        useMenu();
     const { createInputValue, favoriteToggleBtn } = useRecipeCreate();
     const { deleteHandleSubmit } = useRecipeDelete();
     const { inputValue, handleSearchChange, handleSearchSubmit } =
@@ -34,6 +35,7 @@ export const Header = () => {
     const isLocationRecipes =
         location.pathname.includes("/recipes") ||
         location.pathname.includes("/recipes/category/");
+    const isCreate = location.pathname === "/create";
 
     return isLocation ? (
         <header className="sticky top-0 z-30 md:shadow-gray">
@@ -122,15 +124,23 @@ export const Header = () => {
                         />
                         {open.deleteOpen && (
                             <ul className="absolute top-9 right-2 w-40 bg-white shadow-modal rounded-sm">
-                                <DeleteMenuButton
-                                    key=""
-                                    text="削除"
-                                    image="/images/trash.svg"
-                                    index={0}
-                                    type=""
-                                    recipeDeleteId={recipeDeleteId}
-                                    deleteHandleSubmit={deleteHandleSubmit}
-                                />
+                                {isCreate ? (
+                                    <Link to="/">
+                                        <li className="flex items-center gap-x-2 w-40 px-4 py-2 text-gray-opacity border-gray-opacity border-1 bg-white z-50 first:rounded-t-modal last-of-type:rounded-b-modal hover:bg-beige">
+                                            戻る
+                                        </li>
+                                    </Link>
+                                ) : (
+                                    <DeleteMenuButton
+                                        key=""
+                                        text="削除"
+                                        image="/images/trash.svg"
+                                        index={0}
+                                        type=""
+                                        recipeDeleteId={recipeDeleteId}
+                                        deleteHandleSubmit={deleteHandleSubmit}
+                                    />
+                                )}
                             </ul>
                         )}
                     </div>
@@ -251,7 +261,7 @@ export const Header = () => {
                 </div>
             </div>
             <div
-                onClick={menuOpen}
+                onClick={menuClose}
                 className={`inset-0 ${
                     open.sideOpen ? "fixed z-50 bg-gray-opacity" : "z-0"
                 }`}

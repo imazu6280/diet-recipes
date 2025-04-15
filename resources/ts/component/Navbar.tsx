@@ -20,9 +20,9 @@ export const Navbar = ({ open }: Props) => {
 
     return (
         <nav
-            className={`fixed ease-linear duration-200 ${
+            className={`fixed ${
                 open.sideOpen
-                    ? "right-0 top-0 h-screen flex flex-col gap-y-7 px-6 pt-5 bg-white"
+                    ? "right-0 top-0 h-screen flex flex-col gap-y-7 px-6 pt-5 bg-white ease-linear duration-200"
                     : "-right-full"
             }`}
         >
