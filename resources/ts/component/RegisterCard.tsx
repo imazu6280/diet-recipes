@@ -97,17 +97,18 @@ export const RegisterCard = ({
                         onChange={(e) => stepsHandleFileChange(e, index)}
                         className="hidden"
                     ></input>
-                    <p>
-                        {stepImage[index] ? ( // prevImage[index]を使用
-                            <img
-                                src={stepImage[index]} // インデックスに対応する画像を表示
-                                alt="プレビュー"
-                                className="w-full h-full object-cover rounded-lg"
-                            />
-                        ) : (
-                            <img src="/images/image16.svg" alt="カメラ" />
-                        )}
-                    </p>
+                    {/* <div> */}
+                    {stepImage[index] ? ( // prevImage[index]を使用
+                        <p
+                            className="w-full h-full bg-cover bg-no-repeat bg-center rounded-lg"
+                            style={{
+                                backgroundImage: `url(${stepImage[index]})`, // インデックスに対応する画像を表示
+                            }}
+                        ></p>
+                    ) : (
+                        <img src="/images/image16.svg" alt="カメラ" />
+                    )}
+                    {/* </div> */}
                 </label>
                 <label
                     htmlFor={`description-${index}`}
