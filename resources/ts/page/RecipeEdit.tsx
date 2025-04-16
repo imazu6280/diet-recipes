@@ -89,7 +89,7 @@ export const RecipeEdit = () => {
                                         placeholder="料理名を入力してください"
                                         value={updateInputValue.name}
                                         onChange={updateCreateHandleChange}
-                                        className="w-full px-2 py-4 text-34px font-bold bg-beige rounded-md tablet_md:text-xl sm:text-lg"
+                                        className="w-full p-4 text-34px font-bold bg-beige rounded-md tablet_md:text-xl sm:text-lg"
                                     />
                                 </label>
                                 <label htmlFor="comments">
@@ -99,7 +99,7 @@ export const RecipeEdit = () => {
                                         placeholder={placeholderString}
                                         value={updateInputValue.comments}
                                         onChange={updateCreateHandleChange}
-                                        className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
+                                        className="w-full px-4 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
                                 <div className="flex justify-between gap-y-4 md:flex-col">
@@ -139,7 +139,7 @@ export const RecipeEdit = () => {
                                         </select>
                                         <FontAwesomeIcon
                                             icon={faChevronDown}
-                                            className="absolute right-3 bottom-3.5 text-xs text-gray"
+                                            className="select-with-icon absolute left-36 bottom-3.5 text-xs text-gray md:right-3"
                                         />
                                     </label>
                                     {errors.length > 0 && (

@@ -76,7 +76,7 @@ export const RecipeCreate = () => {
                                         placeholder="料理名を入力してください"
                                         value={createInputValue.name}
                                         onChange={CreateHandleChange}
-                                        className="w-full px-2 py-4 text-34px font-bold bg-beige rounded-md tablet_md:text-xl sm:text-lg"
+                                        className="w-full p-4 text-34px font-bold bg-beige rounded-md tablet_md:text-xl sm:text-lg"
                                     />
                                 </label>
                                 <label>
@@ -86,7 +86,7 @@ export const RecipeCreate = () => {
                                         placeholder={placeholderString}
                                         value={createInputValue.comments}
                                         onChange={CreateHandleChange}
-                                        className="w-full px-10 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
+                                        className="w-full px-4 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
                                 <div className="flex flex-col gap-y-4 md:flex-row md:justify-between">
