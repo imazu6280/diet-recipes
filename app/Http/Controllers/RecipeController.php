@@ -117,7 +117,10 @@ class RecipeController extends Controller
         ]);
 
         // ingredientsのリレーションを保存
-        foreach ($validatedData['ingredients'] as $ingredientData) {
+        foreach ($validatedData['ingredients'] as $index => $ingredientData) {
+            if($index > 0 && empty($ingredientData['name'])){
+                continue;
+            }
 
             // 食材の作成または更新
             $ingredient = Ingredient::updateOrCreate(
@@ -136,7 +139,10 @@ class RecipeController extends Controller
 
 
         // ステップの保存
-        foreach ($validatedData['steps'] as $stepData) {
+        foreach ($validatedData['steps'] as $index => $stepData) {
+            if($index > 0 && empty($stepData['description'])){
+                continue;
+            }
 
             if(!empty($stepData['thumbnail'])){
                 $stepPath = $stepData['thumbnail']->store('step-thumbnails' , 's3' , 'public');
