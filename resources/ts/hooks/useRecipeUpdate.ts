@@ -23,7 +23,7 @@ export const useRecipeUpdate = () => {
         mainImage: "",
         stepImage: [],
     });
-    const [errors, setErrors] = useState<string[]>([]);
+    const [updateErrors, setUpdateErrors] = useState<string[]>([]);
     const navigate = useNavigate();
 
     const updateAddIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -329,29 +329,21 @@ export const useRecipeUpdate = () => {
                 newErrors = [...newErrors, "コメントは必須です"];
             }
 
-            // if (!updateInputValue.thumbnail) {
-            //     newErrors = [...newErrors, "サムネイルは必須です"];
-            // }
-
             if (Number(updateInputValue.people) <= 0) {
                 newErrors = [...newErrors, "人数は1以上で指定してください"];
             }
 
-            const firstIngredientError = updateInputValue.ingredients.find(
-                (ingredient) => !ingredient.name
-            );
-            if (firstIngredientError) {
+            const firstIngredientError = updateInputValue.ingredients[0].name;
+            if (!firstIngredientError) {
                 newErrors = [...newErrors, "食材名は必須です"];
             }
 
-            const firstStepError = updateInputValue.steps.find(
-                (step) => !step.description
-            );
-            if (firstStepError) {
+            const firstStepError = updateInputValue.steps[0].description;
+            if (!firstStepError) {
                 newErrors = [...newErrors, "ステップの説明は必須です"];
             }
 
-            setErrors(newErrors);
+            setUpdateErrors(newErrors);
 
             return newErrors.length === 0;
         };
@@ -438,7 +430,7 @@ export const useRecipeUpdate = () => {
     return {
         updateInputValue,
         prevImage,
-        errors,
+        updateErrors,
         updateAddIngredient,
         updateAddSteps,
         updateCreateHandleChange,

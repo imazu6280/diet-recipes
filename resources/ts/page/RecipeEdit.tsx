@@ -19,7 +19,7 @@ export const RecipeEdit = () => {
     const {
         updateInputValue,
         prevImage,
-        errors,
+        updateErrors,
         updateAddIngredient,
         updateAddSteps,
         updateCreateHandleChange,
@@ -102,7 +102,7 @@ export const RecipeEdit = () => {
                                         className="w-full px-4 pt-5 pb-10 break-words bg-beige rounded-md whitespace-pre-wrap"
                                     ></textarea>
                                 </label>
-                                <div className="flex justify-between gap-y-4 md:flex-col">
+                                <div className="flex flex-col justify-between gap-y-4 md:flex-row">
                                     <Button
                                         isIcon={sideLink[0].icon}
                                         alt="お気に入り登録"
@@ -142,19 +142,19 @@ export const RecipeEdit = () => {
                                             className="select-with-icon absolute left-36 bottom-3.5 text-xs text-gray md:right-3"
                                         />
                                     </label>
-                                    {errors.length > 0 && (
-                                        <ul className="flex flex-col gap-y-1">
-                                            {errors.map((message, index) => (
-                                                <li
-                                                    key={index}
-                                                    className="text-red"
-                                                >
-                                                    {message}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
                                 </div>
+                                {updateErrors.length > 0 && (
+                                    <ul className="flex flex-col gap-y-1">
+                                        {updateErrors.map((message, index) => (
+                                            <li
+                                                key={index}
+                                                className="text-red"
+                                            >
+                                                {message}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
                             </div>
                         </div>
                     </div>

@@ -258,9 +258,7 @@ class RecipeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Log::info('Update Request Data: ', $request->all());
         try {
-            Log::info('Update Request Data: ', $request->all());
             // バリデーション
             $validatedData = $request->validate([
                 'category_id' => 'required|string',
@@ -325,7 +323,11 @@ class RecipeController extends Controller
 
         // ingredientsのリレーションを更新
         $recipe->ingredients()->detach(); // 既存のリレーションを削除
-        foreach ($validatedData['ingredients'] as $ingredientData) {
+        foreach ($validatedData['ingredients'] as $index => $ingredientData) {
+
+            if($index > 0 && empty($ingredientData['name'])){
+                continue;
+            }
 
             // 食材の作成または更新
             $ingredient = Ingredient::updateOrCreate(
@@ -350,6 +352,10 @@ class RecipeController extends Controller
 
         // ステップの更新
         foreach ($validatedData['steps'] as $index => $stepData) {
+            if($index > 0 && empty($stepData['description'])){
+                continue;
+            }
+
             // ステップサムネイルのアップロード（新しい画像があれば更新）
             if ($request->hasFile("steps.{$index}.thumbnail")) {
                 $file = $request->file("steps.{$index}.thumbnail");
