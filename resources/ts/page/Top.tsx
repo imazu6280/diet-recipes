@@ -56,7 +56,7 @@ export const Top = () => {
                                 onClick={() => GetRecipesDetailApi(item.id)}
                             >
                                 <li
-                                    className="pt-16 pb-2 px-4 text-white font-bold shadow-black rounded-lg bg-top bg-cover bg-no-repeat"
+                                    className="pt-16 pb-2 px-4 text-white font-bold shadow-black rounded-lg bg-top bg-cover bg-no-repeat truncate"
                                     style={{
                                         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${item.thumbnail})`,
                                     }}
@@ -82,12 +82,12 @@ export const Top = () => {
                                     className="bg-white shadow-black rounded-lg"
                                 >
                                     <div
-                                        className="pt-20 pb-4 px-4 rounded-t-lg bg-top bg-cover bg-no-repeat"
+                                        className="pt-20 pb-4 px-4 rounded-t-lg bg-top bg-cover bg-no-repeat md:bg-center"
                                         style={{
                                             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3)), url(${item.thumbnail})`,
                                         }}
                                     >
-                                        <p className="text-white font-bold">
+                                        <p className="text-white font-bold truncate">
                                             {item.name}
                                         </p>
                                         <p className="pt-0.5 text-xs font-light text-white">
@@ -124,20 +124,18 @@ export const Top = () => {
                                             {item.steps.map((step, index) => (
                                                 <li
                                                     key={step.id}
-                                                    className={`aspect-square rounded-lg  ${
+                                                    className={`aspect-square min-w-5 rounded-lg bg-cover bg-no-repeat bg-center ${
                                                         index >= 6 &&
                                                         "block sm:hidden"
-                                                    } 
+                                                    }
                                                     ${
                                                         index >= 4 &&
                                                         "hidden sm:block"
                                                     }`}
-                                                >
-                                                    <img
-                                                        src={step.thumbnail}
-                                                        alt=""
-                                                    />
-                                                </li>
+                                                    style={{
+                                                        backgroundImage: `url(${step.thumbnail})`,
+                                                    }}
+                                                ></li>
                                             ))}
                                         </ul>
                                     </div>
