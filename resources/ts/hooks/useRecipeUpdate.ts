@@ -340,7 +340,7 @@ export const useRecipeUpdate = () => {
 
             const firstStepError = updateInputValue.steps[0].description;
             if (!firstStepError) {
-                newErrors = [...newErrors, "ステップの説明は必須です"];
+                newErrors = [...newErrors, "作り方の説明は必須です"];
             }
 
             setUpdateErrors(newErrors);
