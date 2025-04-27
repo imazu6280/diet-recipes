@@ -319,18 +319,16 @@ export const useRecipeCreate = () => {
                 newErrors = [...newErrors, "カテゴリーを選択してください"];
             }
 
-            const firstIngredientError = createInputValue.ingredients.find(
-                (ingredient) => !ingredient.name
-            );
+            // 食材名の1つ目だけチェックして2つ目以降は記載なしでも許可
+            const firstIngredientError = !createInputValue.ingredients[0]?.name;
             if (firstIngredientError) {
                 newErrors = [...newErrors, "食材名は必須です"];
             }
 
-            const firstStepError = createInputValue.steps.find(
-                (step) => !step.description
-            );
+            // ステップ説明の1つ目だけチェック2つ目以降は記載なしでも許可
+            const firstStepError = !createInputValue.steps[0]?.description;
             if (firstStepError) {
-                newErrors = [...newErrors, "ステップの説明は必須です"];
+                newErrors = [...newErrors, "作り方の説明は必須です"];
             }
 
             setErrors(newErrors);
