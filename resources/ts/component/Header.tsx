@@ -16,16 +16,21 @@ import { RootState } from "../redux/store";
 import { useRecipeList } from "../hooks/useRecipeList";
 import { setFavoriteTab } from "../redux/favoriteTabSlice";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { resetFavorite } from "../redux/favoriteToggleSlice";
 
 export const Header = () => {
     const { open, menuOpen, menuClose, toggleDeleteOpen }: SideMenuType =
         useMenu();
-    const { createInputValue, favoriteToggleBtn } = useRecipeCreate();
+    const { favoriteToggleBtn } = useRecipeCreate();
     const { deleteHandleSubmit } = useRecipeDelete();
     const { inputValue, handleSearchChange, handleSearchSubmit } =
         useRecipeList();
 
     const recipeDeleteId = useSelector((state: RootState) => state.id.id);
+    const isFavorite = useSelector(
+        (state: RootState) => state.favorite.is_favorite
+    );
     const dispatch = useDispatch();
 
     const location = useLocation();
@@ -36,6 +41,12 @@ export const Header = () => {
         location.pathname.includes("/recipes") ||
         location.pathname.includes("/recipes/category/");
     const isCreate = location.pathname === "/create";
+
+    useEffect(() => {
+        if (isCreate) {
+            dispatch(resetFavorite());
+        }
+    }, [location.pathname]);
 
     return isLocation ? (
         <header className="sticky top-0 z-30 md:shadow-gray">
@@ -57,7 +68,7 @@ export const Header = () => {
                     alt="お気に入り"
                     text="お気に入り"
                     color={`${
-                        createInputValue.is_favorite === 0
+                        isFavorite === 0
                             ? buttonColors.gray
                             : buttonColors.bgOrange
                     }`}

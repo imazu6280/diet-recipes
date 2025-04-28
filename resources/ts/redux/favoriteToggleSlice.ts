@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export type favorite = {
-    is_favorite: boolean | number;
+    is_favorite: number;
 };
 
 const initialState: favorite = {
@@ -12,11 +12,18 @@ const favoriteSlice = createSlice({
     name: "favorite",
     initialState,
     reducers: {
+        resetFavorite: (state) => {
+            state.is_favorite = 0;
+        },
         toggleFavorite: (state) => {
             state.is_favorite = state.is_favorite === 1 ? 0 : 1;
+        },
+        setFavorite: (state, action) => {
+            state.is_favorite = action.payload;
         },
     },
 });
 
-export const { toggleFavorite } = favoriteSlice.actions;
+export const { resetFavorite, toggleFavorite, setFavorite } =
+    favoriteSlice.actions;
 export default favoriteSlice.reducer;

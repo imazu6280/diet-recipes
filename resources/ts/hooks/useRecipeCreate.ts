@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PostRecipesResponse } from "../type/recipes";
 import { createState } from "../constants/createState";
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../redux/favoriteToggleSlice";
+import { resetFavorite, toggleFavorite } from "../redux/favoriteToggleSlice";
 import { RootState } from "../redux/store";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const useRecipeCreate = () => {
-    const dispatch = useDispatch();
-    const isFavorite = useSelector(
-        (state: RootState) => state.favorite.is_favorite
-    );
     const [createInputValue, setCreateInputValue] =
         useState<PostRecipesResponse>(createState);
     const [prevImage, setPrevImage] = useState<{
@@ -22,6 +19,14 @@ export const useRecipeCreate = () => {
         stepImage: [],
     });
     const [errors, setErrors] = useState<string[]>([]);
+
+    const dispatch = useDispatch();
+    const isFavorite = useSelector(
+        (state: RootState) => state.favorite.is_favorite
+    );
+
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const addIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -398,7 +403,7 @@ export const useRecipeCreate = () => {
                 return;
             }
 
-            location.href = "/";
+            navigate("/");
         } catch (error) {
             console.error("post error!!", error);
         }

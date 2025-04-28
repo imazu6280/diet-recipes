@@ -12,6 +12,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { setFavoriteTab } from "../redux/favoriteTabSlice";
+import { resetFavorite } from "../redux/favoriteToggleSlice";
 
 export const RecipeList = () => {
     const { open, toggleSearchOpen } = useMenu();
@@ -94,7 +95,7 @@ export const RecipeList = () => {
             </h2>
             <div className="grid grid-cols-wrapper-column gap-x-6 pt-4 text-xl md:block md:w-inner md:mx-auto">
                 <div className="flex flex-col gap-y-4">
-                    {!isFavoriteTab && (
+                    {recipeFavoriteList.length !== 0 && !isFavoriteTab && (
                         <div className="flex flex-col gap-y-4">
                             <p>
                                 お気に入りの「

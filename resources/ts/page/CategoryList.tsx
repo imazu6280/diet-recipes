@@ -83,60 +83,61 @@ export const CategoryList = () => {
             </h2>
             <div className="grid grid-cols-wrapper-column gap-x-6 pt-4 text-xl md:block md:w-inner md:mx-auto">
                 <div className="flex flex-col gap-y-4">
-                    {!isFavoriteTab && (
-                        <div className="flex flex-col gap-y-4">
-                            <p>
-                                お気に入りの「
-                                {categoryData.categoryName.name}
-                                」レシピ
-                            </p>
-                            <div className="relative w-full">
-                                <Swiper
-                                    ref={swiperRef}
-                                    modules={[Navigation]}
-                                    navigation={{
-                                        nextEl: ".button-next",
-                                        prevEl: ".button-prev",
-                                    }}
-                                    pagination={{ clickable: true }}
-                                    spaceBetween={5}
-                                    slidesPerView="auto"
-                                    slidesPerGroup={1}
-                                >
-                                    {categoryData.categoryFavoriteList.map(
-                                        (item) => (
-                                            <SwiperSlide
-                                                key={item.id}
-                                                style={{
-                                                    backgroundImage: `url(${item.thumbnail})`,
-                                                    backgroundSize: "cover",
-                                                    backgroundPosition:
-                                                        "center",
-                                                    maxWidth: "160px",
-                                                    height: "120px",
-                                                }}
-                                            >
-                                                <Link
-                                                    to={`/show/${item.id}`}
+                    {categoryData.categoryFavoriteList.length !== 0 &&
+                        !isFavoriteTab && (
+                            <div className="flex flex-col gap-y-4">
+                                <p>
+                                    お気に入りの「
+                                    {categoryData.categoryName.name}
+                                    」レシピ
+                                </p>
+                                <div className="relative w-full">
+                                    <Swiper
+                                        ref={swiperRef}
+                                        modules={[Navigation]}
+                                        navigation={{
+                                            nextEl: ".button-next",
+                                            prevEl: ".button-prev",
+                                        }}
+                                        pagination={{ clickable: true }}
+                                        spaceBetween={5}
+                                        slidesPerView="auto"
+                                        slidesPerGroup={1}
+                                    >
+                                        {categoryData.categoryFavoriteList.map(
+                                            (item) => (
+                                                <SwiperSlide
+                                                    key={item.id}
                                                     style={{
-                                                        display: "block",
-                                                        width: "100%",
-                                                        height: "100%",
+                                                        backgroundImage: `url(${item.thumbnail})`,
+                                                        backgroundSize: "cover",
+                                                        backgroundPosition:
+                                                            "center",
+                                                        maxWidth: "160px",
+                                                        height: "120px",
                                                     }}
-                                                />
-                                            </SwiperSlide>
-                                        )
-                                    )}
-                                </Swiper>
-                                <div className="button-prev absolute top-1/2 -translate-y-1/2 -left-3 md:-left-1 bg-black opacity-75 text-white w-7 h-7 rounded-full flex items-center justify-center z-40 hover:bg-black hover:opacity-90 after:text-lg after:text-white after:font-bold">
-                                    <img src="/images/prev.svg" alt="" />
-                                </div>
-                                <div className="button-next absolute top-1/2 -translate-y-1/2 -right-3 md:-right-1 bg-black opacity-75 text-white w-7 h-7 rounded-full flex items-center justify-center z-40 hover:bg-black hover:opacity-90 after:text-lg after:text-white after:font-bold">
-                                    <img src="/images/next.svg" alt="" />
+                                                >
+                                                    <Link
+                                                        to={`/show/${item.id}`}
+                                                        style={{
+                                                            display: "block",
+                                                            width: "100%",
+                                                            height: "100%",
+                                                        }}
+                                                    />
+                                                </SwiperSlide>
+                                            )
+                                        )}
+                                    </Swiper>
+                                    <div className="button-prev absolute top-1/2 -translate-y-1/2 -left-3 md:-left-1 bg-black opacity-75 text-white w-7 h-7 rounded-full flex items-center justify-center z-40 hover:bg-black hover:opacity-90 after:text-lg after:text-white after:font-bold">
+                                        <img src="/images/prev.svg" alt="" />
+                                    </div>
+                                    <div className="button-next absolute top-1/2 -translate-y-1/2 -right-3 md:-right-1 bg-black opacity-75 text-white w-7 h-7 rounded-full flex items-center justify-center z-40 hover:bg-black hover:opacity-90 after:text-lg after:text-white after:font-bold">
+                                        <img src="/images/next.svg" alt="" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
                     <div className="justify-between hidden md:flex">
                         <h2 className="pt-4 text-2xl">
