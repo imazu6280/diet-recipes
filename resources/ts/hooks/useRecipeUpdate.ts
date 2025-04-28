@@ -4,9 +4,9 @@ import { createState } from "../constants/createState";
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../redux/favoriteToggleSlice";
+import { setFavorite, toggleFavorite } from "../redux/favoriteToggleSlice";
 import { RootState } from "../redux/store";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export const useRecipeUpdate = () => {
     const { id } = useParams();
@@ -24,6 +24,7 @@ export const useRecipeUpdate = () => {
         stepImage: [],
     });
     const [updateErrors, setUpdateErrors] = useState<string[]>([]);
+    const location = useLocation();
     const navigate = useNavigate();
 
     const updateAddIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -305,6 +306,7 @@ export const useRecipeUpdate = () => {
             const res = await fetch(`/api/recipes/edit/${id}`);
             const json: Omit<recipeSchema, "created_at" | "updated_at"> =
                 await res.json();
+            dispatch(setFavorite(json.is_favorite));
             setUpdateInputValue(json);
             setPrevImage({
                 mainImage: json.thumbnail,
@@ -424,8 +426,10 @@ export const useRecipeUpdate = () => {
     };
 
     useEffect(() => {
-        getRecipeToEdit();
-    }, []);
+        if (id) {
+            getRecipeToEdit();
+        }
+    }, [id]);
 
     return {
         updateInputValue,
