@@ -97,7 +97,6 @@ export const RegisterCard = ({
                         onChange={(e) => stepsHandleFileChange(e, index)}
                         className="hidden"
                     ></input>
-                    {/* <div> */}
                     {stepImage[index] ? ( // prevImage[index]を使用
                         <p
                             className="w-full h-full bg-cover bg-no-repeat bg-center rounded-lg"
@@ -108,7 +107,6 @@ export const RegisterCard = ({
                     ) : (
                         <img src="/images/image16.svg" alt="カメラ" />
                     )}
-                    {/* </div> */}
                 </label>
                 <label
                     htmlFor={`description-${index}`}
