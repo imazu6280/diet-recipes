@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export const useRecipeDelete = () => {
+    const navigate = useNavigate();
+
     const deleteHandleSubmit = async (
         e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>,
         id?: number | null
@@ -15,7 +19,7 @@ export const useRecipeDelete = () => {
                 });
                 const result = await res.json();
 
-                location.href = "/";
+                navigate("/");
 
                 console.log("DELETE success!!", result);
             } catch (error) {
