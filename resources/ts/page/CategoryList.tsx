@@ -187,7 +187,9 @@ export const CategoryList = () => {
                                                   src="/images/people.svg"
                                                   alt=""
                                               />
-                                              <p className="text-sm">2人前</p>
+                                              <p className="text-sm">
+                                                  {item.people}人前
+                                              </p>
                                           </div>
                                           <p className="pt-1 text-sm">
                                               コメント
