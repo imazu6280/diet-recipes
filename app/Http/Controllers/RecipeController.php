@@ -16,7 +16,7 @@ class RecipeController extends Controller
         $search = $request->query('search');
         // $favoriteOnly = $request->query(('favorite'));
 
-        $query = Recipe::with('steps','ingredients');
+        $query = Recipe::with('steps','ingredients')->orderBy('created_at','desc');;
 
         if($search){
             $recipes = $query->where('name','like', '%' . $search . '%');
