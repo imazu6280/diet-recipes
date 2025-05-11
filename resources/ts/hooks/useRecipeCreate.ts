@@ -72,8 +72,6 @@ export const useRecipeCreate = () => {
     ) => {
         const { name, value } = e.target;
 
-        console.log("category_id", value);
-
         setCreateInputValue((prevState) => ({
             ...prevState,
             [name]: value,
