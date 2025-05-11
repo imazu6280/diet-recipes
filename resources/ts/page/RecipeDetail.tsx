@@ -67,7 +67,7 @@ export const RecipeDetail = () => {
                     <h3 className="text-2xl font-bold">材料</h3>
                     <p className="flex items-center gap-x-2">
                         <FontAwesomeIcon icon={faPerson} />
-                        1枚分
+                        {recipesDetail?.people}人前
                     </p>
                     <div>
                         {recipeIngredient?.map((item) => (
