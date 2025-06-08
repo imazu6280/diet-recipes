@@ -130,19 +130,19 @@ export const RecipeCreate = () => {
                                             className="select-with-icon absolute left-36 bottom-3.5 text-xs text-gray md:right-3"
                                         />
                                     </label>
-                                    {errors.length > 0 && (
-                                        <ul className="flex flex-col gap-y-1">
-                                            {errors.map((message, index) => (
-                                                <li
-                                                    key={index}
-                                                    className="text-red"
-                                                >
-                                                    {message}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
                                 </div>
+                                {errors.length > 0 && (
+                                    <ul className="flex flex-col gap-y-1">
+                                        {errors.map((message, index) => (
+                                            <li
+                                                key={index}
+                                                className="text-red"
+                                            >
+                                                {message}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
                             </div>
                         </div>
                     </div>
